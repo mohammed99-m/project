@@ -1,2 +1,4 @@
 db.sqlite3
 project/__pycache__/
+authapp/__pycache__/
+authapp/migrations/__pycache__/
