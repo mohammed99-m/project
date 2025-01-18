@@ -19,7 +19,21 @@ class LoginSerializer(serializers.Serializer):
     experianse_level = serializers.CharField(required=False, allow_blank=True)
     user_type = serializers.CharField(required=False, allow_blank=True) 
 
-   
+class ProfileSerializer(serializers.Serializer):
+    # Access fields from the related 'User' model
+    email = serializers.EmailField(source='user.email', required=True)
+    id = serializers.IntegerField(source='user.id',required=True)
+    username = serializers.CharField(source='user.username', required=True)
+    first_name = serializers.CharField(source='user.first_name', required=False, allow_blank=True)
+    last_name = serializers.CharField(source='user.last_name', required=False, allow_blank=True)
+    phone = serializers.CharField(required=False, allow_blank=True)
+    weight = serializers.FloatField(required=False)
+    height = serializers.FloatField(required=False)
+    gender = serializers.CharField(required=False, allow_blank=True)
+    goal = serializers.CharField(required=False, allow_blank=True)
+    experianse_level = serializers.CharField(required=False, allow_blank=True)
+    user_type = serializers.CharField(required=False, allow_blank=True)
+    
 
    
     

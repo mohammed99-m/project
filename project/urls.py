@@ -21,4 +21,6 @@ urlpatterns = [
     path('authapp/',include('authapp.urls')),
     path('admin/', admin.site.urls),
     path('',include('accounts.urls')),
+    path('posts/',include('posts.urls')),
+    path('exercises/',include('exercises.urls')),
 ]
