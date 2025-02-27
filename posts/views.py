@@ -6,15 +6,14 @@ from .models import Post, Profile,Comment
 from .serializers import PostSerializer,CommentSerializer
 from accounts.serializers import ProfileSerializer
 from django.contrib.auth.models import User
-
+from django.shortcuts import get_object_or_404
 @api_view(['POST'])
-def add_post(request):
-    profile_id = request.data.get('author')  
+def add_post(request,author_id):
     content = request.data.get('content')  
 
     try:
        
-        profile = Profile.objects.get(user__id=profile_id)
+        profile = get_object_or_404(Profile,user_id=author_id)
     except Profile.DoesNotExist:
         return Response({'error': 'Profile not found.'}, status=status.HTTP_404_NOT_FOUND)
 

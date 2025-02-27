@@ -238,9 +238,9 @@ def get_coaches(request):
 
 @api_view(["GET"])
 # جلب مستخد محدد
-def get_specific_user(request,pk):
+def get_specific_user(request,user_id):
     ##  المحدد id جلب المستخدم ذو ال
-    user = get_object_or_404(User,id=pk)
+    user = get_object_or_404(User,id=user_id)
     ## جلب البروفايل الموافق للمستخد الافتراضي الصحيح
     profile = Profile.objects.get(user = user)
     ##json تحويل البيانات
@@ -277,6 +277,9 @@ def send_join_request(request, user_id, coach_id):
         # اذا الطلب الردي مبعوت
         if JoinRequest.objects.filter(trainer=trainer_profile, coach=coach_profile, status='Pending').exists():
             return Response({"error": "A pending request already exists"}, status=400)
+        
+        if trainer_profile.id in [trainer.id for trainer in coach_profile.trainers.all()]:
+              return Response({"message": "You are already joined with that coach"}, status=400)
 
         #  والا ننشئ خانة جديدة في جدول الطلبات
         JoinRequest.objects.create(trainer=trainer_profile, coach=coach_profile)

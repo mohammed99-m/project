@@ -1,0 +1,242 @@
+POST http://127.0.0.1:8000/login/
+Content-Type: application/json
+
+{"username":"Ka" ,  "password":"1234"}
+
+
+###
+
+POST http://127.0.0.1:8000/register/
+Content-Type: application/json
+
+{"username":"Ka" , "email":"Ka@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"Kamel","last_name":"ahmed",
+"gender":"male",
+"goal":"lose_weight",
+"experianse_level" :"beginner",
+"user_type":"coach"
+}
+
+###
+
+GET http://127.0.0.1:8000/getInfo/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+###
+DELETE http://127.0.0.1:8000/delete/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE5MzM1LCJpYXQiOjE3MzQ5ODMzMzUsImp0aSI6ImY5MGY2ZTg2N2UxYTQyZTY5MDk0NGJhYjQwMzQxNzNhIiwidXNlcl9pZCI6ODR9.84RAQq57eOJBk8_n6QO1y4ClTD1XqzrrGBYVLKMsokY
+
+{}
+
+
+###
+
+Put http://127.0.0.1:8000/update_profile/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{
+    "field": "email",
+    "value": "koko"
+}
+
+###
+
+GET http://127.0.0.1:8000/users/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+###
+
+GET http://127.0.0.1:8000/coaches/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+###
+
+GET http://127.0.0.1:8000/user/4/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+
+###
+
+GET http://127.0.0.1:8000/trainers/7/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+
+###
+
+POST http://127.0.0.1:8000/sendjoinrequest/4/7/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+
+
+###
+
+POST http://127.0.0.1:8000/responsetojoinrequest/7/2/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{
+    "action": "Reject"
+}
+
+###
+
+GET http://127.0.0.1:8000/getjoinrequests/7/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+
+
+###
+
+GET http://127.0.0.1:8000/exercises/listexercises/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+###
+
+GET http://127.0.0.1:8000/exercises/searchexercises/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+###
+
+POST http://127.0.0.1:8000/exercises/makeprogram/coach_id/trainer_id/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{
+}
+
+###
+
+GET http://127.0.0.1:8000/exercises/gettrainerprogram/trainner_id/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+###
+
+DELETE http://127.0.0.1:8000/exercises/deleteprogram/user_id/program_id/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+
+###
+
+GET http://127.0.0.1:8000/exercises/updateprogram/coach_id/program_id/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+
+###
+
+GET http://127.0.0.1:8000/exercises/getcoachprograms/7/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+
+###
+
+POST http://127.0.0.1:8000/posts/addpost/8/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMjI3NjQwLCJpYXQiOjE3NDA2OTE2NDAsImp0aSI6IjJiNGQ4YjZmMWIxNjQwNDQ5ZDM0ZmE3YWYxYzRhYzAwIiwidXNlcl9pZCI6OH0.tHkNi-Z1lphqVTyTXMo3qs2cmy8GKa8_xZ8GQ_LGq7A
+
+{
+    "content":"hello"
+}
+
+###
+
+POST http://127.0.0.1:8000/posts/addcomment/post_id/user_id/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{
+    "text":"my post"
+}
+
+###
+
+POST http://127.0.0.1:8000/posts/like/post_id/user_id/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+###
+
+GET http://127.0.0.1:8000/posts/getallposts/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+###
+
+GET http://127.0.0.1:8000/posts/getsomeoneposts/8/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
+###
+
+GET http://127.0.0.1:8000/posts/getcommentsonpost/2/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+
