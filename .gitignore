@@ -8,3 +8,5 @@ posts/__pycache__/
 posts/migrations/__pycache__/
 exercises/__pycache__/
 exercises/migrations/__pycache__/
+healh/__pycache__/
+healh/migrations/__pycache__/

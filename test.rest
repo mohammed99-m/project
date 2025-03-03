@@ -240,3 +240,158 @@ Content-Type: application/json
 
 {}
 
+###
+
+###
+GET http://127.0.0.1:8000/healthprogram/healthy-meals/
+Content-Type: application/json
+
+{}
+
+###
+GET  http://127.0.0.1:8000/healthprogram/getmealbyname/?q=Meal1
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+{}
+
+###
+GET  http://127.0.0.1:8000/healthyprogram/meal_time/?q=first meal
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+{}
+
+###
+GET http://127.0.0.1:8000/healthprogram/foods/
+Content-Type: application/json
+
+{}
+
+###
+POST http://127.0.0.1:8000/healthprogram/addditeplan/2/3/
+Content-Type: application/json
+
+{
+    "meals":[1,2]
+}
+
+###
+GET http://127.0.0.1:8000/healthprogram/coachdietplans/2/
+Content-Type: application/json
+
+{}
+
+###
+GET http://127.0.0.1:8000/healthprogram/gettrainerdietplan/2/
+Content-Type: application/json
+
+{}
+
+###
+POST http://127.0.0.1:8000/healthprogram/updatedietplan/1/1/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+{
+    "meals":[1,2]
+}
+
+###
+GET http://127.0.0.1:8000/healthprogram/listofretaurant/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+{}
+
+###
+POST http://127.0.0.1:8000/healthprogram/ordermeals/3/1/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+{
+    "meals":[
+        {
+            "meal":1,
+            "quantity":3
+        }
+    ]
+}
+
+###
+PATCH  http://127.0.0.1:8000/healthprogram/updateorderstatus/2/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+{
+    "status":"done"
+}
+
+###
+GET  http://127.0.0.1:8000/healthprogram/getuserorders/3/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+{}
+
+###
+POST  http://127.0.0.1:8000/healthprogram/create_restaurant/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+{
+    "name":"Restaurant3",
+    "location":"Damascus"
+}
+
+
+###
+POST  http://127.0.0.1:8000/healthprogram/add_food/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+{
+    "name":"healthy soap",
+    "calories":"75"
+}
+
+###
+DELETE http://127.0.0.1:8000/healthyprogram/delete-restaurants/3/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+###
+POST  http://127.0.0.1:8000/healt/create_meal/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+
+{
+    "name":"meal7",
+    "description":"meal7",
+    "ingredients":[1,2],
+    "price":"150",
+    "restaurant":[1,2]
+}
+
+###
+GET http://127.0.0.1:8000/healthyprogram/restaurants_meal/1/
+Content-Type: application/json
+
+{}
+
+###
+GET http://127.0.0.1:8000/healthyprogram/meals_in_restaurant/1/
+Content-Type: application/json
+
+{}

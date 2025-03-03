@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'posts',
     'exercises',
+    'health'
 
 ]
 REST_FRAMEWORK = {

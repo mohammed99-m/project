@@ -23,4 +23,5 @@ urlpatterns = [
     path('',include('accounts.urls')),
     path('posts/',include('posts.urls')),
     path('exercises/',include('exercises.urls')),
+    path('health/',include('health.urls'))
 ]
