@@ -349,18 +349,20 @@ def get_join_requests(request, coach_id):
     
 @api_view(["GET"])
 def return_experince_level(request):
-    data = {
-          "level1":"beginner",
-          "level2":"intermediate",
-          "level3":"advanced"
-      }
+    data =  [
+          "beginner",
+          "intermediate",
+          "advanced"
+        ]
+      
     return Response(data,status=200)
 
 @api_view(["GET"])
 def return_goals(request):
-    data = {
-        "goal1":"lose_weight",
-        "goal2":"build_muscle",
-        "goal3":"endurance"
-    }
+    data = [
+        "lose_weight",
+        "build_muscle",
+        "endurance"
+        ]
+    
     return Response(data,status=200)
