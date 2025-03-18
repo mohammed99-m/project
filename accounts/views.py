@@ -346,3 +346,21 @@ def get_join_requests(request, coach_id):
         return Response(data, status=200)
     except Profile.DoesNotExist:
         return Response({"error": "Coach Profile not found"}, status=404)
+    
+@api_view(["GET"])
+def return_experince_level(request):
+    data = {
+          "level1":"beginner",
+          "level2":"intermediate",
+          "level3":"advanced"
+      }
+    return Response(data,status=200)
+
+@api_view(["GET"])
+def return_goals(request):
+    data = {
+        "goal1":"lose_weight",
+        "goal2":"build_muscle",
+        "goal3":"endurance"
+    }
+    return Response(data,status=200)

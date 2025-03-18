@@ -13,5 +13,7 @@ urlpatterns = [
     path('sendjoinrequest/<str:user_id>/<str:coach_id>/',views.send_join_request,name="Send Join Request"),
     path('responsetojoinrequest/<str:coach_id>/<str:request_id>/',views.respond_to_join_request,name="Response To Join Request"),
     path('getjoinrequests/<str:coach_id>/',views.get_join_requests,name="Get All Join Requestes"),
+    path('getgoals/',views.return_goals,name="Get Goals"),
+    path('getexperincelevel/',views.return_experince_level,name="Experince Level")
 
 ]
