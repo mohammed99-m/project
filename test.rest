@@ -395,3 +395,15 @@ GET http://127.0.0.1:8000/health/meals_in_restaurant/1/
 Content-Type: application/json
 
 {}
+
+###
+GET http://127.0.0.1:8000/getgoals/
+Content-Type: application/json
+
+{}
+
+###
+GET http://127.0.0.1:8000/getexperincelevel/
+Content-Type: application/json
+
+{}
