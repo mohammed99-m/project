@@ -68,7 +68,7 @@ def login(request):
         
         # Check the password
         if not user.check_password(request.data['password']):
-            return Response({"detail": "Invalid credentials"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "Invalid credentials"}, status=status.HTTP_404_NOT_FOUND)
 
         # Get or create token for the user
         #token, created = Token.objects.get_or_create(user=user)
@@ -86,7 +86,7 @@ def login(request):
         return Response({"token": str(acces_token), "user": serializer.data})
 
     except KeyError as e:
-        return Response({"detail": f"Missing field: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": f"Missing field: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
     
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
