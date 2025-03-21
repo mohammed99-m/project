@@ -13,6 +13,11 @@ from django.contrib.auth.models import User
 
 @api_view(["POST"])
 def sign_up(request):
+
+    User = get_user_model()
+    if User.objects.filter(username=request.data['username']).exists():
+        return Response({"message": "this User name already Exist"}, status=status.HTTP_404_NOT_FOUND)
+    
     profile_serializer = RegisterSerializer(data=request.data)
     if profile_serializer.is_valid():
 
@@ -47,7 +52,11 @@ def sign_up(request):
         return Response(response_data, status=status.HTTP_201_CREATED)
     
     # Return errors if the serializer is invalid
-    return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if(profile_serializer.errors.get('email')!=None):
+      return Response({"message": "This Email already exist"},status=status.HTTP_404_NOT_FOUND)
+    if(profile_serializer.errors.get('password')!=None):
+      return Response({"message": "add password"}, status=status.HTTP_404_NOT_FOUND)
+    return Response({"message": "something get wrong"}, status=status.HTTP_404_NOT_FOUND)
 
 
 
