@@ -122,7 +122,7 @@ def delete_account(request):
 
     user.delete()
 
-    return Response({"detail": "Account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    return Response({"message": "Account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
@@ -145,7 +145,7 @@ def update_profile_field(request):
     field_value = request.data.get("value")
     ## في حال كانت البيانات خاطئة في جسم الطلب 
     if not field_name:
-        return Response({"error": "Field name is required."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Field name is required."}, status=status.HTTP_400_BAD_REQUEST)
 
     ## نحصل على اسماء جميع الحثول في البروفايل و المستخدم الافتراضي 
     profile_fields = [field.name for field in Profile._meta.get_fields()]
@@ -156,13 +156,13 @@ def update_profile_field(request):
         ##  التحقق من عدم تكرار الايميل او ادخال ايميل خاطئ
         if not field_value or not isinstance(field_value, str) or "@" not in field_value:
             return Response(
-                {"error": "Invalid email address."},
+                {"message": "Invalid email address."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         ## التحقق من عدم وجود الايميل مسبقا
         if User.objects.filter(email=field_value).exclude(id=user.id).exists():
             return Response(
-                {"error": "This email is already in use by another account."},
+                {"message": "This email is already in use by another account."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         ## في حال كان الايميل ممكن التعديل نخزن الايميل الجديد
@@ -177,7 +177,7 @@ def update_profile_field(request):
         ## الاسم موجود مسبقا 
         if User.objects.filter(username=field_value).exclude(id=user.id).exists():
             return Response(
-                {"error": "This username is already in use by another account."},
+                {"message": "This username is already in use by another account."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         ## ان كان الاسم ممكن نخزن الاسم الجديد
@@ -192,7 +192,7 @@ def update_profile_field(request):
         ## التاكد انا الرقم غير موجود مسبقا 
         if Profile.objects.filter(phone=field_value).exclude(user=user).exists():
             return Response(
-                {"error": "This phone is already in use by another account."},
+                {"message": "This phone is already in use by another account."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         ## حفظ رقم الهاتف الجديد
@@ -221,7 +221,7 @@ def update_profile_field(request):
         )
     ## في حال ارسال مفتاح خاطئ
     return Response(
-        {"error": f"Field '{field_name}' does not exist."},
+        {"message": f"Field '{field_name}' does not exist."},
         status=status.HTTP_400_BAD_REQUEST,
     )
 
@@ -270,7 +270,7 @@ def get_trainers(request, coach_id):
         return Response(serializer.data, status=200)
     #الممرر id اذا كان مافي بروفايل لهاد ال 
     except Profile.DoesNotExist:
-        return Response({"error": "Profile not found"}, status=404)
+        return Response({"message": "Profile not found"}, status=404)
     
 
 
@@ -285,7 +285,7 @@ def send_join_request(request, user_id, coach_id):
 
         # اذا الطلب الردي مبعوت
         if JoinRequest.objects.filter(trainer=trainer_profile, coach=coach_profile, status='Pending').exists():
-            return Response({"error": "A pending request already exists"}, status=400)
+            return Response({"message": "a pending request already exist"}, status=400)
         
         if trainer_profile.id in [trainer.id for trainer in coach_profile.trainers.all()]:
               return Response({"message": "You are already joined with that coach"}, status=400)
@@ -295,7 +295,7 @@ def send_join_request(request, user_id, coach_id):
         return Response({"message": "Join request sent successfully"}, status=201)
     # في حال مافي متدرب او مدرب موافق للايدي المبعوت
     except Profile.DoesNotExist:
-        return Response({"error": "User or Coach Profile not found"}, status=404)
+        return Response({"message": "User or Coach Profile not found"}, status=404)
     
 
  
@@ -311,7 +311,7 @@ def respond_to_join_request(request, coach_id, request_id):
         action = request.data.get('action')
         ## هون اذا كنا باعتين شي غلط غير الرفض و القبول
         if action not in ['Accept', 'Reject']:
-            return Response({"error": "Invalid action. Use 'Accept' or 'Reject'."}, status=400)
+            return Response({"message": "Invalid action. Use 'Accept' or 'Reject'."}, status=400)
         
         # حالة القبول 
         if action == 'Accept':
@@ -328,9 +328,9 @@ def respond_to_join_request(request, coach_id, request_id):
             return Response({"message": "Join request rejected"}, status=200)
     ## حالات الفشل
     except Profile.DoesNotExist:
-        return Response({"error": "Coach Profile not found"}, status=404)
+        return Response({"message": "Coach Profile not found"}, status=404)
     except JoinRequest.DoesNotExist:
-        return Response({"error": "Join request not found"}, status=404)
+        return Response({"message": "Join request not found"}, status=404)
 
 
 @api_view(['GET'])
@@ -354,7 +354,7 @@ def get_join_requests(request, coach_id):
         ]
         return Response(data, status=200)
     except Profile.DoesNotExist:
-        return Response({"error": "Coach Profile not found"}, status=404)
+        return Response({"message": "Coach Profile not found"}, status=404)
     
 @api_view(["GET"])
 def return_experince_level(request):
