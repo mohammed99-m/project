@@ -177,7 +177,7 @@ def update_profile_field(request):
         ## الاسم موجود مسبقا 
         if User.objects.filter(username=field_value).exclude(id=user.id).exists():
             return Response(
-                {"message": "This username is already in use by another account."},
+                {"message": "This username Is already in use by another account"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         ## ان كان الاسم ممكن نخزن الاسم الجديد
@@ -295,7 +295,7 @@ def send_join_request(request, user_id, coach_id):
         return Response({"message": "Join request sent successfully"}, status=201)
     # في حال مافي متدرب او مدرب موافق للايدي المبعوت
     except Profile.DoesNotExist:
-        return Response({"message": "User or Coach Profile not found"}, status=404)
+        return Response({"message": "User or Coach Profile not found!"}, status=404)
     
 
  
