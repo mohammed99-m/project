@@ -26,6 +26,6 @@ class ExerciseScheduleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExerciseSchedule
-        fields = ['exercise', 'program', 'day']
+        fields = ['exercise', 'program', 'day' ,'sets', 'reps']
 
     

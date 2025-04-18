@@ -34,7 +34,7 @@ def make_program(request,coach_id,trainer_id):
     print("H"*50)
 # استقبل البيانات المتعلقة بالأيام والتمارين
     days_exercises = request.data.get("days_exercises", [])
-    
+    print(days_exercises)
     program = Program.objects.filter(trainer=trainer).first()
 
     if program:
@@ -56,25 +56,23 @@ def make_program(request,coach_id,trainer_id):
     )
 
     for day_exercise in days_exercises:
-        day = day_exercise.get("day")  # الحصول على اليوم
-        exercises_ids = day_exercise.get("exercises", [])  # الحصول على التمارين
+        day = day_exercise.get("day")  
+        sets = day_exercise.get("sets")  
+        reps = day_exercise.get("reps")  
+        exercises_ids = day_exercise.get("exercises", []) 
 
         if not exercises_ids:
-            return Response({"detail": "Exercises must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
-
+             return Response({"detail": "Exercises must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
+        
         exercises = Exercise.objects.filter(exercise_id__in=exercises_ids)
-        if exercises.count() != len(exercises_ids):
-            return Response(
-                {"detail": "One or more exercises not found."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # إضافة التمارين إلى الجدول الزمني
+        
         for exercise in exercises:
-            ExerciseSchedule.objects.create(
+             ExerciseSchedule.objects.create(
                 exercise=exercise,
                 program=program,
-                day=day
+                day=day,
+                sets=sets,
+                reps=reps
             )
 
     serialized_program = ProgramSerializer(program)
@@ -91,6 +89,8 @@ def get_program(request, user_id):
     for schedule in schedules:
         exercise_info = {
             'day': schedule.day,
+            'sets': schedule.sets,
+            'reps' : schedule.reps,
             'exercise': ExerciseSerializer(schedule.exercise).data,
         }
         exercises_with_days.append(exercise_info)
@@ -115,7 +115,7 @@ def delete_program(request,program_id,user_id):
     else:
            return(Response("no program with that info"))
 
-
+#يحدث كامل البرنامج
 @api_view(["Post"])
 def update_program(request,coach_id,program_id):
     coach = get_object_or_404(Profile,user__id=coach_id)
@@ -138,6 +138,8 @@ def update_program(request,coach_id,program_id):
 
     for day_exercise in days_exercises:
         day = day_exercise.get("day")
+        sets = day_exercise.get("sets")  
+        reps = day_exercise.get("reps")
         exercises_ids = day_exercise.get("exercises", [])
 
         if not exercises_ids:
@@ -156,12 +158,15 @@ def update_program(request,coach_id,program_id):
             ExerciseSchedule.objects.create(
                 program=program,
                 day=day,
+                sets=sets, 
+                reps=reps,
                 exercise=exercise
             )
             
     serialized_program = ProgramSerializer(program)
     return Response(serialized_program.data, status=status.HTTP_200_OK)
 
+#يحدث البرنامج من خلال التحديثات فقط ويبقي على الأيام التي لاتتغير
 @api_view(["POST"])
 def update_program_by_days(request, coach_id, program_id):
     coach = get_object_or_404(Profile, user__id=coach_id)
@@ -181,6 +186,8 @@ def update_program_by_days(request, coach_id, program_id):
 
     for day_exercise in days_exercises:
         day = day_exercise.get("day")
+        sets = day_exercise.get("sets")
+        reps = day_exercise.get("reps")
         exercises_ids = day_exercise.get("exercises", [])
         print( {day})
 
@@ -204,6 +211,8 @@ def update_program_by_days(request, coach_id, program_id):
             ExerciseSchedule.objects.create(
                 program=program,
                 day=day,
+                sets=sets, 
+                reps=reps ,
                 exercise=exercise
                 )
     
