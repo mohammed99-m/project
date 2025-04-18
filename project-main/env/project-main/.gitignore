@@ -1,0 +1,10 @@
+db.sqlite3
+project/__pycache__/
+authapp/__pycache__/
+authapp/migrations/__pycache__/
+accounts/__pycache__/
+accounts/migrations/__pycache__/
+posts/__pycache__/
+posts/migrations/__pycache__/
+exercises/__pycache__/
+exercises/migrations/__pycache__/

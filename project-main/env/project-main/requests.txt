@@ -1,0 +1,327 @@
+http://127.0.0.1:8000/restaurants/create_restaurant/ #اضافة مطعم
+{
+    "name": "healthy rest",
+    "location": "lattakia"
+}
+Response
+{
+  "message": "Restaurant created successfully.",
+  "restaurant_id": 4,
+  "name": "healthy rest",
+  "location": "lattakia"
+}
+http://127.0.0.1:8000/restaurants/restaurants/  #ارجاع المطاعم
+Response
+[
+  {
+    "restaurant_id": 2,
+    "name": "healthy",
+    "location": "latakia"
+  },
+  {
+    "restaurant_id": 3,
+    "name": "Rest Name",
+    "location": "lattakia"
+  },
+  {
+    "restaurant_id": 4,
+    "name": "healthy rest",
+    "location": "lattakia"
+  }
+]
+http://127.0.0.1:8000/restaurants/add-food/ # إضافةfood
+{
+    "name": "تفاح",
+    "calories": 52.00
+}
+Response
+{
+  "id": 1,
+  "name": "تفاح",
+  "calories": "52.00"
+}
+
+http://127.0.0.1:8000/restaurants/get-food/ #الحصول على الطعام
+Response
+[
+  {
+    "id": 1,
+    "name": "تفاح",
+    "calories": "52.00"
+  }
+]
+
+http://127.0.0.1:8000/restaurants/create_meal/ #اضافة وجبة 
+{
+    "name": "rizz with meat",
+    "price": 25,
+    "description": "rizz with meat",
+    "photo": "http://photo.jpg",
+    "restaurant": 3,  
+    "meal_time": "غداء",
+    "ingredients": [1]  
+}
+Response
+{
+  "message": "Meal created successfully.",
+  "meals_id": 5,
+  "name": "rizz with meat",
+  "price": 25.0,
+  "description": "rizz with meat",
+  "photo": "http://photo.jpg",
+  "restaurant": 3,
+  "meal_time": "غداء",
+  "ingredients": [
+    {
+      "id": 1,
+      "name": "تفاح",
+      "calories": 52.0
+    }
+  ],
+  "restaurant_name": "Rest Name"
+}
+
+http://localhost:8000/restaurants/meals/#ارجاع الوجبات
+Response
+[
+  {
+    "meals_id": 2,
+    "name": "pizza",
+    "price": 12.0,
+    "description": "pizza",
+    "photo": "https://ar.pikbest.com/png-images/salad-plate-on-transparent-background-png-image_10133937.html",
+    "restaurant": 2,
+    "meal_time": "1",
+    "ingredients": []
+  },
+  {
+    "meals_id": 4,
+    "name": "rizz with meat",
+    "price": 25.0,
+    "description": "rizz with meat",
+    "photo": "http://photo.jpg",
+    "restaurant": 3,
+    "meal_time": "غداء",
+    "ingredients": []
+  },
+  {
+    "meals_id": 5,
+    "name": "rizz with meat",
+    "price": 25.0,
+    "description": "rizz with meat",
+    "photo": "http://photo.jpg",
+    "restaurant": 3,
+    "meal_time": "غداء",
+    "ingredients": [
+      1
+    ]
+  }
+]
+
+http://localhost:8000/restaurants/creat-orders/ ,# انشاء طلب
+{
+    "meals": [
+        {
+            "meal": 5,
+            "quantity": 2
+        }
+    ]
+}
+Response
+{
+  "message": "Order created successfully.",
+  "order": {
+    "order_id": 25,
+    "user": "manar1",
+    "status": "pending",
+    "meals": [
+      {
+        "meal_id": 5,
+        "meal_name": "rizz with meat",
+        "quantity": 2,
+        "price": 25.0,
+        "restaurant": "Rest Name",
+        "ingredients": [
+          {
+            "id": 1,
+            "name": "تفاح",
+            "calories": 52.0
+          }
+        ]
+      }
+    ],
+    "total_price": 50.0
+  }
+}
+
+http://127.0.0.1:8000/restaurants/user/orders/  #عرض طلبات المستخدم
+Response
+[
+     "user": {
+      "email": "manar1@gmail.com",
+      "id": 1,
+      "username": "manar1",
+      "first_name": "",
+      "last_name": "",
+      "phone": "123456",
+      "weight": 12.0,
+      "height": 13.0,
+      "gender": "fmale",
+      "goal": "fit",
+      "experianse_level": "beginner",
+      "user_type": "trainer"
+    },
+    "id": 17,
+    "order_meal": [
+      {
+        "meal": 2,
+        "quantity": 3
+      }
+    ],
+    "status": "pending",
+    "created_at": "2025-02-28T22:34:01.263208Z",
+    "total_price": 36.0
+  },
+  {
+    "user": {
+      "email": "manar1@gmail.com",
+      "id": 1,
+      "username": "manar1",
+      "first_name": "",
+      "last_name": "",
+      "phone": "123456",
+      "weight": 12.0,
+      "height": 13.0,
+      "gender": "fmale",
+      "goal": "fit",
+      "experianse_level": "beginner",
+      "user_type": "trainer"
+    },
+    "id": 18,
+    "order_meal": [
+      {
+        "meal": 2,
+        "quantity": 3
+      }
+    ],
+    "status": "pending",
+    "created_at": "2025-02-28T22:39:54.809221Z",
+    "total_price": 36.0
+  },
+
+
+http://127.0.0.1:8000/restaurants/orders/4/update-status/  #لتغيير حالة الطلب (pendding ready ...)
+{
+  "status": "ready"
+}
+Response
+{
+  "message": "Order status updated",
+  "order": {
+    "id": 4,
+    "user": 1,
+    "status": "ready",
+    "created_at": "2025-02-28T19:54:03.489787Z"
+  }
+}
+
+
+http://127.0.0.1:8000/restaurants/meals/search/?q=rizz with meat ,#للحصول على الوجبة من خلال اسمها
+Response
+[
+  {
+    "meals_id": 4,
+    "name": "rizz with meat",
+    "price": 25.0,
+    "description": "rizz with meat",
+    "photo": "http://photo.jpg",
+    "restaurant": 3,
+    "meal_time": "غداء",
+    "ingredients": []
+  },
+  {
+    "meals_id": 5,
+    "name": "rizz with meat",
+    "price": 25.0,
+    "description": "rizz with meat",
+    "photo": "http://photo.jpg",
+    "restaurant": 3,
+    "meal_time": "غداء",
+    "ingredients": [
+      1
+    ]
+  }
+]
+http://127.0.0.1:8000/restaurants/diet-plans/ ,# ارجاع الخطط الغذائية
+Response
+[
+  {
+    "id": 1,
+    "coach": 1,
+    "trainer": 1,
+    "meals": [
+      2,
+      3
+    ],
+    "created_at": "2025-03-01T20:16:43.564468Z"
+  }
+]
+
+http://127.0.0.1:8000/restaurants/diet-plans/add/ ,#إضافة خطة غذائية
+{
+    "coach": 1,
+    "trainer": 1,
+    "meals": [2, 3,4] 
+}
+Response
+{
+  "id": 2,
+  "coach": 1,
+  "trainer": 1,
+  "meals": [
+    2,
+    3,
+    4
+  ],
+  "created_at": "2025-03-01T20:25:56.499645Z"
+}
+
+http://127.0.0.1:8000/restaurants/diet-plans/search/?meal_time=غداء  
+Response  # للبحث عن الخطة الغذائية حسب وقتها(افطار, غداء....) 
+[
+  {
+    "meals_id": 4,
+    "name": "rizz with meat",
+    "price": 25.0,
+    "description": "rizz with meat",
+    "photo": "http://photo.jpg",
+    "restaurant": 3,
+    "meal_time": "غداء",
+    "ingredients": []
+  }
+]
+http://127.0.0.1:8000/restaurants/user-diet-plans/ #ارجاع الخطط الغذائية للمستخدم الحالي
+Response
+[
+  {
+    "id": 1,
+    "coach": 1,
+    "trainer": 1,
+    "meals": [
+      2,
+      3
+    ],
+    "created_at": "2025-03-01T20:16:43.564468Z"
+  },
+  {
+    "id": 2,
+    "coach": 1,
+    "trainer": 1,
+    "meals": [
+      2,
+      3,
+      4
+    ],
+    "created_at": "2025-03-01T20:25:56.499645Z"
+  }
+]
