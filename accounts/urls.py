@@ -14,6 +14,7 @@ urlpatterns = [
     path('responsetojoinrequest/<str:coach_id>/<str:request_id>/',views.respond_to_join_request,name="Response To Join Request"),
     path('getjoinrequests/<str:coach_id>/',views.get_join_requests,name="Get All Join Requestes"),
     path('getgoals/',views.return_goals,name="Get Goals"),
-    path('getexperincelevel/',views.return_experince_level,name="Experince Level")
-
+    path('getexperincelevel/',views.return_experince_level,name="Experince Level"),
+    path('getrequeststatus/<str:trainer_id>/',views.get_request_status,name="Request Status"),
+    path('gettrainerinfo/<str:trainer_id>/<str:coach_id>/',views.get_trainer_info)
 ]

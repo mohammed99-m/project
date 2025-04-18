@@ -7,8 +7,7 @@ from django.contrib.auth import get_user_model
 from .models import Profile
 from rest_framework_simplejwt.tokens import AccessToken
 from django.contrib.auth.models import User
-
-
+from exercises.models import Program
 
 
 @api_view(["POST"])
@@ -375,3 +374,52 @@ def return_goals(request):
         ]
     
     return Response(data,status=200)
+
+@api_view(['GET'])
+def get_request_status(request, trainer_id):
+    try:
+
+        trainer_profile = Profile.objects.get(user__id=trainer_id)
+
+        requests = JoinRequest.objects.filter(trainer=trainer_profile)
+
+        data = [
+            {
+                "id": req.id,
+                "coach_id": req.coach.user.id,
+                "trainer_id":req.trainer.user.id,
+                "coach_name": req.trainer.user.username,
+                "trainer_name":req.trainer.user.username,
+                "status":req.status,
+                "created_at": req.created_at
+            }
+            for req in requests
+        ]
+        return Response(data, status=200)
+    except Profile.DoesNotExist:
+        return Response({"error": "Trainner Profile not found"}, status=404)
+    
+
+@api_view(['GET'])
+## جلب المتدربين الخاصين بمدرب معين
+def get_trainer_info(request,trainer_id,coach_id):
+    try:
+        ## البروفايل الخاص بمدرب معين
+        coach = get_object_or_404(Profile,user__id=coach_id)
+        trainer = get_object_or_404(Profile,user__id=trainer_id)
+        joinRequest = get_object_or_404(JoinRequest,trainer=trainer,coach=coach)
+
+        no_program = True
+        try:
+          Program.objects.get(trainer=trainer,coach=coach)
+        except Program.DoesNotExist:
+            no_program = False
+        data = {
+            "join_status":joinRequest.status,
+            "program_status":no_program
+        }
+        
+        return Response(data, status=200)
+    #الممرر id اذا كان مافي بروفايل لهاد ال 
+    except Profile.DoesNotExist:
+        return Response({"error": "Profile not found"}, status=404)

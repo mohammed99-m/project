@@ -1,7 +1,7 @@
 POST http://127.0.0.1:8000/login/
 Content-Type: application/json
 
-{"username":"Ka" ,  "password":"1234"}
+{"username":"Kamel" ,  "password":"1234"}
 
 
 ###
@@ -9,7 +9,7 @@ Content-Type: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"Kamel" , "email":"Kamel@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"Kamel","last_name":"ahmed",
+{"username":"coach" , "email":"coach@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"Kamel","last_name":"ahmed",
 "gender":"male",
 "goal":"lose_weight",
 "experianse_level" :"advanced",
@@ -74,7 +74,7 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/trainers/7/
+GET http://127.0.0.1:8000/trainers/2/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -84,7 +84,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/sendjoinrequest/4/7/
+POST http://127.0.0.1:8000/sendjoinrequest/1/2/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -95,18 +95,18 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/responsetojoinrequest/7/2/
+POST http://127.0.0.1:8000/responsetojoinrequest/2/1/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
 
 {
-    "action": "Reject"
+    "action": "Accept"
 }
 
 ###
 
-GET http://127.0.0.1:8000/getjoinrequests/7/
+GET http://127.0.0.1:8000/getjoinrequests/2/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -404,6 +404,18 @@ Content-Type: application/json
 
 ###
 GET http://127.0.0.1:8000/getexperincelevel/
+Content-Type: application/json
+
+{}
+
+###
+GET http://127.0.0.1:8000/getrequeststatus/1/
+Content-Type: application/json
+
+{}
+
+###
+GET http://127.0.0.1:8000/gettrainerinfo/1/2/
 Content-Type: application/json
 
 {}
