@@ -64,7 +64,7 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/user/4/
+GET http://127.0.0.1:8000/user/2/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -174,7 +174,7 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/exercises/getcoachprograms/7/
+GET http://127.0.0.1:8000/exercises/getcoachprograms/2/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -419,3 +419,25 @@ GET http://127.0.0.1:8000/gettrainerinfo/1/2/
 Content-Type: application/json
 
 {}
+
+###
+Post http://127.0.0.1:8000/exercises/makeprogram/2/1/
+Content-Type: application/json
+
+{
+    "description":"first program",
+    "days_exercises":[
+        { 
+            "day":"sunday",
+            "sets":3,
+            "reps":10,
+            "exercises":[1,2,3] 
+        },
+        {
+            "day":"friday",
+            "sets":3,
+            "reps":10,
+            "exercises":[1,2,3] 
+        }
+    ]
+}

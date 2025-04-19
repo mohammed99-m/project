@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Exercise
+from .models import Exercise, ExerciseSchedule, Program
 from accounts.serializers import ProfileSerializer
 class ExerciseSerializer(serializers.Serializer):
     exercise_id = serializers.IntegerField(read_only=True) 
@@ -13,5 +13,19 @@ class ProgramSerializer(serializers.Serializer):
     description = serializers.CharField(max_length = 500 , required=True)
     coach = ProfileSerializer()
     trainer = ProfileSerializer()
-    exercises = ExerciseSerializer(many=True)
+    exercises = serializers.SerializerMethodField()
     created_at = serializers.DateTimeField(read_only=True)
+
+    def get_exercises(self, obj):
+        schedules = ExerciseSchedule.objects.filter(program=obj)
+        return ExerciseScheduleSerializer(schedules, many=True).data
+
+class ExerciseScheduleSerializer(serializers.ModelSerializer):
+    exercise = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all())
+    program = serializers.PrimaryKeyRelatedField(queryset=Program.objects.all())
+
+    class Meta:
+        model = ExerciseSchedule
+        fields = ['exercise', 'program', 'day' ,'sets', 'reps']
+
+    

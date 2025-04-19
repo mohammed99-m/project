@@ -7,8 +7,6 @@ class Exercise(models.Model):
     #video_url = models.URLField(blank=True, null=True)  # URL
     description = models.TextField(blank=True, null=True)  # TEXT
 
-    def __str__(self):
-        return self.name
     
 
 class Program(models.Model):
@@ -16,5 +14,17 @@ class Program(models.Model):
     description = models.TextField(max_length=500)
     coach = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name="Program_maker")
     trainer = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name="Program_assigned")
-    exercises = models.ManyToManyField(Exercise,related_name="exercises")
+    exercises = models.ManyToManyField(Exercise, through='ExerciseSchedule', related_name="programs")
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class ExerciseSchedule(models.Model):
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    program = models.ForeignKey(Program, on_delete=models.CASCADE)
+    day = models.CharField(max_length=10)
+    sets = models.IntegerField()  
+    reps = models.IntegerField()  
+
+    class Meta:
+        unique_together = ('exercise', 'program', 'day')  # لضمان عدم تكرار نفس التمرين في نفس اليوم
+

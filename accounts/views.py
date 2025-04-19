@@ -388,7 +388,7 @@ def get_request_status(request, trainer_id):
                 "id": req.id,
                 "coach_id": req.coach.user.id,
                 "trainer_id":req.trainer.user.id,
-                "coach_name": req.trainer.user.username,
+                "coach_name": req.coach.user.username,
                 "trainer_name":req.trainer.user.username,
                 "status":req.status,
                 "created_at": req.created_at
