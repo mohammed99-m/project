@@ -6,6 +6,7 @@ class ExerciseSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255, required=True) 
     muscle_group = serializers.CharField(max_length=255, required=True)  
     #video_url = serializers.URLField(required=False, allow_blank=True) 
+    machine = serializers.CharField(required = False, allow_blank=True)
     description = serializers.CharField(required=False, allow_blank=True) 
 
 class ProgramSerializer(serializers.Serializer):
