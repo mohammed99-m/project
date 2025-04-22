@@ -230,3 +230,14 @@ def get_coach_programs(request,coach_id):
     serializer = ProgramSerializer(programs,many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+def get_exercises_by_muscle(request):
+    query = request.query_params.get('q', None)  
+    if query:
+        exercises = Exercise.objects.filter(muscle_group__icontains=query)  
+    else:
+        exercises = Exercise.objects.all()  
+
+    serializer = ExerciseSerializer(exercises, many=True)  
+    return Response(serializer.data, status=status.HTTP_200_OK)

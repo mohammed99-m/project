@@ -5,6 +5,13 @@ Content-Type: application/json
 
 
 ###
+### اختبار عرض التمارين حسب العضلة
+
+GET http://127.0.0.1:8000/exercises/by-muscle/?q=arm
+Accept: application/json
+###
+
+###
 
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
