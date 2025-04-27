@@ -11,4 +11,6 @@ urlpatterns = [
    path('makeprogram/<str:coach_id>/<str:trainer_id>/',make_program,name="make program"),
    path('gettrainerprogram/<str:user_id>/',get_program,name="Get Trainer's Program"),
    path('deleteprogram/<str:program_id>/<str:user_id>/',delete_program,name="Delete Program"),
+   path('updateprogram/<str:coach_id>/<str:program_id>/',update_program,name="Update Program"),
+   path('updateprogrampyday/<str:coach_id>/<str:program_id>/',update_program_by_days,name="Update Program By Days")
 ]
