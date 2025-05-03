@@ -53,7 +53,7 @@ Content-Type: application/json
             "day": "Monday",
             "sets": 3,
             "reps": 10,
-            "exercises": [1, 2]
+            "exercises": [1]
         },
         {
             "day": "Wednesday",
@@ -348,11 +348,16 @@ Content-Type: application/json
 {}
 
 ###
-POST http://127.0.0.1:8000/health/addditeplan/7/4/
+POST http://127.0.0.1:8000/health/addditeplan/3/10/
 Content-Type: application/json
 
-{
-    "meals":[1,2]
+  {
+    "days_meals": [
+       {
+           "day": "Monday",
+           "meals": [3]
+       }
+    ]
 }
 
 ###
@@ -368,13 +373,18 @@ Content-Type: application/json
 {}
 
 ###
-POST http://127.0.0.1:8000/health/updatedietplan/1/1/
+POST http://127.0.0.1:8000/health/updatedietplan/3/6/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
 
 {
-    "meals":[1,2]
+    "days_meals": [
+       {
+           "day": "Mond",
+           "meals": [2]
+       }
+    ]
 }
 
 ###
@@ -446,7 +456,16 @@ DELETE http://127.0.0.1:8000/health/delete-restaurants/3/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
+####
+DELETE  http://127.0.0.1:8000/health/deletemeal/7/
 
+####
+POST  http://127.0.0.1:8000/health/updatemeals/7/
+Content-Type: application/json
+
+{
+    "ingredients": [2]
+}
 ###
 POST  http://127.0.0.1:8000/health/create_meal/
 Content-Type: application/json
@@ -454,11 +473,11 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
 
 {
-    "name":"meal7",
-    "description":"meal7",
+    "name":"meal3",
+    "description":"meal1",
     "ingredients":[1,2],
     "price":"150",
-    "restaurant":[1,2]
+    "restaurant":[1]
 }
 
 ###

@@ -5,7 +5,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import DietPlan, Meal , Food
+from .models import DietPlan, Meal , Food, MealsSchedule
 from .serializers import DietPlanSerializer, MealSerializer , FoodSerializer
 import logging #للتأكد من صحةالبيانات
 from django.shortcuts import get_object_or_404
@@ -250,35 +250,42 @@ def get_diet_plans(request):
 def add_diet_plan(request,coach_id,trainer_id):
     coach = get_object_or_404(Profile,user__id=coach_id)
     trainer = get_object_or_404(Profile,user__id=trainer_id)
-    meals_ids = request.data.get("meals",[])
-
+    days_meals = request.data.get("days_meals", [])
+    print(days_meals)
     ## هون في حال لم يكن هناك برنامج رح يفرش بس اذا كان في رح يعلم المستخدم انو في برنامج
-    diteplan = DietPlan.objects.filter(trainer=trainer).first()
+    dietplan = DietPlan.objects.filter(trainer=trainer).first()
 
-    if diteplan:
+    if dietplan:
         return Response({"detail": "This User already got a dite plan"}, status=status.HTTP_400_BAD_REQUEST)
-    if not meals_ids:
+    if not days_meals:
         return Response({"detail": "At least one meal must be provided."}, status=status.HTTP_400_BAD_REQUEST)
     
     print("H"*50)
-    print(meals_ids[0])
-    meals = Meal.objects.filter(meals_id__in=meals_ids)
-    print("K"*50)
-    print(meals[0])
-    if meals.count() != len(meals_ids):
-        return Response(
-            {"detail": "One or more meal not found."},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-    
-  
-    diteplan = DietPlan.objects.create(
+      
+    dietplan = DietPlan.objects.create(
         coach=coach,
         trainer=trainer,
     )
 
-    diteplan.meals.set(meals)
-    serialized_program = DietPlanSerializer(diteplan)
+    for day_meal in days_meals:
+        day = day_meal.get("day")
+        meals_ids = day_meal.get("meals" , []) 
+
+        if not meals_ids:
+             return Response({"detail": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        meals = Meal.objects.filter(meals_id__in=meals_ids)
+        print("K"*50)
+        print(meals[0])
+
+        for meal in meals:
+             MealsSchedule.objects.create(
+                meal=meal,
+                dietplan=dietplan,
+                day=day
+            )
+
+    serialized_program = DietPlanSerializer(dietplan)
     return Response(serialized_program.data, status=status.HTTP_201_CREATED)
 
 
@@ -300,10 +307,9 @@ def update_dietplan(request,coach_id,plan_id):
     coach = get_object_or_404(Profile,user__id=coach_id)
     print(coach.user.username)
     dietplan = get_object_or_404(DietPlan,id=plan_id)
+    days_meals = request.data.get("days_meals", [])
 
-    meals_id = request.data.get("meals",[])
-
-    if not meals_id:
+    if not days_meals:
         return Response({"detail": "At least one meal must be provided."}, status=status.HTTP_400_BAD_REQUEST)
     
     if coach!=dietplan.coach:
@@ -312,18 +318,34 @@ def update_dietplan(request,coach_id,plan_id):
         return Response({"detail":"You Cant update on this plan"})
     
     print("H"*50)
-    print(meals_id[0])
-    meals = Meal.objects.filter(meals_id__in=meals_id)
+    MealsSchedule.objects.filter(dietplan=dietplan).delete()
     print("K"*50)
-    print(meals[0])
-
-    if meals.count() != len(meals_id):
-        return Response(
-            {"detail": "One or more exercises not found."},
-            status=status.HTTP_400_BAD_REQUEST
-        )
     
-    dietplan.meals.set(meals)
+    for day_meal in days_meals:
+        day = day_meal.get("day")
+        meals_ids = day_meal.get("meals" , []) 
+
+        if not meals_ids:
+             return Response({"detail": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        meals = Meal.objects.filter(meals_id__in=meals_ids)
+        print("K"*50)
+        print(meals[0])
+
+        if meals.count() != len(meals_ids):
+           return Response(
+               {"detail": "One or more exercises not found."},
+               status=status.HTTP_400_BAD_REQUEST
+           )
+  
+        for meal in meals:
+             MealsSchedule.objects.create(
+                meal=meal,
+                dietplan=dietplan,
+                day=day
+            )
+    
+    
     serialized_program = DietPlanSerializer(dietplan)
     return Response(serialized_program.data, status=status.HTTP_200_OK)
    
@@ -350,3 +372,35 @@ def get_meals_in_restaurant(request, restaurant_id):
     # Return the serialized data
     return Response(serializer.data, status=status.HTTP_200_OK)
 ####################################################################################
+
+
+@api_view(['POST'])
+def update_meal(request, meal_id):
+    meal = get_object_or_404(Meal, meals_id=meal_id)
+    ingredient_ids = request.data.get('ingredients', [])
+
+    if not ingredient_ids:
+        return Response({"detail": "Food IDs must be provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+    new_foods = []
+    for food_id in ingredient_ids:
+        food = get_object_or_404(Food, id=food_id)
+        new_foods.append(food)
+
+    meal.ingredients.clear()
+
+    meal.ingredients.add(*new_foods)
+
+    serializer = MealSerializer(meal)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['DELETE'])
+def delete_meal(request,  meal_id):
+    
+    meal = get_object_or_404(Meal, meals_id=meal_id)
+
+  
+    meal.delete()
+
+    return Response({"detail": "Meal deleted successfully."}, status=status.HTTP_204_NO_CONTENT)

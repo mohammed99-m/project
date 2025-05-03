@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Exercise, ExerciseSchedule, Program
 from accounts.serializers import ProfileSerializer
+
 class ExerciseSerializer(serializers.Serializer):
     exercise_id = serializers.IntegerField(read_only=True) 
     name = serializers.CharField(max_length=255, required=True) 

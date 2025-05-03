@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import HealthyMealList , search_HealthyMeal,foods,add_diet_plan,get_coach_diet_plans,get_diet_plans,get_meals_in_restaurant,get_restaurants_with_meal,get_trainner_diet_plans,update_dietplan,list_restaurants,list_user_orders,create_restaurant,delete_restaurant,create_order,create_meal,update_order_status,add_food,search_meal_time
+from .views import HealthyMealList, delete_meal , search_HealthyMeal,foods,add_diet_plan,get_coach_diet_plans,get_diet_plans,get_meals_in_restaurant,get_restaurants_with_meal,get_trainner_diet_plans,update_dietplan,list_restaurants,list_user_orders,create_restaurant,delete_restaurant,create_order,create_meal, update_meal,update_order_status,add_food,search_meal_time
 urlpatterns = [
+    path('getdietplane',get_diet_plans , name= "Get Diet Plane"),
     path('healthy-meals/',HealthyMealList,name="health Meals"),
     path('getmealbyname/',search_HealthyMeal,name="GET Meal By Name"),
     path('foods/',foods,name="Get All Food"),
@@ -19,4 +20,7 @@ urlpatterns = [
     path('meal_time/',search_meal_time, name='search-diet-plan'), 
     path('restaurants_meal/<str:meal_id>/',get_restaurants_with_meal, name='get restaurant that have that meal'), 
     path('meals_in_restaurant/<str:restaurant_id>/',get_meals_in_restaurant, name='get meal in restaurant'), 
+    path('updatemeals/<int:meal_id>/',update_meal, name='update_meal'), 
+    path('deletemeal/<int:meal_id>/',delete_meal, name='delete_meal'), 
+    
 ]

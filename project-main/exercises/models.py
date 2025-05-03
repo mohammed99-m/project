@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import Profile
+
 class Exercise(models.Model):
     exercise_id = models.AutoField(primary_key=True)  # INT, PRIMARY KEY, AUTO_INCREMENT
     name = models.CharField(max_length=255)  # VARCHAR

@@ -44,7 +44,7 @@ def make_program(request,coach_id,trainer_id):
     trainer = get_object_or_404(Profile,user__id=trainer_id)
     print(trainer.user.username)
     print("H"*50)
-# استقبل البيانات المتعلقة بالأيام والتمارين
+    # استقبل البيانات المتعلقة بالأيام والتمارين
     days_exercises = request.data.get("days_exercises", [])
     print(days_exercises)
     program = Program.objects.filter(trainer=trainer).first()
