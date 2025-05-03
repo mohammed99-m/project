@@ -1,7 +1,6 @@
 from rest_framework import serializers
-
 from accounts.models import Profile
-from .models import DietPlan, Meal , Restaurant , Food
+from .models import DietPlan, Meal, MealsSchedule , Restaurant , Food
 from accounts.serializers import ProfileSerializer
 
 class FoodSerializer(serializers.Serializer):
@@ -38,8 +37,13 @@ class DietPlanSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     coach = ProfileSerializer()
     trainer = ProfileSerializer()
-    meals = MealSerializer(many=True)
+    meals = serializers.SerializerMethodField()
     created_at = serializers.DateTimeField(read_only=True)
+
+
+    def get_meals(self, obj):
+        schedules = MealsSchedule.objects.filter(dietplan=obj)
+        return MealsScheduleSerializer(schedules, many=True).data
 
     # def create(self, validated_data):
     #     healthymeals_ids = validated_data.pop('healthymeals')
@@ -62,6 +66,14 @@ class DietPlanSerializer(serializers.Serializer):
 
     #     return instance
 
+class MealsScheduleSerializer(serializers.ModelSerializer):
+    meal = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all())
+    dietplan = serializers.PrimaryKeyRelatedField(queryset=DietPlan.objects.all())
+
+    class Meta:
+        model = MealsSchedule
+        fields = ['meal', 'dietplan', 'day']
+  
 
 from rest_framework import serializers
 from .models import Order, OrderMeal, Meal, Restaurant  

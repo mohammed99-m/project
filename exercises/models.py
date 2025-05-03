@@ -1,13 +1,15 @@
 from django.db import models
 from accounts.models import Profile
+
 class Exercise(models.Model):
     exercise_id = models.AutoField(primary_key=True)  # INT, PRIMARY KEY, AUTO_INCREMENT
     name = models.CharField(max_length=255)  # VARCHAR
     muscle_group = models.CharField(max_length=255)  # VARCHAR
     #video_url = models.URLField(blank=True, null=True)  # URL
-    machine = models.CharField(max_length=255 , null=True,blank=True)
     description = models.TextField(blank=True, null=True)  # TEXT
 
+    def __str__(self):
+        return self.name
     
 
 class Program(models.Model):
@@ -29,3 +31,5 @@ class ExerciseSchedule(models.Model):
     class Meta:
         unique_together = ('exercise', 'program', 'day')  # لضمان عدم تكرار نفس التمرين في نفس اليوم
 
+    def __str__(self):
+        return f"{self.exercise.name} on {self.day} for {self.program.description} - Sets: {self.sets}, Reps: {self.reps}"

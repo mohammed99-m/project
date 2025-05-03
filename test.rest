@@ -16,11 +16,11 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"coach" , "email":"coach@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"Kamel","last_name":"ahmed",
+{"username":"mo" , "email":"mo@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"K","last_name":"ah",
 "gender":"male",
 "goal":"lose_weight",
 "experianse_level" :"advanced",
-"user_type":"coach"
+"user_type":"trainer"
 }
 
 ###
@@ -91,7 +91,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/sendjoinrequest/1/2/
+POST http://127.0.0.1:8000/sendjoinrequest/4/2/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -102,7 +102,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/responsetojoinrequest/2/1/
+POST http://127.0.0.1:8000/responsetojoinrequest/2/2/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -447,4 +447,12 @@ Content-Type: application/json
             "exercises":[1,2,3] 
         }
     ]
+}
+
+###
+Get http://127.0.0.1:8000/exercises/get_diet_plan/4/
+Content-Type: application/json
+
+{
+    
 }

@@ -1,6 +1,5 @@
-from django.db import models
 
-# Create your models here.
+from django.db import models
 from django.db import models
 from accounts.models import Profile
 
@@ -57,3 +56,12 @@ class DietPlan(models.Model):
     meals = models.ManyToManyField(Meal, related_name='diet_plans')
     created_at = models.DateTimeField(auto_now_add=True)
    
+
+class MealsSchedule(models.Model):
+   meal=models.ForeignKey(Meal, on_delete=models.CASCADE)  
+   dietplan = models.ForeignKey(DietPlan,on_delete=models.CASCADE)
+   day = models.CharField(max_length=10)  
+
+   
+   def __str__(self):
+        return f"{self.meal.name} on {self.day} for {self.dietplane.description}"
