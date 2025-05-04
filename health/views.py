@@ -269,7 +269,8 @@ def add_diet_plan(request,coach_id,trainer_id):
 
     for day_meal in days_meals:
         day = day_meal.get("day")
-        meals_ids = day_meal.get("meals" , []) 
+        description = day_meal.get("description")
+        meals_ids = day_meal.get("meals" , [])
 
         if not meals_ids:
              return Response({"detail": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
@@ -281,6 +282,7 @@ def add_diet_plan(request,coach_id,trainer_id):
         for meal in meals:
              MealsSchedule.objects.create(
                 meal=meal,
+                description = description,
                 dietplan=dietplan,
                 day=day
             )
@@ -324,6 +326,7 @@ def update_dietplan(request,coach_id,plan_id):
     for day_meal in days_meals:
         day = day_meal.get("day")
         meals_ids = day_meal.get("meals" , []) 
+        description = day_meal.get("description")
 
         if not meals_ids:
              return Response({"detail": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
@@ -341,6 +344,7 @@ def update_dietplan(request,coach_id,plan_id):
         for meal in meals:
              MealsSchedule.objects.create(
                 meal=meal,
+                description = description,
                 dietplan=dietplan,
                 day=day
             )
