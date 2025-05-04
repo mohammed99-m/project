@@ -16,7 +16,7 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"mo" , "email":"mo@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"K","last_name":"ah",
+{"username":"moff" , "email":"moff@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"K","last_name":"ah",
 "gender":"male",
 "goal":"lose_weight",
 "experianse_level" :"advanced",
@@ -191,10 +191,10 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/posts/addpost/8/
+POST http://127.0.0.1:8000/posts/addpost/6/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcyMjI3NjQwLCJpYXQiOjE3NDA2OTE2NDAsImp0aSI6IjJiNGQ4YjZmMWIxNjQwNDQ5ZDM0ZmE3YWYxYzRhYzAwIiwidXNlcl9pZCI6OH0.tHkNi-Z1lphqVTyTXMo3qs2cmy8GKa8_xZ8GQ_LGq7A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc3OTE4Nzk4LCJpYXQiOjE3NDYzODI3OTgsImp0aSI6ImU2Y2Y3NWYwNDEyMzQ0M2E5ZGVkMWVjYjQ1OGQxMDE3IiwidXNlcl9pZCI6Nn0.ROSJczURBaOQ5LnOQflofcbePdvRJiUWoJk3TJ5E85c
 
 {
     "content":"hello"
@@ -231,7 +231,7 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/posts/getsomeoneposts/8/
+GET http://127.0.0.1:8000/posts/getcommentsonpost/2/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -240,12 +240,14 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/posts/getcommentsonpost/2/
+Post http://127.0.0.1:8000/posts/addcomment/2/5/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
-##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc3OTE4Nzk4LCJpYXQiOjE3NDYzODI3OTgsImp0aSI6ImU2Y2Y3NWYwNDEyMzQ0M2E5ZGVkMWVjYjQ1OGQxMDE3IiwidXNlcl9pZCI6Nn0.ROSJczURBaOQ5LnOQflofcbePdvRJiUWoJk3TJ5E85c
 
-{}
+{
+  "text":"first comment"
+}
 
 ###
 
