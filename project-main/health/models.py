@@ -54,13 +54,15 @@ class DietPlan(models.Model):
     trainer = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name="health_Program_assigned")
     meals = models.ManyToManyField(Meal, related_name='diet_plans')
     created_at = models.DateTimeField(auto_now_add=True)
-   
+       
 
 class MealsSchedule(models.Model):
    meal=models.ForeignKey(Meal, on_delete=models.CASCADE)  
    dietplan = models.ForeignKey(DietPlan,on_delete=models.CASCADE)
-   day = models.CharField(max_length=10)  
+   day = models.CharField(max_length=10)
+   description = models.TextField(max_length=500)
 
-   
+
+
    def __str__(self):
         return f"{self.meal.name} on {self.day} for {self.dietplane.description}"

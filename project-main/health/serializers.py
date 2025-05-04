@@ -20,7 +20,7 @@ class RestaurantSerializer(serializers.Serializer):
     location = serializers.CharField(max_length=255)
 
 class MealSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
+    meals_id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(max_length=255)
     description = serializers.CharField(max_length=255)
     ingredients = FoodSerializer(many=True)
@@ -72,7 +72,7 @@ class MealsScheduleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MealsSchedule
-        fields = ['meal', 'dietplan', 'day']
+        fields = ['meal', 'dietplan', 'day' , 'description']
   
 
 from rest_framework import serializers

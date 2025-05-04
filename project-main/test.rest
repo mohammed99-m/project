@@ -348,12 +348,13 @@ Content-Type: application/json
 {}
 
 ###
-POST http://127.0.0.1:8000/health/addditeplan/3/10/
+POST http://127.0.0.1:8000/health/addditeplan/3/12/
 Content-Type: application/json
 
   {
     "days_meals": [
        {
+          "description":"Heelo",
            "day": "Monday",
            "meals": [3]
        }
@@ -381,6 +382,7 @@ Content-Type: application/json
 {
     "days_meals": [
        {
+           "description" : "Helo",
            "day": "Mond",
            "meals": [2]
        }
