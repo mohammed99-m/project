@@ -17,7 +17,6 @@ class Comment(models.Model):
     writer = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name="writer")
     text = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
-    created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
 
 
 

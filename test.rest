@@ -202,7 +202,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ###
 
-POST http://127.0.0.1:8000/posts/addcomment/post_id/user_id/
+POST http://127.0.0.1:8000/posts/addcomment/1/6/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -231,7 +231,7 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/posts/getcommentsonpost/2/
+GET http://127.0.0.1:8000/posts/getcommentsonpost/1/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -240,13 +240,13 @@ Content-Type: application/json
 
 ###
 
-Post http://127.0.0.1:8000/posts/addcomment/2/5/
+Post http://127.0.0.1:8000/posts/addpost/6/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc3OTE4Nzk4LCJpYXQiOjE3NDYzODI3OTgsImp0aSI6ImU2Y2Y3NWYwNDEyMzQ0M2E5ZGVkMWVjYjQ1OGQxMDE3IiwidXNlcl9pZCI6Nn0.ROSJczURBaOQ5LnOQflofcbePdvRJiUWoJk3TJ5E85c
 
 {
-  "text":"first comment"
+  "content":"test time"
 }
 
 ###
