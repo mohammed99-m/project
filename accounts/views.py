@@ -8,7 +8,7 @@ from .models import Profile
 from rest_framework_simplejwt.tokens import AccessToken
 from django.contrib.auth.models import User
 from exercises.models import Program
-
+from health.models import DietPlan
 
 @api_view(["POST"])
 def sign_up(request):
@@ -408,15 +408,23 @@ def get_trainer_info(request,trainer_id,coach_id):
         coach = get_object_or_404(Profile,user__id=coach_id)
         trainer = get_object_or_404(Profile,user__id=trainer_id)
         joinRequest = get_object_or_404(JoinRequest,trainer=trainer,coach=coach)
-
+        
         no_program = True
+        no_dietPlan = True
         try:
           Program.objects.get(trainer=trainer,coach=coach)
         except Program.DoesNotExist:
             no_program = False
+
+        try:
+            DietPlan.objects.get(trainer=trainer,coach=coach)
+        except DietPlan.DoesNotExist:
+             no_dietPlan = False
+
         data = {
             "join_status":joinRequest.status,
-            "program_status":no_program
+            "program_status":no_program,
+            "dietPlan_status":no_dietPlan
         }
         
         return Response(data, status=200)
