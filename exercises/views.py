@@ -241,3 +241,28 @@ def get_exercises_by_muscle(request):
 
     serializer = ExerciseSerializer(exercises, many=True)  
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def add_exercise_list(request):
+    exercises_data = request.data
+    created_exercises = []
+
+    for exercise in exercises_data:
+        try:
+            obj, created = Exercise.objects.update_or_create(
+                exercise_id=exercise.get('exercise_id'),
+                defaults={
+                    'name': exercise.get('name'),
+                    'muscle_group': exercise.get('muscle_group'),
+                    'description': exercise.get('description', '')
+                }
+            )
+            created_exercises.append({
+                'exercise_id': obj.exercise_id,
+                'created': created
+            })
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({'message': 'Exercises processed successfully.', 'results': created_exercises}, status=status.HTTP_201_CREATED)
