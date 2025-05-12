@@ -408,3 +408,10 @@ def delete_meal(request,  meal_id):
     meal.delete()
 
     return Response({"detail": "Meal deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def get_meal_by_id(request,  meal_id):
+    
+    meal = get_object_or_404(Meal, meals_id=meal_id)
+    serializer = MealSerializer(meal)
+    return Response(serializer.data, status=status.HTTP_200_OK)

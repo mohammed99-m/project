@@ -452,7 +452,7 @@ Content-Type: application/json
 }
 
 ###
-Get http://127.0.0.1:8000/exercises/get_diet_plan/4/
+Get http://127.0.0.1:8000/health/getmeal/3/
 Content-Type: application/json
 
 {
