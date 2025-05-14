@@ -76,7 +76,9 @@ def like_on_post(request, post_id, user_id):
             'content': notification_message,
             'room_name': f'post01_{post.author.user.first_name}',
         }).encode('utf-8')
-
+        
+        print(notification_data)
+        print("H")
         headers = {'Content-Type': 'application/json'}
 
         req = urlrequest.Request(notification_url, data=notification_data, headers=headers, method='POST')
