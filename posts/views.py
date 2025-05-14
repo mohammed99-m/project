@@ -63,7 +63,6 @@ def like_on_post(request, post_id, user_id):
     except Profile.DoesNotExist:
         return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    author_id = post.author.user_id
 
     if profile in post.like.all():
         post.like.remove(profile)
@@ -75,7 +74,7 @@ def like_on_post(request, post_id, user_id):
         
         notification_data = json.dumps({
             'content': notification_message,
-            'room_name': f'post_{post.author.user.username}',
+            'room_name': f'post01_{post.author.user.email}',
         }).encode('utf-8')
 
         headers = {'Content-Type': 'application/json'}

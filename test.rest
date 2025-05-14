@@ -16,7 +16,7 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"moh" , "email":"moh@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"K","last_name":"ah",
+{"username":"mohammed2" , "email":"mohammed2@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"K","last_name":"ah",
 "gender":"male",
 "goal":"lose_weight",
 "experianse_level" :"advanced",
