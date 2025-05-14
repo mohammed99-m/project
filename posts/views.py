@@ -49,8 +49,9 @@ def get_someone_posts(request,user_id):
 
     return Response(serializer.data)
 
-
-import requests
+import json
+from urllib import request as urlrequest
+from urllib.error import URLError, HTTPError
 
 @api_view(['POST'])
 def like_on_post(request, post_id, user_id):
@@ -72,20 +73,27 @@ def like_on_post(request, post_id, user_id):
         notification_message = f"{profile.user.username} liked your post."
         notification_url = f"https://render-project1-qyk2.onrender.com/notification/send-notifications/{user_id}/"
         
-        notification_data = {
+        notification_data = json.dumps({
             'content': notification_message,
             'room_name': f'post_{post.author.user.username}',
-        }
+        }).encode('utf-8')
+
+        headers = {'Content-Type': 'application/json'}
+
+        req = urlrequest.Request(notification_url, data=notification_data, headers=headers, method='POST')
 
         try:
-            response = requests.post(notification_url, json=notification_data)
-            print(response.content)
-            if response.status_code == 201:
-                return Response({"message": "You liked the post and notification sent."}, status=status.HTTP_201_CREATED)
-            else:
-                return Response({"message": "You liked the post, but failed to send notification."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            with urlrequest.urlopen(req) as response:
+                if response.status == 201:
+                    return Response({"message": "You liked the post and notification sent."}, status=status.HTTP_201_CREATED)
+                else:
+                    return Response({"message": "You liked the post, but failed to send notification."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except HTTPError as e:
+            return Response({"message": f"HTTP error: {e.code} - {e.reason}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except URLError as e:
+            return Response({"message": f"Connection error: {e.reason}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
-            return Response({"message": f"You liked the post, but an error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"message": f"Unexpected error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['post'])
