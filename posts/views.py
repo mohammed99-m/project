@@ -86,7 +86,7 @@ def like_on_post(request, post_id, user_id):
         try:
             with urlrequest.urlopen(req) as response:
                 if response.status == 201:
-                    return Response({"message": "You liked the post and notification sent."}, status=status.HTTP_201_CREATED)
+                    return Response({"message": f"You liked the post and notification sent. {notification_data}" ,}, status=status.HTTP_201_CREATED)
                 else:
                     return Response({"message": "You liked the post, but failed to send notification."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except HTTPError as e:
