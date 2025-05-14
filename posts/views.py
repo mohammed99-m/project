@@ -74,7 +74,7 @@ def like_on_post(request, post_id, user_id):
         
         notification_data = json.dumps({
             'content': notification_message,
-            'room_name': f'post01_{post.author.user.email}',
+            'room_name': f'post01_{post.author.user.first_name}',
         }).encode('utf-8')
 
         headers = {'Content-Type': 'application/json'}
