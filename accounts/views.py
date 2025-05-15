@@ -284,17 +284,17 @@ def send_join_request(request, user_id, coach_id):
 
         # اذا الطلب الردي مبعوت
         if JoinRequest.objects.filter(trainer=trainer_profile, coach=coach_profile, status='Pending').exists():
-            return Response({"message": "a pending request already exist"}, status=400)
+            return Response({"message": "a pending request already exist"}, status=201)
         
         if trainer_profile.id in [trainer.id for trainer in coach_profile.trainers.all()]:
-              return Response({"message": "You are already joined with that coach"}, status=400)
+              return Response({"message": "You are already joined with that coach"}, status=201)
 
         #  والا ننشئ خانة جديدة في جدول الطلبات
         JoinRequest.objects.create(trainer=trainer_profile, coach=coach_profile)
         return Response({"message": "Join request sent successfully"}, status=201)
     # في حال مافي متدرب او مدرب موافق للايدي المبعوت
     except Profile.DoesNotExist:
-        return Response({"message": "User or Coach Profile not found!"}, status=404)
+        return Response({"message": "User or Coach Profile not found!"}, status=201)
     
 
  
