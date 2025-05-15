@@ -80,10 +80,10 @@ def like_on_post(request, post_id, user_id):
         print(notification_data)
         print("H")
         headers = {'Content-Type': 'application/json'}
-
         req = urlrequest.Request(notification_url, data=notification_data, headers=headers, method='POST')
         try:
             with urlrequest.urlopen(req) as response:
+                print(response.status)
                 if response.status == 201:
                     return Response({"message": f"You liked the post and notification sent. {notification_data}" ,}, status=status.HTTP_201_CREATED)
                 else:
@@ -91,7 +91,7 @@ def like_on_post(request, post_id, user_id):
         except HTTPError as e:
             return Response({"message": f"HTTP error: {e.code} - {e.reason}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except URLError as e:
-            return Response({"message": f"Connection error: {e.reason , notification_data,response.status}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"message": f"Connection error: {e.reason , notification_data}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             return Response({"message": f"Unexpected error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
