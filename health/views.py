@@ -1,3 +1,4 @@
+from collections import defaultdict
 from django.shortcuts import render
 
 # Create your views here.
@@ -5,6 +6,8 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+
+from accounts.serializers import ProfileSerializer
 from .models import DietPlan, Meal , Food, MealsSchedule
 from .serializers import DietPlanSerializer, MealSerializer , FoodSerializer
 import logging #للتأكد من صحةالبيانات
@@ -224,19 +227,80 @@ def search_HealthyMeal(request):
 
 # للحصول على الخطط الغذائية لمدرب محدد
 @api_view(["GET"])
-def get_coach_diet_plans(request,coach_id):
-    coach = get_object_or_404(Profile,user__id=coach_id)
+def get_coach_diet_plans(request, coach_id):
+    coach = get_object_or_404(Profile, user__id=coach_id)
     diet_plans = DietPlan.objects.filter(coach=coach)
-    serializer = DietPlanSerializer(diet_plans, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    result = []
+
+    for plan in diet_plans:
+        # جلب جميع الوجبات لهذا النظام ا لغذائي
+        scheduled_meals = MealsSchedule.objects.filter(dietplan=plan)
+        grouped_by_day = defaultdict(list)
+
+        for schedule in scheduled_meals:
+            serialized_meal = MealSerializer(schedule.meal).data
+
+            # إضافة وصف اليوم من جدول MealsSchedule
+            grouped_by_day[schedule.day].append({
+                "meal": serialized_meal
+            })
+        days_meals = []
+        for day, meals_list in grouped_by_day.items():
+            days_meals.append({
+                "diet_plan_id": plan.id,
+                "day": day,
+                "description": scheduled_meals.filter(day=day).first().description,
+                "meals": meals_list
+            })
+
+      
+        result.append({                     
+              "coach": ProfileSerializer(plan.coach).data,
+              "trainer": ProfileSerializer(plan.trainer).data,
+              "days_meals": days_meals                            
+        })
+
+    return Response(result, status=status.HTTP_200_OK)
+
 
 # للحصول على الخطة الغذائية للاعب محدد
 @api_view(["GET"])
 def get_trainner_diet_plans(request,trainer_id):
     trainer = get_object_or_404(Profile,user__id=trainer_id)
     diet_plan = get_object_or_404(DietPlan,trainer=trainer)
-    serializer = DietPlanSerializer(diet_plan)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    result = []
+
+        # جلب جميع الوجبات المجدولة لهذا النظام الغذائي
+    scheduled_meals = MealsSchedule.objects.filter(dietplan=diet_plan)
+    grouped_by_day = defaultdict(list)
+
+    for schedule in scheduled_meals:
+        serialized_meal = MealSerializer(schedule.meal).data
+
+            # إضافة وصف اليوم من جدول MealsSchedule
+        grouped_by_day[schedule.day].append({
+            "meal": serialized_meal
+        })
+
+    days_meals = []
+    for day, meals_list in grouped_by_day.items():
+        days_meals.append({
+            "day": day,
+            "description": scheduled_meals.filter(day=day).first().description,
+            "meals": meals_list
+        })
+
+      
+    result.append({                     
+          "id": diet_plan.id,
+          "coach": ProfileSerializer(diet_plan.coach).data,
+          "trainer": ProfileSerializer(diet_plan.trainer).data,
+          "days_meals": days_meals                            
+    })
+
+    return Response(result, status=status.HTTP_200_OK)
 
 #للحصول على الخطط الغذائية
 @api_view(["GET"])
@@ -331,23 +395,19 @@ def update_dietplan(request,coach_id,plan_id):
         if not meals_ids:
              return Response({"detail": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
         
-        meals = Meal.objects.filter(meals_id__in=meals_ids)
-        print("K"*50)
-        print(meals[0])
+        for meal_id in meals_ids:
+            try:
+               meal = Meal.objects.get(meals_id=meal_id)
+            except Meal.DoesNotExist:
+               return Response({"detail": f"Meal with id {meal_id} not found."}, status=status.HTTP_400_BAD_REQUEST)
 
-        if meals.count() != len(meals_ids):
-           return Response(
-               {"detail": "One or more exercises not found."},
-               status=status.HTTP_400_BAD_REQUEST
-           )
-  
-        for meal in meals:
-             MealsSchedule.objects.create(
-                meal=meal,
-                description = description,
-                dietplan=dietplan,
-                day=day
+            MealsSchedule.objects.create(
+                  meal=meal,
+                  description=description,
+                  dietplan=dietplan,
+                  day=day
             )
+          
     
     
     serialized_program = DietPlanSerializer(dietplan)
