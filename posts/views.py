@@ -66,35 +66,10 @@ def like_on_post(request, post_id, user_id):
 
     if profile in post.like.all():
         post.like.remove(profile)
-        return Response({"message": "You unliked the post."})
+        return Response({"message": "dislike"})
     else:
         post.like.add(profile)
-        notification_message = f"{profile.user.username} liked your post."
-        notification_url = f"https://render-project1-qyk2.onrender.com/notification/send-notifications/{user_id}/"
-        
-        notification_data = json.dumps({
-            'content': notification_message,
-            'room_name': f'post01_{post.author.user.first_name}',
-        }).encode('utf-8')
-        
-        print(notification_data)
-        print("H")
-        headers = {'Content-Type': 'application/json'}
-        req = urlrequest.Request(notification_url, data=notification_data, headers=headers, method='POST')
-        g = req.data
-        try:
-            with urlrequest.urlopen(req) as response:
-                print(response.status)
-                if response.status == 201:
-                    return Response({"message": f"You liked the post and notification sent. {notification_data}" ,}, status=status.HTTP_201_CREATED)
-                else:
-                    return Response({"message": "You liked the post, but failed to send notification."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except HTTPError as e:
-            return Response({"message": f"HTTP error: {e.code} - {e.reason}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except URLError as e:
-            return Response({"message": f"Connection error: {e.reason , notification_data,g}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except Exception as e:
-            return Response({"message": f"Unexpected error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"message":"like"})
 
 
 @api_view(['post'])
