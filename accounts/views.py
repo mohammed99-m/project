@@ -310,7 +310,7 @@ def respond_to_join_request(request, coach_id, request_id):
         action = request.data.get('action')
         ## هون اذا كنا باعتين شي غلط غير الرفض و القبول
         if action not in ['Accept', 'Reject']:
-            return Response({"message": "Invalid action. Use 'Accept' or 'Reject'."}, status=400)
+            return Response({"message": "Invalid action. Use 'Accept' or 'Reject'."}, status=201)
         
         # حالة القبول 
         if action == 'Accept':
@@ -319,17 +319,17 @@ def respond_to_join_request(request, coach_id, request_id):
             #هون صارت حالة الطلب هي مقبول
             join_request.status = 'Accepted'
             join_request.save()
-            return Response({"message": "Join request accepted"}, status=200)
+            return Response({"message": "Join request accepted"}, status=201)
         # حالة الرفض 
         elif action == 'Reject':
             join_request.status = 'Rejected'
             join_request.save()
-            return Response({"message": "Join request rejected"}, status=200)
+            return Response({"message": "Join request rejected"}, status=201)
     ## حالات الفشل
     except Profile.DoesNotExist:
-        return Response({"message": "Coach Profile not found"}, status=404)
+        return Response({"message": "Coach Profile not found"}, status=201)
     except JoinRequest.DoesNotExist:
-        return Response({"message": "Join request not found"}, status=404)
+        return Response({"message": "Join request not found"}, status=201)
 
 
 @api_view(['GET'])
