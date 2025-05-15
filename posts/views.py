@@ -70,7 +70,7 @@ def like_on_post(request, post_id, user_id):
     else:
         post.like.add(profile)
         notification_message = f"{profile.user.username} liked your post."
-        notification_url = f"https://render-project1-qyk2.onrender.com/notification/send-notifications/{user_id}/"
+        notification_url = f"http://render-project1-qyk2.onrender.com/notification/send-notifications/{user_id}/"
         
         notification_data = json.dumps({
             'content': notification_message,
