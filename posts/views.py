@@ -42,7 +42,7 @@ def add_post(request,author_id):
         notification_data = {
             'content': notification_message,
             'user_id': user.user.id,  
-            'room_name': f'user_{user.user.id}',  # يمكنك تعديل اسم الغرفة حسب الحاجة
+            'room_name': f'user_{user.user.id}', 
         }
         print(user.user.id)
         notification_url = f"https://render-project1-qyk2.onrender.com/notification/send-notifications/{user.user.id}/"
@@ -50,7 +50,6 @@ def add_post(request,author_id):
         headers = {'Content-Type': 'application/json'}
         req = urlrequest.Request(notification_url, data=notification_data_json, headers=headers, method='POST')
 
-        # إرسال الإشعار
         try:
             with urlrequest.urlopen(req) as response:
                 if response.status == 201:
@@ -146,6 +145,7 @@ def add_comment(request,post_id,user_id):
     comment.save()
 
     notification_message = f"{profile.user.username} commented on your post."
+    #سنرسل الاشعار لصاحب المنشور
     notification_url = f"https://render-project1-qyk2.onrender.com/notification/send-notifications/{post.author.user.id}/"
     
     notification_data = json.dumps({
