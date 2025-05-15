@@ -91,7 +91,7 @@ def like_on_post(request, post_id, user_id):
         except HTTPError as e:
             return Response({"message": f"HTTP error: {e.code} - {e.reason}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except URLError as e:
-            return Response({"message": f"Connection error: {e.reason , notification_data}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"message": f"Connection error: {e.reason , notification_data,response}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             return Response({"message": f"Unexpected error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
