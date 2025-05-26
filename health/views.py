@@ -475,3 +475,18 @@ def get_meal_by_id(request,  meal_id):
     meal = get_object_or_404(Meal, meals_id=meal_id)
     serializer = MealSerializer(meal)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+@api_view(["DELETE"])
+def delete_dietplan(request,dietplan_id,user_id):
+
+    deleter = get_object_or_404(Profile,user__id=user_id)
+    dietplan = get_object_or_404(DietPlan,id=dietplan_id)
+
+
+    if(dietplan and (dietplan.coach==deleter or dietplan.trainer==deleter)):
+            dietplan.delete()
+            return(Response("dietplan Deleted Succesfuly"))
+    else:
+           return(Response("no dietplan with that info"))

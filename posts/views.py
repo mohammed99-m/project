@@ -101,3 +101,14 @@ def get_comments_on_post(request,post_id):
     serializer = CommentSerializer(comment,many=True)
 
     return Response(serializer.data)
+
+@api_view(["DELETE"])
+def delete_post(request, post_id, user_id):
+    deleter = get_object_or_404(Profile, user__id=user_id)
+    post = get_object_or_404(Post, id=post_id)
+
+    if post.author == deleter:
+        post.delete()
+        return Response("Post deleted successfully.")
+    else:
+           return(Response("no post with that info"))

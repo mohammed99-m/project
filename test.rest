@@ -142,17 +142,32 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/exercises/makeprogram/coach_id/trainer_id/
+POST http://127.0.0.1:8000/exercises/makeprogram/2/3/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
 
 {
+    "description": "برنامج تدريب جديد",
+    "days_exercises": [
+        {
+            "day": "Monday",
+            "sets": 3,
+            "reps": 10,
+            "exercises": [1, 2]
+        },
+        {
+            "day": "Wednesday",
+            "sets": 2,
+            "reps": 15,
+            "exercises": [3]
+        }
+    ]
 }
 
 ###
 
-GET http://127.0.0.1:8000/exercises/gettrainerprogram/trainner_id/
+GET http://127.0.0.1:8000/exercises/gettrainerprogram/3/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -161,7 +176,15 @@ Content-Type: application/json
 
 ###
 
-DELETE http://127.0.0.1:8000/exercises/deleteprogram/user_id/program_id/
+DELETE http://127.0.0.1:8000/exercises/deleteprogram/1/3/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+####
+
+DELETE http://127.0.0.1:8000/exercises/deleteprogram/program_id/user_id/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -228,7 +251,14 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
 
 {}
+###
 
+DELETE http://127.0.0.1:8000/posts/deletepost/1/4/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
 ###
 
 GET http://127.0.0.1:8000/posts/getcommentsonpost/1/
@@ -310,6 +340,14 @@ Content-Type: application/json
 
 {}
 
+###
+
+DELETE http://127.0.0.1:8000/health/deletedietplan/5/5/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
 ###
 POST http://127.0.0.1:8000/health/updatedietplan/2/5/
 Content-Type: application/json
