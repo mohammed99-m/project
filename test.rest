@@ -16,7 +16,7 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"mohammed2" , "email":"mohammed2@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"K","last_name":"ah",
+{"username":"mohammed5" , "email":"mohammed5@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"K","last_name":"ah",
 "gender":"male",
 "goal":"lose_weight",
 "experianse_level" :"advanced",
@@ -142,17 +142,32 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/exercises/makeprogram/coach_id/trainer_id/
+POST http://127.0.0.1:8000/exercises/makeprogram/2/3/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
 
 {
+    "description": "برنامج تدريب جديد",
+    "days_exercises": [
+        {
+            "day": "Monday",
+            "sets": 3,
+            "reps": 10,
+            "exercises": [1, 2]
+        },
+        {
+            "day": "Wednesday",
+            "sets": 2,
+            "reps": 15,
+            "exercises": [3]
+        }
+    ]
 }
 
 ###
 
-GET http://127.0.0.1:8000/exercises/gettrainerprogram/trainner_id/
+GET http://127.0.0.1:8000/exercises/gettrainerprogram/3/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -161,7 +176,15 @@ Content-Type: application/json
 
 ###
 
-DELETE http://127.0.0.1:8000/exercises/deleteprogram/user_id/program_id/
+DELETE http://127.0.0.1:8000/exercises/deleteprogram/1/3/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+####
+
+DELETE http://127.0.0.1:8000/exercises/deleteprogram/program_id/user_id/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -228,7 +251,14 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
 
 {}
+###
 
+DELETE http://127.0.0.1:8000/posts/deletepost/2/4/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
 ###
 
 GET http://127.0.0.1:8000/posts/getcommentsonpost/1/
@@ -280,34 +310,65 @@ Content-Type: application/json
 {}
 
 ###
-POST http://127.0.0.1:8000/health/addditeplan/7/4/
+POST http://127.0.0.1:8000/health/addditeplan/2/5/
 Content-Type: application/json
 
-{
-    "meals":[1,2]
+  {
+    "days_meals": [
+       {
+           "day": "sunday",
+           "description":"Hlo",
+           "meals": [1]
+       },
+       {
+           "description" : "Helo",
+           "day": "sunday",
+           "meals": [1,2]
+       }
+    ]
 }
 
 ###
-GET http://127.0.0.1:8000/health/coachdietplans/7/
+GET http://127.0.0.1:8000/health/coachdietplans/2/
 Content-Type: application/json
 
 {}
 
 ###
-GET http://127.0.0.1:8000/health/gettrainerdietplan/4/
+GET http://127.0.0.1:8000/health/gettrainerdietplan/5/
 Content-Type: application/json
 
 {}
 
 ###
-POST http://127.0.0.1:8000/health/updatedietplan/1/1/
+
+DELETE http://127.0.0.1:8000/health/deletedietplan/5/5/
+Content-Type: application/json
+## Token instated of Bearer for normal token
+##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+###
+POST http://127.0.0.1:8000/health/updatedietplan/2/5/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
 
 {
-    "meals":[1,2]
+    "days_meals": [
+       {
+           "description" : "Helo",
+           "day": "sunday",
+           "meals": [1,2,1]
+       },
+       {
+           "description" : "Heo",
+           "day": "Mond",
+           "meals": [2]
+       }
+    ]
 }
+
 
 ###
 GET http://127.0.0.1:8000/health/listofretaurant/
