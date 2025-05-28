@@ -10,5 +10,7 @@ exercises/__pycache__/
 exercises/migrations/__pycache__/
 health/__pycache__/
 health/migrations/__pycache__/
+illnesses/__pycache__/
+illnesses/migrations/__pycache__/
 static/
 myvenv/

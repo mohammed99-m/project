@@ -45,7 +45,8 @@ def sign_up(request):
                 "gender":profile.gender,
                 "goal": profile.goal,
                 "experianse_level" :profile.experianse_level,
-                "user_type":profile.user_type
+                "user_type":profile.user_type,
+                "illnesses":profile.illnesses
             },
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
