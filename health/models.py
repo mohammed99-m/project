@@ -66,3 +66,4 @@ class MealsSchedule(models.Model):
 
    def __str__(self):
         return f"{self.meal.name} on {self.day} for {self.dietplane.description}"
+   

@@ -16,11 +16,11 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"mohammed5" , "email":"mohammed5@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"K","last_name":"ah",
+{"username":"manar9" , "email":"manar9@gmail.com" , "password":"1234","phone":"1234", "weight":120.4,"height":100,"first_name":"K","last_name":"ah",
 "gender":"male",
-"goal":"lose_weight",
+"goal":"build_muscle",
 "experianse_level" :"advanced",
-"user_type":"trainer"
+"user_type":"coach"
 }
 
 ###
@@ -29,6 +29,11 @@ GET http://127.0.0.1:8000/getInfo/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+
+{}
+###
+post http://127.0.0.1:8000/exercises/ai-program/3/
+Content-Type: application/json
 
 {}
 ###
@@ -151,23 +156,47 @@ Content-Type: application/json
     "description": "برنامج تدريب جديد",
     "days_exercises": [
         {
+            "day": "sunday",
+            "sets": 3,
+            "reps": 10,
+            "exercises": [12, 13]
+        },
+        {
             "day": "Monday",
             "sets": 3,
             "reps": 10,
-            "exercises": [1, 2]
+            "exercises": [15, 14]
+        },
+        {
+            "day": "Tuesday",
+            "sets": 3,
+            "reps": 10,
+            "exercises": [12, 14]
+        },
+        {
+            "day": "Thursday",
+            "sets": 3,
+            "reps": 10,
+            "exercises": [13, 15]
         },
         {
             "day": "Wednesday",
             "sets": 2,
             "reps": 15,
-            "exercises": [3]
+            "exercises": [15]
+        },
+        {
+            "day": "Friday",
+            "sets": 3,
+            "reps": 10,
+            "exercises": [11, 12]
         }
     ]
 }
 
 ###
 
-GET http://127.0.0.1:8000/exercises/gettrainerprogram/3/
+GET http://127.0.0.1:8000/exercises/gettrainerprogram/17/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -527,42 +556,42 @@ Content-Type: application/json
 
 [
   {
-    "exercise_id": 1,
+    "exercise_id": 21,
     "name": "Barbell Curl",
     "muscle_group": "Biceps",
     "machine": "Barbell",
     "description": "A classic strength exercise where you lift a barbell with both hands, focusing on contracting the biceps by keeping your elbows stationary and lifting the weight toward your chest."
   },
   {
-    "exercise_id": 2,
+    "exercise_id": 22,
     "name": "Concentration Curl",
     "muscle_group": "Biceps",
     "machine": "Dumbbell",
     "description": "An isolation exercise performed seated, where you rest your elbow on your inner thigh and curl a dumbbell upward, targeting the biceps with strict form."
   },
   {
-    "exercise_id": 3,
+    "exercise_id": 23,
     "name": "Bench Press",
     "muscle_group": "Pectoralis",
     "machine": "Bench + Barbell",
     "description": "A compound exercise where you lower a barbell to your chest while lying on a bench and press it back up, primarily targeting the chest muscles."
   },
   {
-    "exercise_id": 4,
+    "exercise_id": 24,
     "name": "Chest Fly",
     "muscle_group": "Pectoralis",
     "machine": "Pec Deck Machine",
     "description": "A chest-isolation movement done on a pec deck machine or with dumbbells, where you bring your arms together in a hugging motion to contract the pectoral muscles."
   },
   {
-    "exercise_id": 5,
+    "exercise_id": 25,
     "name": "Crunches",
     "muscle_group": "Rectus Abdominis",
     "machine": "Mat",
     "description": "A bodyweight core exercise done on the floor where you lift your upper body toward your knees, targeting the front abdominal muscles."
   },
   {
-    "exercise_id": 6,
+    "exercise_id": 26,
     "name": "Cable Crunch",
     "muscle_group": "Rectus Abdominis",
     "machine": "Cable Machine",

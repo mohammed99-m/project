@@ -1,10 +1,11 @@
+import os
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Exercise, ExerciseSchedule , Program
 from .serializers import ExerciseSerializer , ProgramSerializer
-from accounts.models import Profile
+from .models import Profile
 
 
 @api_view(["GET"])
@@ -266,3 +267,72 @@ def add_exercise_list(request):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({'message': 'Exercises processed successfully.', 'results': created_exercises}, status=status.HTTP_201_CREATED)
+
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+import joblib
+import numpy as np
+from .models import Profile, Program, Exercise, ExerciseSchedule
+from .serializers import ProgramSerializer
+
+@api_view(["POST"])
+def recommend_program_ai(request, user_id):
+    profile = get_object_or_404(Profile, user__id=user_id)
+
+    # جلب معلومات المتدرب
+    weight = profile.weight
+    height = profile.height
+    gender = encode_gender(profile.gender)
+    level = encode_fitness_level(profile.experianse_level)
+    goal = encode_goal(profile.goal) 
+  
+
+    # تحميل النموذج والمحول
+    model = joblib.load('program_recommender_multi.joblib')
+    mlb = joblib.load('exercise_mlb.joblib')
+
+    # توقع التمارين المناسبة
+    X = np.array([[weight, height, level, goal, gender]])
+    predicted = model.predict(X)
+    exercise_ids = mlb.inverse_transform(predicted)[0]  # List of IDs
+
+    # جلب تمارين
+    exercises = Exercise.objects.filter(exercise_id__in=exercise_ids)
+    print(exercises)
+
+    virtual_coach = Profile.objects.get(user__username='ai_trainer')  # غيّره حسب حالتك
+    print(virtual_coach)
+
+    new_program = Program.objects.create(
+        description="AI Generated Program",
+        coach=virtual_coach,
+        trainer=profile,
+    )
+
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    num_days = 7
+    for i, exercise in enumerate(exercises):
+        day = days[i % num_days]
+        print(day)
+        ExerciseSchedule.objects.create(
+            program=new_program,
+            exercise=exercise,
+            day=day,
+            sets=3 if profile.experianse_level == 'beginner' else 4,
+            reps=12 if profile.goal == 'build_muscle' else 15,
+        )
+
+    serializer = ProgramSerializer(new_program)
+    return Response(serializer.data)
+
+# ترميزات المساعدة
+def encode_fitness_level(level):
+    return {'beginner': 0, 'intermediate': 1, 'advanced': 2}.get(level, 0)
+
+def encode_goal(goal):
+    return {'lose_weight': 0, 'build_muscle': 1, 'endurance': 2}.get(goal, 0)
+
+def encode_gender(gender):
+    return {'male': 0, 'female': 1}.get(gender, 0)

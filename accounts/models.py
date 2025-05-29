@@ -45,6 +45,8 @@ class JoinRequest(models.Model):
     def __str__(self):
         return f"Request from {self.user.user.username} to {self.coach.user.username} ({self.status})"
 
+
+
     
 
 

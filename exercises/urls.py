@@ -1,6 +1,6 @@
 
 from django.urls import path
-from .views import  list_exercises, search_exercises ,make_program , get_program ,delete_program , update_program , get_coach_programs, update_program_by_days
+from .views import  list_exercises, recommend_program_ai, search_exercises ,make_program , get_program ,delete_program , update_program , get_coach_programs, update_program_by_days
 from .views import  get_exercises_by_muscle, list_exercises, search_exercises ,make_program , get_program ,delete_program, update_program , get_coach_programs, update_program_by_days,add_exercise_list
 
 urlpatterns = [
@@ -14,4 +14,5 @@ urlpatterns = [
    path('updateprogram/<str:coach_id>/<str:program_id>/',update_program,name="Update Program"),
    path('updateprogrampyday/<str:coach_id>/<str:program_id>/',update_program_by_days,name="Update Program By Days"),
    path('add-exercises/', add_exercise_list, name='add-exercise-list'),
+   path('ai-program/<int:user_id>/', recommend_program_ai, name='ai_program'),
 ]
