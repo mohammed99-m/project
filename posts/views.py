@@ -87,7 +87,7 @@ def add_comment(request,post_id,user_id):
     
     comment = Comment(writer=profile,post=post,text=request.data['text'])
     comment.save()
-    return Response(CommentSerializer(comment).data, status=status.HTTP_201_CREATED)
+    return Response({'message': 'comment add succesfuly'}, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET'])

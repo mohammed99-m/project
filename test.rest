@@ -1,7 +1,7 @@
 POST http://127.0.0.1:8000/login/
 Content-Type: application/json
 
-{"username":"Kamel" ,  "password":"1234"}
+{"username":"mohammed5h" ,  "password":"1234"}
 
 
 ###
@@ -16,11 +16,11 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"manar9" , "email":"manar9@gmail.com" , "password":"1234","phone":"1234", "weight":120.4,"height":100,"first_name":"K","last_name":"ah",
+{"username":"mohammed5" , "email":"mohammed5@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"K","last_name":"ah",
 "gender":"male",
 "goal":"build_muscle",
 "experianse_level" :"advanced",
-"user_type":"coach"
+"user_type":"trainer"
 }
 
 ###
@@ -696,3 +696,43 @@ Content-Type: application/json
     "description": "A rotational movement where you pull the cable from high to low or low to high across your body, engaging the oblique muscles."
   }
 ]
+
+###
+POST http://127.0.0.1:8000/illnesses/addillnesses/
+Content-Type: application/json
+
+[
+ { "illness": "Peripheral Artery Disease", "foods_to_avoid": ["Fried foods", "High-sodium meals", "Sugary desserts", "Processed meats"], "sources": ["Cleveland Clinic"] },
+ { "illness": "Stroke (Prevention)", "foods_to_avoid": ["Sodium-heavy foods", "Alcohol (excess)", "Red meat", "Trans fats"], "sources": ["American Stroke Association"] }
+]
+
+###
+GET http://127.0.0.1:8000/illnesses/illnesses/
+Content-Type: application/json
+
+###
+POST http://127.0.0.1:8000/illnesses/addillnesses_exercises/
+Content-Type: application/json
+
+[
+ {
+    "illness": "Hypertension (Severe)",
+    "exercises_to_avoid": ["Heavy weightlifting", "High-intensity interval training (HIIT)", "Competitive sports"],
+    "safer_alternatives": ["Walking", "Swimming", "Yoga"],
+    "sources": ["American Heart Association", "Mayo Clinic"]
+  },
+  {
+    "illness": "Heart Failure",
+    "exercises_to_avoid": ["Running", "Push-ups/Sit-ups", "Sprinting"],
+    "safer_alternatives": ["Stationary cycling", "Tai Chi", "Water aerobics"],
+    "sources": ["NIH Heart Failure Guidelines"]
+  }
+]
+
+###
+GET http://127.0.0.1:8000/illnesses/illnesses_exercises/
+Content-Type: application/json
+
+###
+DELETE http://127.0.0.1:8000/illnesses/deleteillness
+Content-Type: application/json

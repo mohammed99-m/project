@@ -45,7 +45,8 @@ def sign_up(request):
                 "gender":profile.gender,
                 "goal": profile.goal,
                 "experianse_level" :profile.experianse_level,
-                "user_type":profile.user_type
+                "user_type":profile.user_type,
+                "illnesses":profile.illnesses
             },
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
@@ -284,17 +285,17 @@ def send_join_request(request, user_id, coach_id):
 
         # اذا الطلب الردي مبعوت
         if JoinRequest.objects.filter(trainer=trainer_profile, coach=coach_profile, status='Pending').exists():
-            return Response({"message": "a pending request already exist"}, status=400)
+            return Response({"message": "a pending request already exist"}, status=201)
         
         if trainer_profile.id in [trainer.id for trainer in coach_profile.trainers.all()]:
-              return Response({"message": "You are already joined with that coach"}, status=400)
+              return Response({"message": "You are already joined with that coach"}, status=201)
 
         #  والا ننشئ خانة جديدة في جدول الطلبات
         JoinRequest.objects.create(trainer=trainer_profile, coach=coach_profile)
         return Response({"message": "Join request sent successfully"}, status=201)
     # في حال مافي متدرب او مدرب موافق للايدي المبعوت
     except Profile.DoesNotExist:
-        return Response({"message": "User or Coach Profile not found!"}, status=404)
+        return Response({"message": "User or Coach Profile not found!"}, status=201)
     
 
  
@@ -310,7 +311,7 @@ def respond_to_join_request(request, coach_id, request_id):
         action = request.data.get('action')
         ## هون اذا كنا باعتين شي غلط غير الرفض و القبول
         if action not in ['Accept', 'Reject']:
-            return Response({"message": "Invalid action. Use 'Accept' or 'Reject'."}, status=400)
+            return Response({"message": "Invalid action. Use 'Accept' or 'Reject'."}, status=201)
         
         # حالة القبول 
         if action == 'Accept':
@@ -319,17 +320,17 @@ def respond_to_join_request(request, coach_id, request_id):
             #هون صارت حالة الطلب هي مقبول
             join_request.status = 'Accepted'
             join_request.save()
-            return Response({"message": "Join request accepted"}, status=200)
+            return Response({"message": "Join request accepted"}, status=201)
         # حالة الرفض 
         elif action == 'Reject':
             join_request.status = 'Rejected'
             join_request.save()
-            return Response({"message": "Join request rejected"}, status=200)
+            return Response({"message": "Join request rejected"}, status=201)
     ## حالات الفشل
     except Profile.DoesNotExist:
-        return Response({"message": "Coach Profile not found"}, status=404)
+        return Response({"message": "Coach Profile not found"}, status=201)
     except JoinRequest.DoesNotExist:
-        return Response({"message": "Join request not found"}, status=404)
+        return Response({"message": "Join request not found"}, status=201)
 
 
 @api_view(['GET'])
