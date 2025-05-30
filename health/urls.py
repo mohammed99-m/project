@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import HealthyMealList, delete_dietplan, delete_meal, recommend_diet_ai , search_HealthyMeal,foods,add_diet_plan,get_coach_diet_plans,get_diet_plans,get_meals_in_restaurant,get_restaurants_with_meal,get_trainner_diet_plans,update_dietplan,list_restaurants,list_user_orders,create_restaurant,delete_restaurant,create_order,create_meal, update_meal,update_order_status,add_food,search_meal_time,get_meal_by_id
+from .views import HealthyMealList, delete_dietplan, delete_meal, recommend_diet_ai , search_HealthyMeal,foods,add_diet_plan,get_coach_diet_plans,get_diet_plans,get_meals_in_restaurant,get_restaurants_with_meal,get_trainner_diet_plans,update_dietplan,list_restaurants,list_user_orders,create_restaurant,delete_restaurant,create_order,create_meal, update_meal,update_order_status,add_food,search_meal_time,get_meal_by_id,get_meals_with_avoid_flag
 urlpatterns = [
     path('getdietplane',get_diet_plans , name= "Get Diet Plane"),
     path('healthy-meals/',HealthyMealList,name="health Meals"),
@@ -25,6 +25,5 @@ urlpatterns = [
     path('getmeal/<str:meal_id>/',get_meal_by_id,name="Get Meal By Id"),
     path('deletedietplan/<str:dietplan_id>/<str:user_id>/',delete_dietplan,name="Delete dietplan"),
     path('ai-program/<str:user_id>/', recommend_diet_ai, name='ai_program'),
-
-    
+    path('avoidfood/<str:user_id>/',get_meals_with_avoid_flag,name="get avoided food"),
 ]

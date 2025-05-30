@@ -579,3 +579,35 @@ def encode_illnesses(user_illness, id, total_illness):
         if index is not None:
             list[index] = 1
     return list
+
+@api_view(["GET"])
+def get_meals_with_avoid_flag(request, user_id):
+    try:
+        profile = Profile.objects.get(user_id=user_id)
+    except Profile.DoesNotExist:
+        return Response({"error": "User profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    illnesses = profile.illnesses  
+
+    avoid_entries = IllnessToAvoidFood.objects.filter(illness__in=illnesses)
+    avoid_food_names = set()
+    for entry in avoid_entries:
+        avoid_food_names.update(entry.foods_to_avoid)  
+
+    all_meals = Meal.objects.prefetch_related("ingredients").all()
+    result = []
+
+    for meal in all_meals:
+        ingredient_names = [food.name for food in meal.ingredients.all()]
+        should_avoid = any(name in avoid_food_names for name in ingredient_names)
+
+        result.append({
+            "meal_id": meal.meals_id,
+            "name": meal.name,
+            "description": meal.description,
+            "price": meal.price,
+            "ingredients": ingredient_names,
+            "avoid": "yes" if should_avoid else "no"
+        })
+
+    return Response(result, status=status.HTTP_200_OK)

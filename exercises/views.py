@@ -371,3 +371,36 @@ def encode_illnesses(user_illness, illness_id, list_length):
         if idx is not None:
             list[idx] = 1
     return list
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+@api_view(["GET"])
+def get_exercises_with_avoid_flag(request, user_id):
+    try:
+        profile = Profile.objects.get(user_id=user_id)
+    except Profile.DoesNotExist:
+        return Response({"error": "User profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    illnesses = profile.illnesses  
+
+    all_exercises = Exercise.objects.all()
+    avoid_exercise_names = set()
+
+   
+    avoid_entries = IllnessToAvoidExercises.objects.filter(illness__in=illnesses)
+    for entry in avoid_entries:
+        avoid_exercise_names.update(entry.exercise_to_avoid)
+
+    result = []
+    for exercise in all_exercises:
+        result.append({
+            "exercise_id": exercise.exercise_id,
+            "name": exercise.name,
+            "muscle_group": exercise.muscle_group,
+            "description": exercise.description,
+            "avoid": "yes" if exercise.name in avoid_exercise_names else "no"
+        })
+
+    return Response(result, status=status.HTTP_200_OK)

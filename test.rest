@@ -16,7 +16,7 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"mnarjd" , "email":"mnarjd@gmail.com" , "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"K","last_name":"ah", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure"] }
+{"username":"userssffr" , "email":"userssffr@gmail.com" , "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"K","last_name":"ah", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Stroke (Prevention)"] }
 
 ###
 
@@ -460,7 +460,7 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
 
 {
-    "name":"healthy soap",
+    "name":"meat",
     "calories":"75"
 }
 
@@ -477,9 +477,9 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
 
 {
-    "name":"meal8",
-    "description":"meal7",
-    "ingredients":[2,3,1],
+    "name":"meal1",
+    "description":"meal1",
+    "ingredients":[2],
     "price":"150",
     "restaurant":[1]
 }
@@ -556,142 +556,9 @@ POST http://127.0.0.1:8000/exercises/add-exercises/
 Content-Type: application/json
 
 [
-  {
+ {
     "exercise_id": 21,
-    "name": "Barbell Curl",
-    "muscle_group": "Biceps",
-    "machine": "Barbell",
-    "description": "A classic strength exercise where you lift a barbell with both hands, focusing on contracting the biceps by keeping your elbows stationary and lifting the weight toward your chest."
-  },
-  {
-    "exercise_id": 22,
-    "name": "Concentration Curl",
-    "muscle_group": "Biceps",
-    "machine": "Dumbbell",
-    "description": "An isolation exercise performed seated, where you rest your elbow on your inner thigh and curl a dumbbell upward, targeting the biceps with strict form."
-  },
-  {
-    "exercise_id": 23,
-    "name": "Bench Press",
-    "muscle_group": "Pectoralis",
-    "machine": "Bench + Barbell",
-    "description": "A compound exercise where you lower a barbell to your chest while lying on a bench and press it back up, primarily targeting the chest muscles."
-  },
-  {
-    "exercise_id": 24,
-    "name": "Chest Fly",
-    "muscle_group": "Pectoralis",
-    "machine": "Pec Deck Machine",
-    "description": "A chest-isolation movement done on a pec deck machine or with dumbbells, where you bring your arms together in a hugging motion to contract the pectoral muscles."
-  },
-  {
-    "exercise_id": 25,
-    "name": "Crunches",
-    "muscle_group": "Rectus Abdominis",
-    "machine": "Mat",
-    "description": "A bodyweight core exercise done on the floor where you lift your upper body toward your knees, targeting the front abdominal muscles."
-  },
-  {
-    "exercise_id": 26,
-    "name": "Cable Crunch",
-    "muscle_group": "Rectus Abdominis",
-    "machine": "Cable Machine",
-    "description": "An abdominal exercise using a cable machine, where you kneel and crunch down while pulling the cable handles to activate the rectus abdominis."
-  },
-  {
-    "exercise_id": 7,
-    "name": "Lat Pulldown",
-    "muscle_group": "Latissimus Dorsi",
-    "machine": "Lat Pulldown Machine",
-    "description": "A pulling movement where you bring a bar down toward your chest while seated, engaging the lats and upper back muscles."
-  },
-  {
-    "exercise_id": 8,
-    "name": "Pull-Ups",
-    "muscle_group": "Latissimus Dorsi",
-    "machine": "Pull-Up Bar",
-    "description": "A bodyweight exercise where you hang from a bar and pull your chin above it, mainly working the lats and arms."
-  },
-  {
-    "exercise_id": 9,
-    "name": "Shoulder Press",
-    "muscle_group": "Deltoids",
-    "machine": "Dumbbell or Machine",
-    "description": "A pressing movement where you lift weights overhead while seated or standing, activating the front and side deltoid muscles."
-  },
-  {
-    "exercise_id": 10,
-    "name": "Lateral Raises",
-    "muscle_group": "Deltoids",
-    "machine": "Dumbbell",
-    "description": "An isolation exercise for the shoulders where you lift dumbbells to the side, focusing on the lateral deltoid head."
-  },
-  {
-    "exercise_id": 11,
-    "name": "Wrist Curls",
-    "muscle_group": "Forearm Muscles",
-    "machine": "Barbell or Dumbbell",
-    "description": "A forearm-specific exercise where you sit with your forearms resting on a bench and curl your wrists upward with weights."
-  },
-  {
-    "exercise_id": 12,
-    "name": "Reverse Wrist Curl",
-    "muscle_group": "Forearm Muscles",
-    "machine": "Dumbbell or Barbell",
-    "description": "Similar to wrist curls but performed with palms facing down to target the extensors in the forearm."
-  },
-  {
-    "exercise_id": 13,
-    "name": "Leg Extension",
-    "muscle_group": "Quadriceps",
-    "machine": "Leg Extension Machine",
-    "description": "A quad-isolation exercise where you sit on a machine and extend your knees to lift a padded weight bar."
-  },
-  {
-    "exercise_id": 14,
-    "name": "Squat",
-    "muscle_group": "Quadriceps",
-    "machine": "Barbell or Smith Machine",
-    "description": "A compound lower body movement where you bend the knees and lower the body, heavily engaging the quads and glutes."
-  },
-  {
-    "exercise_id": 15,
-    "name": "Leg Curl",
-    "muscle_group": "Hamstrings",
-    "machine": "Leg Curl Machine",
-"description": "A hamstring-targeted exercise where you lie face down and curl your legs toward your glutes against resistance."
-  },
-  {
-    "exercise_id": 16,
-    "name": "Romanian Deadlift",
-    "muscle_group": "Hamstrings",
-    "machine": "Barbell or Dumbbell",
-    "description": "A hip hinge movement where you lower the barbell while keeping legs straight or slightly bent, emphasizing hamstring and glute engagement."
-  },
-  {
-    "exercise_id": 17,
-    "name": "Shrugs",
-    "muscle_group": "Trapezius",
-    "machine": "Dumbbell or Barbell",
-    "description": "A simple movement where you raise your shoulders toward your ears while holding weights, focusing on the upper traps."
-  },
-  {
-    "exercise_id": 18,
-    "name": "Upright Row",
-    "muscle_group": "Trapezius",
-    "machine": "Barbell or Cable",
-    "description": "An exercise where you pull a weight vertically to chest height with elbows out, engaging the traps and deltoids."
-  },
-  {
-    "exercise_id": 19,
-    "name": "Side Plank with Reach Through",
-    "muscle_group": "Obliques",
-    "machine": "Mat",
-    "description": "A core stability exercise where you hold a side plank position and twist your torso to reach under your body, activating the obliques."
-  },
-  {
-    "exercise_id": 20,
-    "name": "Cable Woodchopper",
+    "name": "Running",
     "muscle_group": "Obliques",
     "machine": "Cable Machine",
     "description": "A rotational movement where you pull the cable from high to low or low to high across your body, engaging the oblique muscles."
@@ -747,3 +614,8 @@ Get http://127.0.0.1:8000/illnesses/illnessesfoodsavoid/25/
 Content-Type: application/json
 
 #############
+Get http://127.0.0.1:8000/exercises/avoidexercises/10/
+Content-Type: application/json
+#############
+Get http://127.0.0.1:8000/health/avoidfood/10/
+Content-Type: application/json
