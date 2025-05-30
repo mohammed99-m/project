@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view
+
+from accounts.models import Profile
 from .models import IllnessToAvoidFood,IllnessToAvoidExercises
 from rest_framework.response import Response
 from rest_framework import status
@@ -77,3 +79,75 @@ def list_illnesses_exercises(request):
     illnesses = IllnessToAvoidExercises.objects.all()
     serializer = IllnessToAvoidExercisesSerializer(illnesses, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_exercises_to_avoid_for_user(request, user_id):
+    profile = get_object_or_404(Profile, user_id=user_id)
+
+    illness = profile.illnesses
+    if not illness:
+        return Response({'error': 'No illness recorded for this user.'}, status=status.HTTP_404_NOT_FOUND)
+    print(illness)
+    illness_data = IllnessToAvoidExercises.objects.filter(illness__in=illness)
+    print(illness_data)
+    
+    if not illness_data:
+        return Response({'message': 'No data available for this illness.'}, status=status.HTTP_204_NO_CONTENT)
+
+    exercise_to_avoid = []
+    safer_alternatives = []
+    sources = []
+
+    for illnes in illness_data:
+        exercise_to_avoid.extend(illnes.exercise_to_avoid)
+        safer_alternatives.extend(illnes.safer_alternatives)
+        sources.extend(illnes.sources)
+
+    exercise_to_avoid = list(set(exercise_to_avoid))
+    safer_alternatives = list(set(safer_alternatives))
+    sources = list(set(sources))
+
+    return Response({
+        'illnesses': illness,
+        'exercises_to_avoid': exercise_to_avoid,
+        'safer_alternatives': safer_alternatives,
+        'sources': sources,
+    }, status=status.HTTP_200_OK)
+
+    # return Response({
+    #     'illness': illness,
+    #     'exercises_to_avoid': illness_data.exercise_to_avoid,
+    #     'safer_alternatives': illness_data.safer_alternatives,
+    #     'sources': illness_data.sources
+    # }, status=status.HTTP_200_OK)
+
+
+
+@api_view(['GET'])
+def get_foods_to_avoid_for_user(request, user_id):
+    profile = get_object_or_404(Profile, user_id=user_id)
+
+    illnesses = profile.illnesses
+    if not illnesses:
+        return Response({'error': 'No illnesses recorded for this user.'}, status=status.HTTP_404_NOT_FOUND)
+
+    illness = IllnessToAvoidFood.objects.filter(illness__in=illnesses)
+
+    if not illness.exists():
+        return Response({'message': 'No data available for these illnesses.'}, status=status.HTTP_204_NO_CONTENT)
+
+    food_to_avoid = []
+    sources = []
+
+    for illnes in illness:
+        food_to_avoid.extend(illnes.foods_to_avoid)
+        sources.extend(illnes.sources)
+
+    food_to_avoid = list(set(food_to_avoid))
+    sources = list(set(sources))
+
+    return Response({
+        'illnesses': illnesses,
+        'foods_to_avoid': food_to_avoid,
+        'sources': sources,
+    }, status=status.HTTP_200_OK)

@@ -1,28 +1,25 @@
 from collections import defaultdict
+import random
 from django.shortcuts import render
 
 # Create your views here.
-from django.shortcuts import render
-from rest_framework.decorators import api_view
+import joblib
+import numpy as np
 from rest_framework.response import Response
 from rest_framework import status
 
 from accounts.serializers import ProfileSerializer
-from .models import DietPlan, Meal , Food, MealsSchedule
-from .serializers import DietPlanSerializer, MealSerializer , FoodSerializer
+from illnesses.models import IllnessToAvoidFood
+from .models import DietPlan, Meal , Food, MealsSchedule,Order, OrderMeal, Restaurant
+from .serializers import DietPlanSerializer,  FoodSerializer,  MealSerializer, OrderSerializer, RestaurantSerializer,MealSerializer2
 import logging #للتأكد من صحةالبيانات
 from django.shortcuts import get_object_or_404
 from accounts.models import Profile
-from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import viewsets
-from rest_framework import status
-from .models import Meal, Profile, Order, OrderMeal, Restaurant
-from .serializers import MealSerializer, OrderSerializer, RestaurantSerializer,MealSerializer2
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
+
 #اضافة مطعم
 @api_view(['POST'])
 def create_restaurant(request):
@@ -490,3 +487,95 @@ def delete_dietplan(request,dietplan_id,user_id):
             return(Response("dietplan Deleted Succesfuly"))
     else:
            return(Response("no dietplan with that info"))
+    
+
+@api_view(["POST"])
+def recommend_diet_ai(request, user_id):
+    profile = get_object_or_404(Profile, user__id=user_id)
+
+    #اذا كان للمتدرب خطة غذائية
+    existing_plan = DietPlan.objects.filter(trainer=profile).first()
+    if existing_plan:
+        return Response({
+            "message": "User already has a diet plan.",
+            "plan_id": existing_plan.id
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    #جلب الأمراض من الداتا بيز
+    illnesses = list(IllnessToAvoidFood.objects.all())
+    illness_id= {ill.id: idx for idx, ill in enumerate(illnesses)}
+
+
+    # معلومات المتدرب
+    weight = profile.weight
+    height = profile.height
+    gender = encode_gender(profile.gender)
+    level = encode_fitness_level(profile.experianse_level)
+    goal = encode_goal(profile.goal)
+    illnesses = encode_illnesses(profile.illnesses or [], illness_id, len(illnesses))
+
+    # تحميل المودل
+    model = joblib.load("diet_recommender.joblib")
+    mlb = joblib.load("meal_mlb.joblib")
+
+    #  مصفوفة الأطعمة المتوقعة
+    X_basic = [weight, height, level, goal, gender]
+    X = np.array([X_basic + illnesses])
+    predicted = model.predict(X)
+    meal_ids = mlb.inverse_transform(predicted)[0]
+
+    # جلب الوجبات
+    meals = list(Meal.objects.filter(meals_id__in=meal_ids))
+
+    if not meals:
+        return Response({"detail": "No meals found for the predicted IDs."}, status=status.HTTP_404_NOT_FOUND)
+#المدرب الافتراضي
+    virtual_coach = Profile.objects.get(user__username='ai_trainer')
+
+    new_plan = DietPlan.objects.create(
+        coach=virtual_coach,
+        trainer=profile
+    )
+
+#من اجل كل يوم سيعرض لنا ثلاث تمارين بكل يوم من ايام الاسبوع
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    meals_per_day = 5
+    total = meals_per_day * len(days)
+
+    if len(meals) < total:
+        meals = random.choices(meals, k=total)
+    else:
+        meals = random.sample(meals, total)
+        
+    #لإضافة البرنامج لجدول البرنامج في الداتا
+    for i, day in enumerate(days):
+        day_meals = meals[i * meals_per_day : (i + 1) * meals_per_day]
+        for meal in day_meals:
+            MealsSchedule.objects.create(
+                meal=meal,
+                dietplan=new_plan,
+                day=day,
+                description="AI generated meal plan"
+            )
+
+    serializer = DietPlanSerializer(new_plan)
+    return Response(serializer.data)
+
+def encode_fitness_level(level):
+    return {'beginner': 0, 'intermediate': 1, 'advanced': 2}.get(level, 0)
+
+def encode_goal(goal):
+    return {'lose_weight': 0, 'build_muscle': 1, 'endurance': 2}.get(goal, 0)
+
+def encode_gender(gender):
+    return {'male': 0, 'female': 1}.get(gender, 0)
+
+#تحويل الأمراض الى قائمة اعداد 0 اذا لم يكن موجود و 1 اذا كان المرض موجود
+def encode_illnesses(user_illness, id, total_illness):
+    list = [0] * total_illness
+    for ill_id in user_illness:
+        index = id.get(ill_id)
+        if index is not None:
+            list[index] = 1
+    return list

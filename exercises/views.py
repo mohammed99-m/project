@@ -1,19 +1,26 @@
 import os
+import random
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+
+from illnesses.models import IllnessToAvoidExercises
 from .models import Exercise, ExerciseSchedule , Program
 from .serializers import ExerciseSerializer , ProgramSerializer
 from .models import Profile
+import joblib
+import numpy as np
 
 
+#للحصول على التمارين
 @api_view(["GET"])
 def list_exercises(request):
     exercises = Exercise.objects.all()  
     serializer = ExerciseSerializer(exercises, many=True)  
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+#للبحث عن تمرين حسب الاسم
 @api_view(["GET"])
 def search_exercises(request):
     query = request.query_params.get('q', None)  
@@ -25,7 +32,7 @@ def search_exercises(request):
     serializer = ExerciseSerializer(exercises, many=True)  
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-
+#لصناعة برنامج رياضي لمتدرب محدد
 @api_view(["POST"])
 def make_program(request,coach_id,trainer_id):
     coach = get_object_or_404(Profile,user__id=coach_id)
@@ -49,13 +56,13 @@ def make_program(request,coach_id,trainer_id):
             status=status.HTTP_400_BAD_REQUEST
         )
     
-  
+  # انشاء البرنامج
     program = Program.objects.create(
         coach=coach,
         trainer=trainer,
         description = request.data.get("description"),
     )
-
+#تقسيم التمارين في البرنامج الى ايام وتكرارات ومجموعات
     for day_exercise in days_exercises:
         day = day_exercise.get("day")  
         sets = day_exercise.get("sets")  
@@ -78,7 +85,7 @@ def make_program(request,coach_id,trainer_id):
 
     serialized_program = ProgramSerializer(program)
     return Response(serialized_program.data, status=status.HTTP_201_CREATED)
-
+# ارجاع البرامج الصحية
 @api_view(["GET"])
 def get_program(request, user_id):
     trainer = get_object_or_404(Profile, user__id=user_id)
@@ -103,10 +110,10 @@ def get_program(request, user_id):
 
     return Response(response_data, status=status.HTTP_200_OK)
 
-## NEED ADD 
+## لحذف برنامج رياضي لمتدرب محدد
 @api_view(["DELETE"])
 def delete_program(request,program_id,user_id):
-
+#جلب المتدرب والبرنامج الذي نريد ان نحذفه
     deleter = get_object_or_404(Profile,user__id=user_id)
     program = get_object_or_404(Program,id=program_id)
 
@@ -145,7 +152,7 @@ def update_program(request,coach_id,program_id):
 
         if not exercises_ids:
             return Response({"detail": f"At least one exercise must be provided for day {day}."}, status=status.HTTP_400_BAD_REQUEST)
-
+#جلب التمارين التي وضعناها في البرنامج من الداتا بيز
         exercises = Exercise.objects.filter(exercise_id__in=exercises_ids)
         print("K"*50)
 
@@ -268,41 +275,49 @@ def add_exercise_list(request):
 
     return Response({'message': 'Exercises processed successfully.', 'results': created_exercises}, status=status.HTTP_201_CREATED)
 
-
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-import joblib
-import numpy as np
-from .models import Profile, Program, Exercise, ExerciseSchedule
-from .serializers import ProgramSerializer
-
 @api_view(["POST"])
 def recommend_program_ai(request, user_id):
     profile = get_object_or_404(Profile, user__id=user_id)
 
-    # جلب معلومات المتدرب
+    # عدم وضع برنامج ثاني اذا كان لدى المتدرب برنامج
+    existing_program = Program.objects.filter(trainer=profile).first()
+    if existing_program:
+        return Response({
+            'message': 'User already has an existing program.',
+            'program_id': existing_program.id
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    #جلب الأمراض من الداتا بيز
+    illnesses = list(IllnessToAvoidExercises.objects.all())
+    illness_id = {ill.id: idx for idx, ill in enumerate(illnesses)}
+
+    
+   #معلومات المتدرب
     weight = profile.weight
     height = profile.height
     gender = encode_gender(profile.gender)
     level = encode_fitness_level(profile.experianse_level)
     goal = encode_goal(profile.goal) 
+    illnesses = encode_illnesses(profile.illnesses, illness_id, len(illnesses))
   
 
-    # تحميل النموذج والمحول
+    # تحميل المودل
     model = joblib.load('program_recommender_multi.joblib')
     mlb = joblib.load('exercise_mlb.joblib')
 
-    # توقع التمارين المناسبة
-    X = np.array([[weight, height, level, goal, gender]])
+    #  مصفوفة التمارين المتوقعة
+    X_basic = [weight, height, level, goal, gender]
+    X = np.array([X_basic + illnesses])
     predicted = model.predict(X)
     exercise_ids = mlb.inverse_transform(predicted)[0]  # List of IDs
 
     # جلب تمارين
-    exercises = Exercise.objects.filter(exercise_id__in=exercise_ids)
+    exercises = list(Exercise.objects.filter(exercise_id__in=exercise_ids))
     print(exercises)
 
-    virtual_coach = Profile.objects.get(user__username='ai_trainer')  # غيّره حسب حالتك
+
+#المدرب الافتراضي
+    virtual_coach = Profile.objects.get(user__username='ai_trainer') 
     print(virtual_coach)
 
     new_program = Program.objects.create(
@@ -310,24 +325,33 @@ def recommend_program_ai(request, user_id):
         coach=virtual_coach,
         trainer=profile,
     )
-
+#من اجل كل يوم سيعرض لنا ثلاث تمارين بكل يوم من ايام الاسبوع
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    num_days = 7
-    for i, exercise in enumerate(exercises):
-        day = days[i % num_days]
-        print(day)
-        ExerciseSchedule.objects.create(
-            program=new_program,
-            exercise=exercise,
-            day=day,
-            sets=3 if profile.experianse_level == 'beginner' else 4,
-            reps=12 if profile.goal == 'build_muscle' else 15,
-        )
+    exercisesinday = 3
+    total = exercisesinday * len(days)
+
+    if len(exercises) < total:
+        exercises = random.choices(exercises, k=total)
+    else:
+        exercises = random.sample(exercises, total)
+    #لإضافة البرنامج لجدول البرنامج في الداتا
+    for i, day in enumerate(days):
+        exercise1 = exercises[i * exercisesinday : (i + 1) * exercisesinday]
+
+        for exercise in exercise1:
+            if not ExerciseSchedule.objects.filter(program=new_program, exercise=exercise, day=day).exists():
+              ExerciseSchedule.objects.create(
+                  program=new_program,
+                  exercise=exercise,
+                  day=day,
+                  sets=3 if profile.experianse_level == 'beginner' else 4,
+                  reps=12 if profile.goal == 'build_muscle' else 15,
+              )
 
     serializer = ProgramSerializer(new_program)
     return Response(serializer.data)
 
-# ترميزات المساعدة
+# Helper Encodings
 def encode_fitness_level(level):
     return {'beginner': 0, 'intermediate': 1, 'advanced': 2}.get(level, 0)
 
@@ -336,3 +360,14 @@ def encode_goal(goal):
 
 def encode_gender(gender):
     return {'male': 0, 'female': 1}.get(gender, 0)
+
+#تحويل الأمراض الى قائمة اعداد 0 اذا لم يكن موجود و 1 اذا كان المرض موجود
+def encode_illnesses(user_illness, illness_id, list_length):
+    list = [0] * list_length
+    if not user_illness:
+        return list
+    for ill_id in user_illness:
+        idx = illness_id.get(ill_id)
+        if idx is not None:
+            list[idx] = 1
+    return list

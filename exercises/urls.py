@@ -5,7 +5,7 @@ from .views import  get_exercises_by_muscle, list_exercises, search_exercises ,m
 
 urlpatterns = [
    path('listexercises/',list_exercises,name="List Of Exercises"),
-   path('programs/<int:user_id>/', get_program, name='get_program'),
+   path('programs/<str:user_id>/', get_program, name='get_program'),
    path('searchexercises/',search_exercises,name="Search About Exercise"),
    path('by-muscle/',get_exercises_by_muscle,name="get exercises"),
    path('makeprogram/<str:coach_id>/<str:trainer_id>/',make_program,name="make program"),
@@ -14,5 +14,5 @@ urlpatterns = [
    path('updateprogram/<str:coach_id>/<str:program_id>/',update_program,name="Update Program"),
    path('updateprogrampyday/<str:coach_id>/<str:program_id>/',update_program_by_days,name="Update Program By Days"),
    path('add-exercises/', add_exercise_list, name='add-exercise-list'),
-   path('ai-program/<int:user_id>/', recommend_program_ai, name='ai_program'),
+   path('ai-program/<str:user_id>/', recommend_program_ai, name='ai_program'),
 ]

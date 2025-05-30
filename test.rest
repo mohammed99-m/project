@@ -1,7 +1,7 @@
 POST http://127.0.0.1:8000/login/
 Content-Type: application/json
 
-{"username":"mohammed5h" ,  "password":"1234"}
+{"username":"mohammed5" ,  "password":"1234"}
 
 
 ###
@@ -16,12 +16,7 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"mohammed5" , "email":"mohammed5@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"K","last_name":"ah",
-"gender":"male",
-"goal":"build_muscle",
-"experianse_level" :"advanced",
-"user_type":"trainer"
-}
+{"username":"mnarjd" , "email":"mnarjd@gmail.com" , "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"K","last_name":"ah", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure"] }
 
 ###
 
@@ -32,7 +27,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 {}
 ###
-post http://127.0.0.1:8000/exercises/ai-program/3/
+post http://127.0.0.1:8000/exercises/ai-program/38/
+Content-Type: application/json
+
+{}
+#####
+post http://127.0.0.1:8000/health/ai-program/36/
 Content-Type: application/json
 
 {}
@@ -147,7 +147,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/exercises/makeprogram/2/3/
+POST http://127.0.0.1:8000/exercises/makeprogram/2/26/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -159,25 +159,25 @@ Content-Type: application/json
             "day": "sunday",
             "sets": 3,
             "reps": 10,
-            "exercises": [12, 13]
+            "exercises": [2, 11]
         },
         {
             "day": "Monday",
             "sets": 3,
             "reps": 10,
-            "exercises": [15, 14]
+            "exercises": [2, 20]
         },
         {
             "day": "Tuesday",
             "sets": 3,
             "reps": 10,
-            "exercises": [12, 14]
+            "exercises": [20, 3]
         },
         {
             "day": "Thursday",
             "sets": 3,
             "reps": 10,
-            "exercises": [13, 15]
+            "exercises": [4, 15]
         },
         {
             "day": "Wednesday",
@@ -189,7 +189,7 @@ Content-Type: application/json
             "day": "Friday",
             "sets": 3,
             "reps": 10,
-            "exercises": [11, 12]
+            "exercises": [29, 12]
         }
     ]
 }
@@ -339,7 +339,7 @@ Content-Type: application/json
 {}
 
 ###
-POST http://127.0.0.1:8000/health/addditeplan/2/5/
+POST http://127.0.0.1:8000/health/addditeplan/2/32/
 Content-Type: application/json
 
   {
@@ -347,7 +347,7 @@ Content-Type: application/json
        {
            "day": "sunday",
            "description":"Hlo",
-           "meals": [1]
+           "meals": [2]
        },
        {
            "description" : "Helo",
@@ -356,6 +356,7 @@ Content-Type: application/json
        }
     ]
 }
+###
 
 ###
 GET http://127.0.0.1:8000/health/coachdietplans/2/
@@ -364,7 +365,7 @@ Content-Type: application/json
 {}
 
 ###
-GET http://127.0.0.1:8000/health/gettrainerdietplan/5/
+GET http://127.0.0.1:8000/health/gettrainerdietplan/35/
 Content-Type: application/json
 
 {}
@@ -476,11 +477,11 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
 
 {
-    "name":"meal7",
+    "name":"meal8",
     "description":"meal7",
-    "ingredients":[1,2],
+    "ingredients":[2,3,1],
     "price":"150",
-    "restaurant":[1,2]
+    "restaurant":[1]
 }
 
 ###
@@ -735,4 +736,12 @@ Content-Type: application/json
 
 ###
 DELETE http://127.0.0.1:8000/illnesses/deleteillness
+Content-Type: application/json
+#######
+
+Get http://127.0.0.1:8000/illnesses/illnessesexercisesavoid/26/
+Content-Type: application/json
+
+##############
+Get http://127.0.0.1:8000/illnesses/illnessesfoodsavoid/25/
 Content-Type: application/json
