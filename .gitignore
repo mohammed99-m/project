@@ -14,3 +14,10 @@ illnesses/__pycache__/
 illnesses/migrations/__pycache__/
 static/
 myvenv/
+diet_recommender.joblib
+illness_index_map.joblib
+exercise_mlb.joblib
+program_recommender_multi.joblib
+meal_mlb.joblib
+exercises/management/commands/__pycache__/
+health/management/commands/__pycache__/
