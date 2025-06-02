@@ -16,14 +16,14 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"userssffr" , "email":"userssffr@gmail.com" , "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"K","last_name":"ah", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Stroke (Prevention)"] }
+{"username":"jack3" , "email":"jack3@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Stroke (Prevention)"] }
 
 ###
 
 GET http://127.0.0.1:8000/getInfo/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzgwMzkyODgzLCJpYXQiOjE3NDg4NTY4ODMsImp0aSI6IjAwYWY0NTAxMDNkZTRmODE5NWUyYjI5NWM3MDc3NDViIiwidXNlcl9pZCI6MTN9.fMPIB4sDc3TPtY3cgWTOBBbfFpcjBqirsXH_tMM8X1Y
 
 {}
 ###
@@ -49,11 +49,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 Put http://127.0.0.1:8000/update_profile/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzgwMzkyODgzLCJpYXQiOjE3NDg4NTY4ODMsImp0aSI6IjAwYWY0NTAxMDNkZTRmODE5NWUyYjI5NWM3MDc3NDViIiwidXNlcl9pZCI6MTN9.fMPIB4sDc3TPtY3cgWTOBBbfFpcjBqirsXH_tMM8X1Y
 
 {
-    "field": "email",
-    "value": "koko"
+    "field": "latitude",
+    "value": 1.555555
 }
 
 ###
@@ -448,8 +448,10 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
 
 {
-    "name":"Restaurant3",
-    "location":"Damascus"
+    "name":"Restaurant4",
+    "location":"Damascus",
+    "latitude":1.545454,
+    "longitude":12344443
 }
 
 

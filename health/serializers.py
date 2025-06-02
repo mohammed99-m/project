@@ -18,6 +18,8 @@ class RestaurantSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(max_length=255)
     location = serializers.CharField(max_length=255)
+    latitude = serializers.FloatField(required=False,allow_null=True)
+    longitude = serializers.FloatField(required=False,allow_null=True)
 
 class MealSerializer(serializers.Serializer):
     meals_id = serializers.IntegerField(read_only=True)

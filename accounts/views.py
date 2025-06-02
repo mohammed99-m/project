@@ -46,6 +46,8 @@ def sign_up(request):
                 "goal": profile.goal,
                 "experianse_level" :profile.experianse_level,
                 "user_type":profile.user_type,
+                "latitude":profile.latitude,
+                "longitude":profile.longitude,
                 "illnesses":profile.illnesses
             },
         }

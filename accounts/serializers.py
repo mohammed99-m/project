@@ -19,6 +19,8 @@ class LoginSerializer(serializers.Serializer):
     goal = serializers.CharField(required=False, allow_blank=True)
     experianse_level = serializers.CharField(required=False, allow_blank=True)
     user_type = serializers.CharField(required=False, allow_blank=True) 
+    latitude = serializers.FloatField(required=False, allow_null=True)
+    longitude = serializers.FloatField(required=False, allow_null=True)
 
 class ProfileSerializer(serializers.Serializer):
     # Access fields from the related 'User' model
@@ -35,7 +37,8 @@ class ProfileSerializer(serializers.Serializer):
     goal = serializers.CharField(required=False, allow_blank=True)
     experianse_level = serializers.CharField(required=False, allow_blank=True)
     user_type = serializers.CharField(required=False, allow_blank=True)
-    
+    latitude = serializers.FloatField(required=False, allow_null=True)
+    longitude = serializers.FloatField(required=False, allow_null=True)
 
    
     
@@ -54,7 +57,9 @@ class RegisterSerializer(serializers.Serializer):
     goal = serializers.CharField(required=False, allow_blank=True)
     experianse_level = serializers.CharField(required=False, allow_blank=True)
     user_type = serializers.CharField(required=False, allow_blank=True) 
-
+    latitude = serializers.FloatField(required=False, allow_null=True)
+    longitude = serializers.FloatField(required=False, allow_null=True)
+    
     def validate_email(self, value):
         User = get_user_model()
         if User.objects.filter(email=value).exists():

@@ -27,9 +27,13 @@ def create_restaurant(request):
     if serializer.is_valid():
         name = request.data.get('name')
         location = request.data.get('location')
+        latitude=request.data.get('latitude')
+        longitude=request.data.get('longitude')
         restaurant = Restaurant.objects.create(
           name=name,
-          location=location
+          location=location,
+          latitude=latitude,
+          longitude=longitude
          )
 
          
@@ -38,7 +42,9 @@ def create_restaurant(request):
             "message": "Restaurant created successfully.",
             "id": restaurant.id,
             "name": restaurant.name,
-            "location": restaurant.location
+            "location": restaurant.location,
+            "latitude":restaurant.latitude,
+            "longitude":restaurant.longitude
         }, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -28,6 +28,8 @@ class Profile(models.Model):
         related_name='related_to',
         blank=True
     )
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
     def __str__(self):
         return self.user.username
     
