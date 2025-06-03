@@ -49,6 +49,7 @@ def get_someone_posts(request,user_id):
 
     return Response(serializer.data)
 
+
 import json
 from urllib import request as urlrequest
 from urllib.error import URLError, HTTPError
@@ -87,6 +88,8 @@ def add_comment(request,post_id,user_id):
     
     comment = Comment(writer=profile,post=post,text=request.data['text'])
     comment.save()
+    post.nuber_of_comments+=1
+    post.save()
     return Response({'message': 'comment add succesfuly'}, status=status.HTTP_201_CREATED)
 
 
@@ -101,6 +104,17 @@ def get_comments_on_post(request,post_id):
     serializer = CommentSerializer(comment,many=True)
 
     return Response(serializer.data)
+
+@api_view(['GET'])
+def get_number_of_comments_on_post(request,post_id):
+    try:
+        post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        return Response({"error":"post not found."},status=status.HTTP_404_NOT_FOUND) 
+
+    number_of_comments = Comment.objects.filter(post=post).count()
+
+    return Response({"number_of_comments":number_of_comments})
 
 @api_view(["DELETE"])
 def delete_post(request, post_id, user_id):

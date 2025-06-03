@@ -7,7 +7,7 @@ class PostSerializer(serializers.ModelSerializer):
     like = ProfileSerializer(many=True)
     class Meta:
         model = Post
-        fields = ['id', 'content', 'author','like','created_at']  
+        fields = ['id', 'content', 'author','like','created_at','nuber_of_comments']  
 
 class CommentSerializer(serializers.ModelSerializer):
     writer = ProfileSerializer()
