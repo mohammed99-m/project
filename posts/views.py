@@ -88,7 +88,7 @@ def add_comment(request,post_id,user_id):
     
     comment = Comment(writer=profile,post=post,text=request.data['text'])
     comment.save()
-    post.nuber_of_comments+=1
+    post.number_of_comments+=1
     post.save()
     return Response({'message': 'comment add succesfuly'}, status=status.HTTP_201_CREATED)
 

@@ -8,7 +8,7 @@ class Post(models.Model):
     content = models.TextField()
     like = models.ManyToManyField(Profile,blank=True)
     created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
-    nuber_of_comments= models.IntegerField(default=0,blank=True)
+    number_of_comments= models.IntegerField(default=0,blank=True)
     def __str__(self):
         return f"Post by {self.author.user.username} - {self.content[:20]}"
     
