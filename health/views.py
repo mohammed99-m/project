@@ -275,7 +275,7 @@ def get_trainner_diet_plans(request,trainer_id):
 
     result = []
 
-        # جلب جميع الوجبات المجدولة لهذا النظام الغذائي
+        # جلب جميع الوجبات لهذا النظام الغذائي
     scheduled_meals = MealsSchedule.objects.filter(dietplan=diet_plan)
     grouped_by_day = defaultdict(list)
 
