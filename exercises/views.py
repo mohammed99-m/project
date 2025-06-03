@@ -404,3 +404,37 @@ def get_exercises_with_avoid_flag(request, user_id):
         })
 
     return Response(result, status=status.HTTP_200_OK)
+
+#لعرض التمارين حسب العضلة
+@api_view(["GET"])
+def get_exercises_with_avoid_flag_by_muscle(request, user_id):
+    try:
+        profile = Profile.objects.get(user_id=user_id)
+    except Profile.DoesNotExist:
+        return Response({"error": "User profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    illnesses = profile.illnesses
+
+    # أسم التمرين الذي يجب تجنبه حسب الأمراض
+    avoid_exercise_names = set()
+    avoid_entries = IllnessToAvoidExercises.objects.filter(illness__in=illnesses)
+    for entry in avoid_entries:
+        avoid_exercise_names.update(entry.exercise_to_avoid)
+
+    #لجلب التمارين مصنفة حسب العضلة
+    grouped_exercises = {}
+
+    all_exercises = Exercise.objects.all()
+    for exercise in all_exercises:
+         muscle = exercise.muscle_group
+         if muscle not in grouped_exercises:
+            grouped_exercises[muscle] = []  # إنشاء قائمة جديدة للعضلة
+
+         grouped_exercises[exercise.muscle_group].append({
+            "exercise_id": exercise.exercise_id,
+            "name": exercise.name,
+            "description": exercise.description,
+            "avoid": "yes" if exercise.name in avoid_exercise_names else "no"
+         })
+
+    return Response(grouped_exercises, status=status.HTTP_200_OK)
