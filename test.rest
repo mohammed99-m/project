@@ -16,7 +16,7 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"jack4" , "email":"jack4@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Stroke (Prevention)"] }
+{"username":"jack4" , "email":"jack4@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Hypertension (Severe)"] }
 
 ###
 
@@ -339,7 +339,7 @@ Content-Type: application/json
 {}
 
 ###
-POST http://127.0.0.1:8000/health/addditeplan/2/32/
+POST http://127.0.0.1:8000/health/addditeplan/2/33/
 Content-Type: application/json
 
   {
@@ -655,13 +655,13 @@ Content-Type: application/json
     "muscle_group": "Quadriceps",
     "machine": "Barbell or Smith Machine",
     "description": "A compound lower body movement where you bend the knees and lower the body, heavily engaging the quads and glutes."
-},
-{
+   },
+   {
     "exercise_id": 15,
     "name": "Leg Curl",
     "muscle_group": "Hamstrings",
     "machine": "Leg Curl Machine",
-"description": "A hamstring-targeted exercise where you lie face down and curl your legs toward your glutes against resistance."
+    "description": "A hamstring-targeted exercise where you lie face down and curl your legs toward your glutes against resistance."
   },
   {
     "exercise_id": 16,
@@ -697,7 +697,7 @@ Content-Type: application/json
     "muscle_group": "Obliques",
     "machine": "Cable Machine",
     "description": "A rotational movement where you pull the cable from high to low or low to high across your body, engaging the oblique muscles."
-  }
+  },
   {
     "exercise_id": 21,
     "name": "Running",
@@ -728,7 +728,7 @@ Content-Type: application/json
 [
  {
     "illness": "Hypertension (Severe)",
-    "exercises_to_avoid": ["Heavy weightlifting", "High-intensity interval training (HIIT)", "Competitive sports"],
+    "exercises_to_avoid": ["Bench Press", "Concentration Curl", "Barbell Curl"],
     "safer_alternatives": ["Walking", "Swimming", "Yoga"],
     "sources": ["American Heart Association", "Mayo Clinic"]
   },
@@ -765,4 +765,7 @@ Content-Type: application/json
 
 #############
 Get http://127.0.0.1:8000/posts/get_nuber_of_comments/1/
+Content-Type: application/json
+#########
+Get http://127.0.0.1:8000/exercises/avoidexercisesbymuscle/1/
 Content-Type: application/json

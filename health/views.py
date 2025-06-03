@@ -282,7 +282,7 @@ def get_trainner_diet_plans(request,trainer_id):
     for schedule in scheduled_meals:
         serialized_meal = MealSerializer(schedule.meal).data
 
-            # إضافة وصف اليوم من جدول MealsSchedule
+            #  إضافة وصف اليوم من جدول MealsSchedule لتصنيف الوجبات حسب اليوم
         grouped_by_day[schedule.day].append({
             "meal": serialized_meal
         })
