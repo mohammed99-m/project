@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=15, blank=True, null=True)
@@ -30,6 +29,7 @@ class Profile(models.Model):
     )
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
+    player_id = models.CharField(blank=True,null=True,max_length=500)
     def __str__(self):
         return self.user.username
     

@@ -48,7 +48,8 @@ def sign_up(request):
                 "user_type":profile.user_type,
                 "latitude":profile.latitude,
                 "longitude":profile.longitude,
-                "illnesses":profile.illnesses
+                "illnesses":profile.illnesses,
+                "player_id":profile.player_id
             },
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
