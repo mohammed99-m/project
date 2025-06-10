@@ -16,7 +16,7 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"jack4" , "email":"jack4@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Hypertension (Severe)"] }
+{"username":"jac3" , "email":"jac3@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Hypertension (Severe)"] }
 
 ###
 
@@ -96,7 +96,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/sendjoinrequest/4/2/
+POST http://127.0.0.1:8000/sendjoinrequest/2/1/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -113,12 +113,12 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
 
 {
-    "action": "Accept"
+    "action": "Reject"
 }
 
 ###
 
-GET http://127.0.0.1:8000/getjoinrequests/2/
+GET http://127.0.0.1:8000/getjoinrequests/1/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -147,7 +147,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/exercises/makeprogram/2/26/
+POST http://127.0.0.1:8000/exercises/makeprogram/2/3/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -448,7 +448,7 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
 
 {
-    "name":"Restaurant4",
+    "name":"Restaurant1",
     "location":"Damascus",
     "latitude":1.545454,
     "longitude":12344443
@@ -481,13 +481,13 @@ Content-Type: application/json
 {
     "name":"meal1",
     "description":"meal1",
-    "ingredients":[2],
+    "ingredients":[1],
     "price":"150",
-    "restaurant":[1]
+    "restaurant":[1,2]
 }
 
 ###
-GET http://127.0.0.1:8000/health/restaurants_meal/1/
+GET http://127.0.0.1:8000/health/restaurants_meal/2/
 Content-Type: application/json
 
 {}
@@ -767,5 +767,4 @@ Content-Type: application/json
 Get http://127.0.0.1:8000/posts/get_nuber_of_comments/1/
 Content-Type: application/json
 #########
-Get http://127.0.0.1:8000/exercises/avoidexercisesbymuscle/1/
-Content-Type: application/json
+Get http://127.0.0.1:8000/exercises/avoidexercisesbymuscle/1
