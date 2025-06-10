@@ -78,7 +78,7 @@ def login(request):
         acces_token = AccessToken.for_user(user)
         # Retrieve the profile related to the user
         profile = get_object_or_404(Profile, user=user)
-        profile.player_id = request.data['palyer_id']
+        profile.player_id = request.data['player_id']
         profile.save()
         # Serialize the profile data, ensuring we access fields from the related 'User' model
         serializer = LoginSerializer(instance=profile)
