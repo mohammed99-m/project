@@ -8,16 +8,17 @@ POST http://127.0.0.1:8000/notifications/save-notification/
 Content-Type: application/json
 
 {
-  "user": 1,
+  "sender": 4,
+  "receiver":1,
   "content": "test",
   "room_name": "1"
 }
-#######
-GET http://127.0.0.1:8000/notifications/user-notifications/1/
+########
+GET http://127.0.0.1:9000/notifications/user-notifications/1/
 Content-Type: application/json
 
 {}
-###
+#####
 ### اختبار عرض التمارين حسب العضلة
 
 GET http://127.0.0.1:8000/exercises/by-muscle/?q=arm
@@ -26,10 +27,10 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:8000/register/
+POST http://127.0.0.1:9000/register/
 Content-Type: application/json
 
-{"username":"Mn" , "email":"Mn@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Hypertension (Severe)"] }
+{"username":"1" , "email":"1@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Hypertension (Severe)"] }
 
 ###
 
@@ -52,7 +53,7 @@ Content-Type: application/json
 ###
 DELETE http://127.0.0.1:8000/delete/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE5MzM1LCJpYXQiOjE3MzQ5ODMzMzUsImp0aSI6ImY5MGY2ZTg2N2UxYTQyZTY5MDk0NGJhYjQwMzQxNzNhIiwidXNlcl9pZCI6ODR9.84RAQq57eOJBk8_n6QO1y4ClTD1XqzrrGBYVLKMsokY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzgxMTgyNjU3LCJpYXQiOjE3NDk2NDY2NTcsImp0aSI6ImU4MGI0M2FlODcwYjQ5NDhiZjA0YzBjZDNiNmVkNjdiIiwidXNlcl9pZCI6NH0.z5pUtiMcfLuSQFZfEfdBp6rRz5GsdkNajzG08C6cGZM
 
 {}
 
