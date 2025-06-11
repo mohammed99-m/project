@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'posts',
     'exercises',
     'health',
-    'illnesses'
+    'illnesses',
+    'notifications'
 
 ]
 REST_FRAMEWORK = {

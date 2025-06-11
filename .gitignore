@@ -15,3 +15,5 @@ illnesses/migrations/__pycache__/
 static/
 myvenv/
 exercises/management/commands/__pycache__/
+notifications/__pycache__/
+notifications/migrations/__pycache__/
