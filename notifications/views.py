@@ -1,4 +1,5 @@
 from django.shortcuts import render
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -17,7 +18,7 @@ def save_notification(request):
 
 #عرض الاشعارات بالنسبة لمستخدم محدد
 @api_view(['GET'])
-def get_user_notifications(request, user_id):
-    notifications = Notification.objects.filter(user_id=user_id).order_by('-created_at')
+def get_user_notifications(request, receiver_id):
+    notifications = Notification.objects.filter(receiver_id=receiver_id).order_by('-created_at')
     serializer = NotificationSerializer(notifications, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)

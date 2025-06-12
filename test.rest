@@ -3,8 +3,22 @@ Content-Type: application/json
 
 {"username":"mohammed5" ,  "password":"1234"}
 
+########
+POST http://127.0.0.1:8000/notifications/save-notification/
+Content-Type: application/json
 
-###
+{
+  "sender": 4,
+  "receiver":1,
+  "content": "test",
+  "room_name": "1"
+}
+########
+GET http://127.0.0.1:9000/notifications/user-notifications/1/
+Content-Type: application/json
+
+{}
+#####
 ### اختبار عرض التمارين حسب العضلة
 
 GET http://127.0.0.1:8000/exercises/by-muscle/?q=arm
@@ -13,10 +27,10 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:8000/register/
+POST http://127.0.0.1:9000/register/
 Content-Type: application/json
 
-{"username":"jack4" , "email":"jack4@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Stroke (Prevention)"] }
+{"username":"1" , "email":"1@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Hypertension (Severe)"] }
 
 ###
 
@@ -39,7 +53,7 @@ Content-Type: application/json
 ###
 DELETE http://127.0.0.1:8000/delete/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE5MzM1LCJpYXQiOjE3MzQ5ODMzMzUsImp0aSI6ImY5MGY2ZTg2N2UxYTQyZTY5MDk0NGJhYjQwMzQxNzNhIiwidXNlcl9pZCI6ODR9.84RAQq57eOJBk8_n6QO1y4ClTD1XqzrrGBYVLKMsokY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzgxMTgyNjU3LCJpYXQiOjE3NDk2NDY2NTcsImp0aSI6ImU4MGI0M2FlODcwYjQ5NDhiZjA0YzBjZDNiNmVkNjdiIiwidXNlcl9pZCI6NH0.z5pUtiMcfLuSQFZfEfdBp6rRz5GsdkNajzG08C6cGZM
 
 {}
 
@@ -96,7 +110,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/sendjoinrequest/4/2/
+POST http://127.0.0.1:8000/sendjoinrequest/2/1/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -113,12 +127,12 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
 
 {
-    "action": "Accept"
+    "action": "Reject"
 }
 
 ###
 
-GET http://127.0.0.1:8000/getjoinrequests/2/
+GET http://127.0.0.1:8000/getjoinrequests/1/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -147,7 +161,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/exercises/makeprogram/2/26/
+POST http://127.0.0.1:8000/exercises/makeprogram/2/3/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -339,7 +353,7 @@ Content-Type: application/json
 {}
 
 ###
-POST http://127.0.0.1:8000/health/addditeplan/2/32/
+POST http://127.0.0.1:8000/health/addditeplan/2/33/
 Content-Type: application/json
 
   {
@@ -448,7 +462,7 @@ Content-Type: application/json
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NzM1NDE1LCJpYXQiOjE3MzcxOTk0MTUsImp0aSI6IjMzNTA5YmVhMGQ4ODRkMGNhYjkyYWQxZDNkZjVkOTQ2IiwidXNlcl9pZCI6ODF9.RuWWcpu8GLnN-Wtb02dA15czQ0-khbM18SzkLO4fR7A
 
 {
-    "name":"Restaurant4",
+    "name":"Restaurant1",
     "location":"Damascus",
     "latitude":1.545454,
     "longitude":12344443
@@ -481,13 +495,13 @@ Content-Type: application/json
 {
     "name":"meal1",
     "description":"meal1",
-    "ingredients":[2],
+    "ingredients":[1],
     "price":"150",
-    "restaurant":[1]
+    "restaurant":[1,2]
 }
 
 ###
-GET http://127.0.0.1:8000/health/restaurants_meal/1/
+GET http://127.0.0.1:8000/health/restaurants_meal/2/
 Content-Type: application/json
 
 {}
@@ -655,13 +669,13 @@ Content-Type: application/json
     "muscle_group": "Quadriceps",
     "machine": "Barbell or Smith Machine",
     "description": "A compound lower body movement where you bend the knees and lower the body, heavily engaging the quads and glutes."
-},
-{
+   },
+   {
     "exercise_id": 15,
     "name": "Leg Curl",
     "muscle_group": "Hamstrings",
     "machine": "Leg Curl Machine",
-"description": "A hamstring-targeted exercise where you lie face down and curl your legs toward your glutes against resistance."
+    "description": "A hamstring-targeted exercise where you lie face down and curl your legs toward your glutes against resistance."
   },
   {
     "exercise_id": 16,
@@ -697,7 +711,7 @@ Content-Type: application/json
     "muscle_group": "Obliques",
     "machine": "Cable Machine",
     "description": "A rotational movement where you pull the cable from high to low or low to high across your body, engaging the oblique muscles."
-  }
+  },
   {
     "exercise_id": 21,
     "name": "Running",
@@ -728,7 +742,7 @@ Content-Type: application/json
 [
  {
     "illness": "Hypertension (Severe)",
-    "exercises_to_avoid": ["Heavy weightlifting", "High-intensity interval training (HIIT)", "Competitive sports"],
+    "exercises_to_avoid": ["Bench Press", "Concentration Curl", "Barbell Curl"],
     "safer_alternatives": ["Walking", "Swimming", "Yoga"],
     "sources": ["American Heart Association", "Mayo Clinic"]
   },
@@ -766,25 +780,5 @@ Content-Type: application/json
 #############
 Get http://127.0.0.1:8000/posts/get_nuber_of_comments/1/
 Content-Type: application/json
-
-Add commentMore actions
-########
-POST http://127.0.0.1:8000/notifications/save-notification/
-Content-Type: application/json
-
-{
-  "user": 1,
-  "content": "test",
-  "room_name": "1"
-}
-#######
-GET http://127.0.0.1:8000/notifications/user-notifications/1/
-Content-Type: application/json
-
-{}
-###
-### اختبار عرض التمارين حسب ال
-POST http://127.0.0.1:8000/register/
-Content-Type: application/json
-
-{"username":"Mn" , "email":"Mn@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Hypertension (Severe)"] }
+#########
+Get http://127.0.0.1:8000/exercises/avoidexercisesbymuscle/1

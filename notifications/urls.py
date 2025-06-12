@@ -3,6 +3,6 @@ from .views import get_user_notifications, save_notification
 
 urlpatterns = [
     path('save-notification/', save_notification, name='save-notification'),
-    path('user-notifications/<int:user_id>/', get_user_notifications, name='user-notifications'),
+    path('user-notifications/<str:receiver_id>/', get_user_notifications, name='user-notifications'),
 
 ]
