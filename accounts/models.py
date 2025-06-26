@@ -30,6 +30,7 @@ class Profile(models.Model):
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     player_id = models.CharField(blank=True,null=True,max_length=500)
+    image_url = models.URLField(blank=True, null=True)
     def __str__(self):
         return self.user.username
     

@@ -782,3 +782,25 @@ Get http://127.0.0.1:8000/posts/get_nuber_of_comments/1/
 Content-Type: application/json
 #########
 Get http://127.0.0.1:8000/exercises/avoidexercisesbymuscle/1
+
+#############
+Get http://127.0.0.1:8000/images/
+Content-Type: application/json
+
+### Upload image with VS Code REST Client
+POST http://127.0.0.1:8000/update_image/1/
+
+image=@C:/Users/mwe33/Desktop/coffee/cap_image2.jpg 
+#############
+
+Get http://127.0.0.1:8000/user_image/1/
+Content-Type: application/json
+
+
+
+### Upload image### Upload image with multipart/form-data### Upload image with multipart/form-data
+POST http://127.0.0.1:8000/update_image/1/
+Content-Type: multipart/form-data
+
+image=@C:/Users/mwe33/Desktop/coffee/cap_image2.jpg
+

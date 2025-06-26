@@ -47,15 +47,34 @@ INSTALLED_APPS = [
     'exercises',
     'health',
     'illnesses',
-    'notifications'
+    'notifications',
+    'cloudinary',
+    'cloudinary_storage',
 
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ]
 }
+# img cloud storage
+import cloudinary
+cloudinary.config(
+    cloud_name = 'dihberqmu',
+    api_key = '139238618629431',
+    api_secret = 'HYAtd2lbAQJdF8q0foLgpnI_e9Q'
+)
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # sittings
 SIMPLE_JWT ={
     'ACCESS_TOKEN_LIFETIME':timedelta(days=365),

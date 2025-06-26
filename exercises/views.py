@@ -438,3 +438,40 @@ def get_exercises_with_avoid_flag_by_muscle(request, user_id):
          })
 
     return Response(grouped_exercises, status=status.HTTP_200_OK)
+
+## ad exircise with video
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Exercise
+from .serializers import ExerciseSerializer
+import cloudinary.uploader
+
+@api_view(["POST"])
+@parser_classes([MultiPartParser, FormParser])
+def add_exercise_with_video(request):
+    name = request.data.get("name")
+    muscle_group = request.data.get("muscle_group")
+    description = request.data.get("description")
+    video = request.FILES.get("video")
+
+    video_url = None
+    if video:
+        try:
+            upload_result = cloudinary.uploader.upload(
+                video,
+                resource_type="video"
+            )
+            video_url = upload_result.get("secure_url")
+        except Exception as e:
+            return Response({"error": f"Video upload failed: {str(e)}"}, status=500)
+
+    exercise = Exercise.objects.create(
+        name=name,
+        muscle_group=muscle_group,
+        video_url=video_url,
+        description=description,
+    )
+
+    return Response(ExerciseSerializer(exercise).data, status=status.HTTP_201_CREATED)
