@@ -45,9 +45,6 @@ class JoinRequest(models.Model):
         default='Pending'
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return f"Request from {self.user.user.username} to {self.coach.user.username} ({self.status})"
 
 
 
