@@ -803,4 +803,50 @@ POST http://127.0.0.1:8000/update_image/1/
 Content-Type: multipart/form-data
 
 image=@C:/Users/mwe33/Desktop/coffee/cap_image2.jpg
-
+####
+[
+    {
+        "name": "meat",
+        "calories": "75"
+    },
+    {
+        "name": "rice",
+        "calories": "130"
+    },
+    {
+        "name": "bread",
+        "calories": "80"
+    },
+    {
+        "name": "cheese",
+        "calories": "113"
+    },
+    {
+        "name": "apple",
+        "calories": "52"
+    },
+    {
+        "name": "banana",
+        "calories": "89"
+    },
+    {
+        "name": "egg",
+        "calories": "68"
+    },
+    {
+        "name": "milk",
+        "calories": "42"
+    },
+    {
+        "name": "potato",
+        "calories": "77"
+    },
+    {
+        "name": "chicken",
+        "calories": "165"
+    },
+     {
+        "name": "Processed cheeses",
+        "calories": "68"
+    }
+]
