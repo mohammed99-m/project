@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'exercises',
     'health',
     'illnesses',
-    'notifications'
+    'notifications',
+    'chatapp'
 
 ]
 REST_FRAMEWORK = {

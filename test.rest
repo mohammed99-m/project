@@ -3,18 +3,30 @@ Content-Type: application/json
 
 {"username":"mohammed5" ,  "password":"1234"}
 
-########
+#######
+GeT http://127.0.0.1:8000/chatapp/get-message/chat_1_2/
+#######
 POST http://127.0.0.1:8000/notifications/save-notification/
 Content-Type: application/json
 
 {
-  "sender": 4,
-  "receiver":1,
+  "sender": 11,
+  "receiver":12,
   "content": "test",
   "room_name": "1"
 }
+#########
+POST http://127.0.0.1:8000/chatapp/save-message/
+Content-Type: application/json
+
+{
+  "sender":11,
+  "receiver":12,
+  "content": "test",
+  "room_name": "chat_1_3"
+}
 ########
-GET http://127.0.0.1:9000/notifications/user-notifications/1/
+GET http://127.0.0.1:8000/notifications/user-notifications/12/
 Content-Type: application/json
 
 {}
@@ -27,10 +39,10 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:9000/register/
+POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"1" , "email":"1@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Hypertension (Severe)"] }
+{"username":"12" , "email":"12@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Hypertension (Severe)"] }
 
 ###
 
@@ -110,7 +122,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/sendjoinrequest/2/1/
+POST http://127.0.0.1:9000/sendjoinrequest/2/1/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -132,7 +144,7 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/getjoinrequests/1/
+GET http://127.0.0.1:9000/getjoinrequests/1/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -257,7 +269,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/posts/addpost/1/
+POST http://127.0.0.1:9000/posts/addpost/1/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc3OTE4Nzk4LCJpYXQiOjE3NDYzODI3OTgsImp0aSI6ImU2Y2Y3NWYwNDEyMzQ0M2E5ZGVkMWVjYjQ1OGQxMDE3IiwidXNlcl9pZCI6Nn0.ROSJczURBaOQ5LnOQflofcbePdvRJiUWoJk3TJ5E85c
