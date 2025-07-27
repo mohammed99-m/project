@@ -434,3 +434,97 @@ def get_trainer_info(request,trainer_id,coach_id):
     #الممرر id اذا كان مافي بروفايل لهاد ال 
     except Profile.DoesNotExist:
         return Response({"error": "Profile not found"}, status=404)
+    
+# @api_view(["GET"])
+# def get_all_profile_images(request):
+#     profiles = Profile.objects.exclude(image_url__isnull=True).exclude(image_url="")
+
+#     image_urls = [profile.image_url for profile in profiles]
+
+#     return Response({"images": image_urls})
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+import cloudinary.api
+import cloudinary.exceptions
+
+@api_view(["GET"])
+def list_all_cloud_images(request):
+    try:
+        print("H" * 50)  # Just for debugging
+        result = cloudinary.api.resources(type="upload", resource_type="image", max_results=100)
+        images = [item['secure_url'] for item in result.get('resources', [])]
+        return Response({"images": images})
+    except cloudinary.exceptions.Error as e:
+        return Response({"error": str(e)}, status=500)
+    
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .models import Profile # or whatever model stores the image
+from django.contrib.auth.models import User
+from rest_framework.parsers import MultiPartParser, FormParser
+@api_view(["GET"])
+def get_user_image(request, user_id):
+    profile = get_object_or_404(Profile, user__id=user_id)
+
+    return Response({"image_url": profile.image_url})
+
+
+@api_view(["POST"])
+@parser_classes([MultiPartParser, FormParser])
+def update_profile_image(request,user_id):
+    try:
+        image = request.FILES.get("image")
+        if not image:
+            return Response({"error": "No image provided"}, status=400)
+
+        # Upload to Cloudinary
+        upload_result = cloudinary.uploader.upload(image)
+
+        # Update profile with new image URL
+        profile = Profile.objects.get(user__id=user_id)
+        profile.image_url = upload_result["secure_url"]
+        profile.save()
+
+        return Response({
+            "message": "Image updated successfully",
+            "image_url": profile.image_url
+        })
+
+    except Profile.DoesNotExist:
+        return Response({"error": "Profile not found"}, status=404)
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+    
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Profile
+import cloudinary.uploader
+
+class UpdateProfileImage(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request, user_id):
+        try:
+            image = request.FILES.get("image")
+            if not image:
+                return Response({"error": "No image provided"}, status=400)
+
+            upload_result = cloudinary.uploader.upload(image)
+
+            profile = Profile.objects.get(user__id=user_id)
+            profile.image_url = upload_result["secure_url"]
+            profile.save()
+
+            return Response({
+                "message": "Image updated successfully",
+                "image_url": profile.image_url
+            })
+
+        except Profile.DoesNotExist:
+            return Response({"error": "Profile not found"}, status=404)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)

@@ -16,6 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path , include
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import AllowAny
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="My API",
+      default_version='v1',
+      description="توثيق API الخاص بي",
+   ),
+   public=True,
+   authentication_classes=[SessionAuthentication],  # أضف هذا
+   permission_classes=[AllowAny],
+)
 
 urlpatterns = [
     path('authapp/',include('authapp.urls')),
@@ -28,4 +44,5 @@ urlpatterns = [
     path('notifications/',include('notifications.urls')),
     path('chatapp/',include('chatapp.urls')),
 
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]

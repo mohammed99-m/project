@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import UpdateProfileImage
 urlpatterns = [
     path('register/',views.sign_up, name='Register'),
     path('login/',views.login,name='Login'),
@@ -16,5 +17,8 @@ urlpatterns = [
     path('getgoals/',views.return_goals,name="Get Goals"),
     path('getexperincelevel/',views.return_experince_level,name="Experince Level"),
     path('getrequeststatus/<str:trainer_id>/',views.get_request_status,name="Request Status"),
-    path('gettrainerinfo/<str:trainer_id>/<str:coach_id>/',views.get_trainer_info,name="Get Trainer Info")
+    path('gettrainerinfo/<str:trainer_id>/<str:coach_id>/',views.get_trainer_info,name="Get Trainer Info"),
+    path('images/', views.list_all_cloud_images,name="get all images"),
+    path('user_image/<str:user_id>/',views.get_user_image,name="get user image"),
+    path('update_image/<str:user_id>/',UpdateProfileImage.as_view(),name="update profile"),
 ]

@@ -30,6 +30,7 @@ class Profile(models.Model):
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     player_id = models.CharField(blank=True,null=True,max_length=500)
+    image_url = models.URLField(blank=True, null=True)
     def __str__(self):
         return self.user.username
     
@@ -44,9 +45,6 @@ class JoinRequest(models.Model):
         default='Pending'
     )
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Request from {self.user.user.username} to {self.coach.user.username} ({self.status})"
 
 
 

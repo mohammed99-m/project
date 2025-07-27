@@ -22,6 +22,7 @@ class LoginSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required=False, allow_null=True)
     longitude = serializers.FloatField(required=False, allow_null=True)
     player_id = serializers.CharField(required = False,allow_null=True)
+    image_url = serializers.URLField(required=False, allow_null=True)
 
 class ProfileSerializer(serializers.Serializer):
     # Access fields from the related 'User' model
@@ -41,7 +42,7 @@ class ProfileSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required=False, allow_null=True)
     longitude = serializers.FloatField(required=False, allow_null=True)
     player_id = serializers.CharField(required = False,allow_null=True)
-   
+    image_url = serializers.URLField(required=False, allow_null=True)
     
 
 class RegisterSerializer(serializers.Serializer):
@@ -61,7 +62,8 @@ class RegisterSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required=False, allow_null=True)
     longitude = serializers.FloatField(required=False, allow_null=True)
     player_id = serializers.CharField(required = False,allow_null=True)
-    
+    image_url = serializers.URLField(required=False, allow_null=True)
+
     def validate_email(self, value):
         User = get_user_model()
         if User.objects.filter(email=value).exists():
@@ -97,8 +99,3 @@ class RegisterSerializer(serializers.Serializer):
         profile = Profile.objects.create(user=user, **validated_data)
 
         return profile
-    
-    
-
-
-
