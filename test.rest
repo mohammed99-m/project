@@ -4,7 +4,7 @@ Content-Type: application/json
 {"username":"mohammed5" ,  "password":"1234"}
 
 #######
-GeT http://127.0.0.1:8000/chatapp/get-message/chat_1_2/
+GeT http://127.0.0.1:8000/chatapp/get-message/chat_11_12/
 #######
 POST http://127.0.0.1:8000/notifications/save-notification/
 Content-Type: application/json
@@ -26,7 +26,7 @@ Content-Type: application/json
   "room_name": "chat_1_3"
 }
 ########
-GET http://127.0.0.1:8000/notifications/user-notifications/12/
+GET http://127.0.0.1:8000/notifications/user-notifications/2/
 Content-Type: application/json
 
 {}
@@ -55,10 +55,10 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:9000/register/
+POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"jack4" , "email":"jack4@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Stroke (Prevention)"] }
+{"username":"jack" , "email":"jack@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Stroke (Prevention)"] }
 
 ###
 
