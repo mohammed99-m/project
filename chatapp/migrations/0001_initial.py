@@ -18,6 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('room_name', models.CharField(max_length=255)),
+                ('room_id', models.CharField(max_length=255)),
                 ('content', models.TextField()),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
                 ('receiver', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_messages', to='accounts.profile')),
