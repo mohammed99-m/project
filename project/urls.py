@@ -42,5 +42,7 @@ urlpatterns = [
     path('health/',include('health.urls')),
     path('illnesses/',include('illnesses.urls')),
     path('notifications/',include('notifications.urls')),
+    path('chatapp/',include('chatapp.urls')),
+
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]

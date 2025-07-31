@@ -25,7 +25,7 @@ def list_exercises(request):
 def search_exercises(request):
     query = request.query_params.get('q', None)  
     if query:
-        exercises = Exercise.objects.filter(name__icontains=query)  
+        exercises = Exercise.objects.filter(name__icontains=query)  # icontains فلترة تمارين تحتوي على النص بدون تمييز بين الأحرف
     else:
         exercises = Exercise.objects.all()  
 

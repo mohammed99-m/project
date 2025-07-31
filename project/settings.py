@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'health',
     'illnesses',
     'notifications',
+    'chatapp',
     'cloudinary',
     'cloudinary_storage',
 
