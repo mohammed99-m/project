@@ -33,8 +33,8 @@ def save_notification2(request):
     print(f"Received sender_id: {sender_id}, receiver_id: {receiver_id}")
 
     try:
-        sender = Profile.objects.get(id=sender_id)
-        receiver = Profile.objects.get(id=receiver_id)
+        sender = Profile.objects.get(user__id=sender_id)
+        receiver = Profile.objects.get(user__id=receiver_id)
     except Profile.DoesNotExist as e:
         return Response({"error": str(e)}, status=404)
 
