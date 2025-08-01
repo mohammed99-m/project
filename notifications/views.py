@@ -38,12 +38,15 @@ def save_notification2(request):
     receiver_id = request.data.get('receiver')
 
     try:
-        sender = Profile.objects.get(User__id=sender_id)
-        receiver = Profile.objects.get(User__id=receiver_id)
-    except User.DoesNotExist:
-        return Response({"error": "Sender or receiver not found"}, status=status.HTTP_404_NOT_FOUND)
+        sender = Profile.objects.get(id=sender_id)
+    except Profile.DoesNotExist:
+        return Response({"error": f"Sender Profile not found for id {sender_id}"}, status=404)
 
-    # باقي البيانات (مثلاً: content و room_name)
+    try:
+        receiver = Profile.objects.get(id=receiver_id)
+    except Profile.DoesNotExist:
+        return Response({"error": f"Receiver Profile not found for id {receiver_id}"}, status=404)
+
     content = request.data.get('content')
     room_name = request.data.get('room_name')
 
@@ -54,4 +57,4 @@ def save_notification2(request):
         room_name=room_name
     )
 
-    return Response({"message": "Notification saved successfully"}, status=status.HTTP_201_CREATED)
+    return Response({"message": "Notification saved successfully"}, status=201)
