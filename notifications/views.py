@@ -25,27 +25,20 @@ def get_user_notifications(request, receiver_id):
     serializer = NotificationSerializer(notifications, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-from django.contrib.auth.models import User
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import NotificationSerializer
-from .models import Notification
-
 @api_view(['POST'])
 def save_notification2(request):
     sender_id = request.data.get('sender')
     receiver_id = request.data.get('receiver')
 
-    try:
-        sender = Profile.objects.get(id=sender_id)
-    except Profile.DoesNotExist:
-        return Response({"error": f"Sender Profile not found for id {sender_id}"}, status=404)
+    print(f"Received sender_id: {sender_id}, receiver_id: {receiver_id}")
 
     try:
+        sender = Profile.objects.get(id=sender_id)
         receiver = Profile.objects.get(id=receiver_id)
-    except Profile.DoesNotExist:
-        return Response({"error": f"Receiver Profile not found for id {receiver_id}"}, status=404)
+    except Profile.DoesNotExist as e:
+        return Response({"error": str(e)}, status=404)
+
+    print(f"Resolved sender: {sender.id}, receiver: {receiver.id}")
 
     content = request.data.get('content')
     room_name = request.data.get('room_name')
@@ -56,5 +49,7 @@ def save_notification2(request):
         content=content,
         room_name=room_name
     )
+
+    print(f"Notification created with sender id: {notification.sender.id}, receiver id: {notification.receiver.id}")
 
     return Response({"message": "Notification saved successfully"}, status=201)
