@@ -39,7 +39,7 @@ def save_notification2(request):
 
     try:
         sender = Profile.objects.get(User__id=sender_id)
-        receiver = User.objects.get(id=receiver_id)
+        receiver = Profile.objects.get(User__id=receiver_id)
     except User.DoesNotExist:
         return Response({"error": "Sender or receiver not found"}, status=status.HTTP_404_NOT_FOUND)
 
