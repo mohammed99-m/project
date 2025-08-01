@@ -297,7 +297,7 @@ def send_join_request(request, user_id, coach_id):
         return Response({"message": "Join request sent successfully"}, status=201)
     # في حال مافي متدرب او مدرب موافق للايدي المبعوت
     except Profile.DoesNotExist:
-        return Response({"message": "User or Coach Profile not found!"}, status=201)
+        return Response({"message": "User or Coach Profile not found!"}, status=400)
     
 
  
