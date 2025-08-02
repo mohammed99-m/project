@@ -29,9 +29,6 @@ def get_user_notifications(request, receiver_id):
 def save_notification2(request):
     sender_id = request.data.get('sender')
     receiver_id = request.data.get('receiver')
-
-    print(f"Received sender_id: {sender_id}, receiver_id: {receiver_id}")
-
     try:
         sender = Profile.objects.get(user__id=sender_id)
         receiver = Profile.objects.get(user__id=receiver_id)
