@@ -528,3 +528,30 @@ class UpdateProfileImage(APIView):
             return Response({"error": "Profile not found"}, status=404)
         except Exception as e:
             return Response({"error": str(e)}, status=500)
+
+from django.contrib.auth.models import User
+from accounts.models import Profile  # تأكد أن اسم التطبيق صحيح
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['GET'])
+def list_users_and_profiles(request):
+    users_data = []
+    for user in User.objects.all():
+        try:
+            profile = Profile.objects.get(user=user)
+            users_data.append({
+                'user_id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'profile_id': profile.id,
+            })
+        except Profile.DoesNotExist:
+            users_data.append({
+                'user_id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'profile_id': None,
+            })
+    
+    return Response(users_data)

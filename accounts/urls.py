@@ -21,4 +21,5 @@ urlpatterns = [
     path('images/', views.list_all_cloud_images,name="get all images"),
     path('user_image/<str:user_id>/',views.get_user_image,name="get user image"),
     path('update_image/<str:user_id>/',UpdateProfileImage.as_view(),name="update profile"),
+    path('test/',views.list_users_and_profiles,name="ooo")
 ]
