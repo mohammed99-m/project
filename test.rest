@@ -1,7 +1,7 @@
-POST http://127.0.0.1:8000/login/
+POST http://mohammedmoh.pythonanywhere.com/login/
 Content-Type: application/json
 
-{"username":"mohammed5" ,  "password":"1234"}
+{"username":"omar" ,  "password":"1234" , "player_id":null}
 
 ########
 POST http://127.0.0.1:8000/notifications/save-notification/
@@ -799,7 +799,7 @@ Content-Type: application/json
 
 
 ### Upload image### Upload image with multipart/form-data### Upload image with multipart/form-data
-POST http://127.0.0.1:8000/update_image/1/
+POST https://mohammedmoh.pythonanywhere.com/update_image/2/
 Content-Type: multipart/form-data
 
 image=@C:/Users/mwe33/Desktop/coffee/cap_image2.jpg
@@ -850,3 +850,15 @@ image=@C:/Users/mwe33/Desktop/coffee/cap_image2.jpg
         "calories": "68"
     }
 ]
+###
+POST  http://127.0.0.1:8000/update_image/2/
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzg2MjEzOTYxLCJpYXQiOjE3NTQ2Nzc5NjEsImp0aSI6ImM2M2Q1ODZjYmU0YTQxNDdhNGMwZjFkNGNhNGVkNDAxIiwidXNlcl9pZCI6MX0.ejEU0HFoYTZz6ShKKwEV9un0pwNZdRVfNGn47MSKVKM
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="cap_image2.jpg"
+Content-Type: image/jpeg
+
+< C:/Users/mwe33/Desktop/coffee/cap_image2.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--

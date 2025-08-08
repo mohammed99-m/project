@@ -555,3 +555,30 @@ def list_users_and_profiles(request):
             })
     
     return Response(users_data)
+
+
+
+#### fix update image to work with the second server :)
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Profile
+
+@api_view(['POST'])
+def update_profile_image_url(request, user_id):
+    try:
+        profile = Profile.objects.get(user__id=user_id)
+    except Profile.DoesNotExist:
+        return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    image_url = request.data.get("image_url")
+    if not image_url:
+        return Response({"error": "No image_url provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+    profile.image_url = image_url
+    profile.save()
+
+    return Response({
+        "message": "Image URL updated successfully",
+        "image_url": profile.image_url
+    }, status=status.HTTP_200_OK)
