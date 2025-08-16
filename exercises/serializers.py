@@ -22,7 +22,7 @@ class ProgramSerializer(serializers.Serializer):
         return ExerciseScheduleSerializer(schedules, many=True).data#حسث سيعرض التمارين حسب ExerciseScheduleSerializer
 
 class ExerciseScheduleSerializer(serializers.ModelSerializer):
-    exercise = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all()) # = ExerciseSerializer(read_only=True) يعرض التمرين كامل
+    exercise = serializers.PrimaryKeyRelatedField(queryset=Exercise.objects.all())
     program = serializers.PrimaryKeyRelatedField(queryset=Program.objects.all())
 
     class Meta:

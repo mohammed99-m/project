@@ -271,18 +271,20 @@ def get_coach_diet_plans(request, coach_id):
 @api_view(["GET"])
 def get_trainner_diet_plans(request,trainer_id):
     trainer = get_object_or_404(Profile,user__id=trainer_id)
-    diet_plan = get_object_or_404(DietPlan,trainer=trainer)
+    diet_plan = DietPlan.objects.filter(trainer=trainer).first()
+    if not diet_plan:
+        return Response([], status=status.HTTP_200_OK)
 
     result = []
 
-        # جلب جميع الوجبات المجدولة لهذا النظام الغذائي
+        # جلب جميع الوجبات لهذا النظام الغذائي
     scheduled_meals = MealsSchedule.objects.filter(dietplan=diet_plan)
     grouped_by_day = defaultdict(list)
 
     for schedule in scheduled_meals:
         serialized_meal = MealSerializer(schedule.meal).data
 
-            # إضافة وصف اليوم من جدول MealsSchedule
+            #  إضافة وصف اليوم من جدول MealsSchedule لتصنيف الوجبات حسب اليوم
         grouped_by_day[schedule.day].append({
             "meal": serialized_meal
         })
