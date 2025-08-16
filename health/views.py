@@ -271,7 +271,9 @@ def get_coach_diet_plans(request, coach_id):
 @api_view(["GET"])
 def get_trainner_diet_plans(request,trainer_id):
     trainer = get_object_or_404(Profile,user__id=trainer_id)
-    diet_plan = get_object_or_404(DietPlan,trainer=trainer)
+    diet_plan = DietPlan.objects.filter(trainer=trainer).first()
+    if not diet_plan:
+        return Response([], status=status.HTTP_200_OK)
 
     result = []
 

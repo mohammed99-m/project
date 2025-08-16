@@ -89,7 +89,11 @@ def make_program(request,coach_id,trainer_id):
 @api_view(["GET"])
 def get_program(request, user_id):
     trainer = get_object_or_404(Profile, user__id=user_id)
-    program = get_object_or_404(Program, trainer=trainer)
+    program = Program.objects.filter(trainer=trainer).first()
+
+    # إذا ما في برنامج رجع مصفوفة فاضية 
+    if not program:
+        return Response([], status=status.HTTP_200_OK)
 
     schedules = ExerciseSchedule.objects.filter(program=program)
     exercises_with_days = []
