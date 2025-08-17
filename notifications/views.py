@@ -25,8 +25,6 @@ def get_user_notifications(request, receiver_id):
     serializer = NotificationSerializer(notifications, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-<<<<<<< HEAD
-=======
 @api_view(['POST'])
 def save_notification2(request):
     sender_id = request.data.get('sender')
@@ -52,4 +50,3 @@ def save_notification2(request):
     print(f"Notification created with sender id: {notification.sender.id}, receiver id: {notification.receiver.id}")
 
     return Response({"message": "Notification saved successfully"}, status=201)
->>>>>>> origin/main

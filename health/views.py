@@ -273,7 +273,7 @@ def get_trainner_diet_plans(request,trainer_id):
     trainer = get_object_or_404(Profile,user__id=trainer_id)
     diet_plan = DietPlan.objects.filter(trainer=trainer).first()
     if not diet_plan:
-        return Response({}, status=status.HTTP_200_OK)
+        return Response([], status=status.HTTP_200_OK)
 
     result = []
 
