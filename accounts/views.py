@@ -277,6 +277,7 @@ def get_trainers(request, coach_id):
 
 
 from .models import JoinRequest
+
 @api_view(['POST'])
 def send_join_request(request, user_id, coach_id):
     try:
@@ -297,7 +298,7 @@ def send_join_request(request, user_id, coach_id):
         return Response({"message": "Join request sent successfully"}, status=201)
     # في حال مافي متدرب او مدرب موافق للايدي المبعوت
     except Profile.DoesNotExist:
-        return Response({"message": "User or Coach Profile not found!"}, status=400)
+        return Response({"message": "User or Coach Profile not found!"}, status=201)
     
 
  
@@ -528,57 +529,3 @@ class UpdateProfileImage(APIView):
             return Response({"error": "Profile not found"}, status=404)
         except Exception as e:
             return Response({"error": str(e)}, status=500)
-
-from django.contrib.auth.models import User
-from accounts.models import Profile  # تأكد أن اسم التطبيق صحيح
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-@api_view(['GET'])
-def list_users_and_profiles(request):
-    users_data = []
-    for user in User.objects.all():
-        try:
-            profile = Profile.objects.get(user=user)
-            users_data.append({
-                'user_id': user.id,
-                'username': user.username,
-                'email': user.email,
-                'profile_id': profile.id,
-            })
-        except Profile.DoesNotExist:
-            users_data.append({
-                'user_id': user.id,
-                'username': user.username,
-                'email': user.email,
-                'profile_id': None,
-            })
-    
-    return Response(users_data)
-
-
-
-#### fix update image to work with the second server :)
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Profile
-
-@api_view(['POST'])
-def update_profile_image_url(request, user_id):
-    try:
-        profile = Profile.objects.get(user__id=user_id)
-    except Profile.DoesNotExist:
-        return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
-
-    image_url = request.data.get("image_url")
-    if not image_url:
-        return Response({"error": "No image_url provided"}, status=status.HTTP_400_BAD_REQUEST)
-
-    profile.image_url = image_url
-    profile.save()
-
-    return Response({
-        "message": "Image URL updated successfully",
-        "image_url": profile.image_url
-    }, status=status.HTTP_200_OK)
