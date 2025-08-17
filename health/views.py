@@ -1,362 +1,575 @@
-import os
+from collections import defaultdict
 import random
-from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view
+from django.shortcuts import render
+
+# Create your views here.
+import joblib
+import numpy as np
 from rest_framework.response import Response
 from rest_framework import status
 
-from illnesses.models import IllnessToAvoidExercises
-from .models import Exercise, ExerciseSchedule , Program
-from .serializers import ExerciseSerializer , ProgramSerializer
-from .models import Profile
-import joblib
-import numpy as np
+from accounts.serializers import ProfileSerializer
+from illnesses.models import IllnessToAvoidFood
+from .models import DietPlan, Meal , Food, MealsSchedule,Order, OrderMeal, Restaurant
+from .serializers import DietPlanSerializer,  FoodSerializer,  MealSerializer, OrderSerializer, RestaurantSerializer,MealSerializer2
+import logging #للتأكد من صحةالبيانات
+from django.shortcuts import get_object_or_404
+from accounts.models import Profile
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
+#اضافة مطعم
+@api_view(['POST'])
+def create_restaurant(request):
+    serializer = RestaurantSerializer(data=request.data)
+    if serializer.is_valid():
+        name = request.data.get('name')
+        location = request.data.get('location')
+        latitude=request.data.get('latitude')
+        longitude=request.data.get('longitude')
+        restaurant = Restaurant.objects.create(
+          name=name,
+          location=location,
+          latitude=latitude,
+          longitude=longitude
+         )
 
-#للحصول على التمارين
+         
+        ##serialized_restaurant = RestaurantSerializer(restaurant)
+        return Response({
+            "message": "Restaurant created successfully.",
+            "id": restaurant.id,
+            "name": restaurant.name,
+            "location": restaurant.location,
+            "latitude":restaurant.latitude,
+            "longitude":restaurant.longitude
+        }, status=status.HTTP_201_CREATED)
 
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#ارجاع المطاعم
 @api_view(["GET"])
-def list_exercises(request):
-    exercises = Exercise.objects.all()  
-    serializer = ExerciseSerializer(exercises, many=True)  
-    return Response(serializer.data, status=status.HTTP_200_OK)
+def list_restaurants(request):
+    restaurants = Restaurant.objects.all()    
+    restaurants_serializer = RestaurantSerializer(restaurants, many=True)  # Serialize resturant
+    return Response(restaurants_serializer.data, status=status.HTTP_200_OK)
 
-#للبحث عن تمرين حسب الاسم
-@api_view(["GET"])
-def search_exercises(request):
-    query = request.query_params.get('q', None)  
-    if query:
-        exercises = Exercise.objects.filter(name__icontains=query)  # icontains فلترة تمارين تحتوي على النص بدون تمييز بين الأحرف
-    else:
-        exercises = Exercise.objects.all()  
-
-    serializer = ExerciseSerializer(exercises, many=True)  
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-#لصناعة برنامج رياضي لمتدرب محدد
+#اضافة food
 @api_view(["POST"])
-def make_program(request,coach_id,trainer_id):
-    coach = get_object_or_404(Profile,user__id=coach_id)
-    print(coach.user.username)
-    trainer = get_object_or_404(Profile,user__id=trainer_id)
-    print(trainer.user.username)
-    print("H"*50)
-# استقبل البيانات المتعلقة بالأيام والتمارين
-    days_exercises = request.data.get("days_exercises", [])
-    print(days_exercises)
-    program = Program.objects.filter(trainer=trainer).first()
-
-    if program:
-        return Response({"detail": "This User already got a trainning program"}, status=status.HTTP_400_BAD_REQUEST)
-    
-    print("H"*50)
-    print("K"*50)
-    if not days_exercises:
-        return Response(
-            {"detail": "At least one day of exercises must be provided"},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-    
-  # انشاء البرنامج
-    program = Program.objects.create(
-        coach=coach,
-        trainer=trainer,
-        description = request.data.get("description"),
-    )
-#تقسيم التمارين في البرنامج الى ايام وتكرارات ومجموعات
-    for day_exercise in days_exercises:
-        day = day_exercise.get("day")  
-        sets = day_exercise.get("sets")  
-        reps = day_exercise.get("reps")  
-        exercises_ids = day_exercise.get("exercises", []) 
-
-        if not exercises_ids:
-             return Response({"detail": "Exercises must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        exercises = Exercise.objects.filter(exercise_id__in=exercises_ids)
-        
-        for exercise in exercises:
-             ExerciseSchedule.objects.create(
-                exercise=exercise,
-                program=program,
-                day=day,
-                sets=sets,
-                reps=reps
-            )
-
-    serialized_program = ProgramSerializer(program)
-    return Response(serialized_program.data, status=status.HTTP_201_CREATED)
-# ارجاع البرامج الصحية
-@api_view(["GET"])
-def get_program(request, user_id):
-    trainer = get_object_or_404(Profile, user__id=user_id)
-    program = Program.objects.filter(trainer=trainer).first()
-
-    # إذا كان لا يوجد برنامج 
-    if not program:
-        return Response({}, status=status.HTTP_200_OK)
-
-    schedules = ExerciseSchedule.objects.filter(program=program)
-    exercises_with_days = []
-
-    for schedule in schedules:
-        exercise_info = {
-            'day': schedule.day,
-            'sets': schedule.sets,
-            'reps' : schedule.reps,
-            'exercise': ExerciseSerializer(schedule.exercise).data,
-        }
-        exercises_with_days.append(exercise_info)
-
-    # إعداد البيانات للرد
-    serialized_program = ProgramSerializer(program)
-    response_data = serialized_program.data
-    response_data['exercises'] = exercises_with_days  # إضافة التمارين مع الأيام
-
-    return Response(response_data, status=status.HTTP_200_OK)
-
-## لحذف برنامج رياضي لمتدرب محدد
-@api_view(["DELETE"])
-def delete_program(request,program_id,user_id):
-#جلب المتدرب والبرنامج الذي نريد ان نحذفه
-    deleter = get_object_or_404(Profile,user__id=user_id)
-    program = get_object_or_404(Program,id=program_id)
-
-    if(program and (program.coach==deleter or program.trainer==deleter)):
-            program.delete()
-            return(Response("Program Deleted Succesfuly"))
-    else:
-           return(Response("no program with that info"))
-
-#يحدث كامل البرنامج
-@api_view(["Post"])
-def update_program(request,coach_id,program_id):
-    coach = get_object_or_404(Profile,user__id=coach_id)
-    print(coach.user.username)
-    program = get_object_or_404(Program,id=program_id)
-
-    days_exercises = request.data.get("days_exercises", [])
-
-    if not days_exercises:
-        return Response({"detail": "Days and exercises must be provided."}, status=status.HTTP_400_BAD_REQUEST)
-    
-
-    if coach!=program.coach:
-        print(program.coach.user.id)
-        print(coach_id)
-        return Response({"detail":"You Cant update on this program"})
-    
-    # حذف التمارين القديمة
-    ExerciseSchedule.objects.filter(program=program).delete()
-
-    for day_exercise in days_exercises:
-        day = day_exercise.get("day")
-        sets = day_exercise.get("sets")  
-        reps = day_exercise.get("reps")
-        exercises_ids = day_exercise.get("exercises", [])
-
-        if not exercises_ids:
-            return Response({"detail": f"At least one exercise must be provided for day {day}."}, status=status.HTTP_400_BAD_REQUEST)
-#جلب التمارين التي وضعناها في البرنامج من الداتا بيز
-        exercises = Exercise.objects.filter(exercise_id__in=exercises_ids)
-        print("K"*50)
-
-        if exercises.count() != len(exercises_ids):
-            return Response(
-                {"detail": "One or more exercises not found."},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-    
-        for exercise in exercises:
-            ExerciseSchedule.objects.create(
-                program=program,
-                day=day,
-                sets=sets, 
-                reps=reps,
-                exercise=exercise
-            )
+def add_food(request):
+    serializer = FoodSerializer(data=request.data)
+    if serializer.is_valid():
+         name = request.data.get('name')
+         calories = request.data.get('calories')
+         food = Food.objects.create(
+          name=name,
+          calories=calories
+         )
             
-    serialized_program = ProgramSerializer(program)
-    return Response(serialized_program.data, status=status.HTTP_200_OK)
+             
+         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-#يحدث البرنامج من خلال التحديثات فقط ويبقي على الأيام التي لاتتغير
-@api_view(["POST"])
-def update_program_by_days(request, coach_id, program_id):
-    coach = get_object_or_404(Profile, user__id=coach_id)
-    program = get_object_or_404(Program, id=program_id)
-
-    days_exercises = request.data.get("days_exercises", [])
-    print(days_exercises)
-
-    if not days_exercises:
-        return Response({"detail": "Days and exercises must be provided."}, status=status.HTTP_400_BAD_REQUEST)
-
-    if coach != program.coach:
-        return Response({"detail": "You can't update this program."})
-  
-    existing_days = list(ExerciseSchedule.objects.filter(program=program).values_list('day', flat=True))
-    print(existing_days)
-
-    for day_exercise in days_exercises:
-        day = day_exercise.get("day")
-        sets = day_exercise.get("sets")
-        reps = day_exercise.get("reps")
-        exercises_ids = day_exercise.get("exercises", [])
-        print( {day})
-
-        if not exercises_ids:
-            return Response({"detail": f"At least one exercise must be provided for day {day}."}, status=status.HTTP_400_BAD_REQUEST)
-        print(f"dd: {day},ex {existing_days}")
-
-        exercises = Exercise.objects.filter(exercise_id__in=exercises_ids)
-        
-        if exercises.count() != len(exercises_ids):
-            return Response({"detail": "One or more exercises not found."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        #اذا كان اليوم موجود في البرنامج يتم تحديثه كاملا حيث يحذف التمارين السابقة
-        if str(day) in existing_days:
-            print(f"Deleting exercises for {day}")
-            ExerciseSchedule.objects.filter(program=program, day=day).delete()
-            
-
-        # نضيف التمارين واليوم 
-        for exercise in exercises:
-            ExerciseSchedule.objects.create(
-                program=program,
-                day=day,
-                sets=sets, 
-                reps=reps ,
-                exercise=exercise
-                )
-    
-    program.refresh_from_db()    
-    serialized_program = ProgramSerializer(program)
-    
-    return Response(serialized_program.data, status=status.HTTP_200_OK)
-
-
+#ارجاع انواع الغذاء
 @api_view(["GET"])
-def get_coach_programs(request,coach_id):
-    coach = get_object_or_404(Profile,user__id=coach_id)
-    programs = Program.objects.filter(coach=coach)
-
-    serializer = ProgramSerializer(programs,many=True)
-
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-@api_view(["GET"])
-def get_exercises_by_muscle(request):
-    query = request.query_params.get('q', None)  
-    if query:
-        exercises = Exercise.objects.filter(muscle_group__icontains=query)  
-    else:
-        exercises = Exercise.objects.all()  
-
-    serializer = ExerciseSerializer(exercises, many=True)  
+def foods(request):
+    foods = Food.objects.all()  
+    serializer = FoodSerializer(foods, many=True)  
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
-def add_exercise_list(request):
-    exercises_data = request.data
-    created_exercises = []
+def create_meal(request):
+    serializer = MealSerializer2(data=request.data)
+    if serializer.is_valid():
+        meal = serializer.save()
+        # name = request.data.get('name')
+        # price = request.data.get('price')
+        # description=request.data.get('description')
+        # restaurant = request.data.get('restaurant')
+        # meal_time= request.data.get('restaurant',[])
+        # ingredients = request.data.get('ingredients',[])
+        
+        # meal = Food.objects.create(
+        #   name=name,
+          
+        #  )
+        meal_data = MealSerializer2(meal).data
+        restaurant_data = [{"id": restaurant.id, "name": restaurant.name, "location":restaurant.location} for restaurant in meal.restaurant.all()]
+        ingredients_data = [{"id": food.id, "name": food.name, "calories":food.calories} for food in meal.ingredients.all()]
 
-    for exercise in exercises_data:
-        try:
-            obj, created = Exercise.objects.update_or_create(
-                exercise_id=exercise.get('exercise_id'),
-                defaults={
-                    'name': exercise.get('name'),
-                    'muscle_group': exercise.get('muscle_group'),
-                    'description': exercise.get('description', '')
-                }
-            )
-            created_exercises.append({
-                'exercise_id': obj.exercise_id,
-                'created': created
+        return Response({
+            "message": "Meal created successfully.",
+            **meal_data,
+            "restaurant":restaurant_data,
+            "ingredients":ingredients_data,
+        }, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#ارجاع الوجبات الصحية
+@api_view(["GET"])
+def HealthyMealList(request):
+    healthy_meals = Meal.objects.all()  
+    serializer = MealSerializer(healthy_meals, many=True)  
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+#اضافة طلب  
+@api_view(['POST'])
+##@permission_classes([IsAuthenticated])
+def create_order(request,user_id,restaurant_id):
+    meals_data = request.data.get('meals', [])
+    
+    try:
+        profile = Profile.objects.get(user__id=user_id)
+    except Profile.DoesNotExist:
+        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+    try:
+       restaurant = Restaurant.objects.get(id=restaurant_id)
+    except Restaurant.DoesNotExist:
+        return Response({"error": "Restaurant not found."}, status=status.HTTP_404_NOT_FOUND)
+    # إنشاء الطلب
+    order = Order.objects.create(user=profile, status='pending')  # تعيين المستخدم
+    # إضافة الوجبات إلى الطلب
+    order_meals = []
+    for meal_data in meals_data:
+        meal_id1 = meal_data.get('meal')
+        quantity = meal_data.get('quantity', 1)
+        
+        meal = Meal.objects.filter(meals_id=meal_id1).first()
+            # إضافة الوجبة إلى الطلب
+        if meal:
+              order_meal= OrderMeal.objects.create(order=order, meal=meal, quantity=quantity)        
+              order_meals.append({
+                "meal_id": meal.meals_id,
+                "meal_name": meal.name,
+                "quantity": order_meal.quantity,
+                "price": meal.price,
+                "restaurant": restaurant.name,
             })
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+              return Response({"error": f"Meal with id {meal_id1} not found."},
+                               status=status.HTTP_404_NOT_FOUND)
 
-    return Response({'message': 'Exercises processed successfully.', 'results': created_exercises}, status=status.HTTP_201_CREATED)
+    total_price = order.total_price
+    return Response({
+        "message": "Order created successfully.",
+        "order": {
+            "order_id": order.id,
+            "user": profile.user.username,
+            "status": order.status,
+            "meals": order_meals,
+            "total_price": total_price
+            }
+            }, status=status.HTTP_201_CREATED)
+
+#لتعديل حالة الطلب من pending to ready...
+@api_view(["PATCH"])
+def update_order_status(request, order_id):
+    try:
+        order = Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    new_status = request.data.get('status')
+    if new_status is None:
+        return Response({"error": "Status must be provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+    order.status = new_status
+    order.save()
+    
+    return Response({
+            "message": "Order status updated",
+            "order": {
+                "id": order.id,
+                "user": order.user.id,  
+                "status": order.status,
+                "created_at": order.created_at,  
+            }
+        }, status=status.HTTP_200_OK)
+
+
+#ارجاع طلبات المسخدم
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def list_user_orders(request,user_id):
+    try:
+        profile = get_object_or_404(Profile,user__id=user_id)
+    except Profile.DoesNotExist:
+        return Response({"error": "Profile not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    orders = Order.objects.filter(user=profile)
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+#حذف  مطعم
+@api_view(['DELETE'])
+def delete_restaurant(request, restaurant_id):
+    try:
+        restaurant = Restaurant.objects.get(id=restaurant_id)
+    except Restaurant.DoesNotExist:
+        return Response({"error": "Restaurant not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    restaurant.delete()
+    return Response({"message": "Restaurant deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+#بحث عن وجبات حسب الاسم
+@api_view(["GET"])
+def search_HealthyMeal(request):
+    query = request.query_params.get('q')
+    print(query)
+    if query:
+        healthy_meals = Meal.objects.filter(name__icontains=query) 
+    else:
+        healthy_meals = Meal.objects.all()  
+
+    serializer = MealSerializer(healthy_meals, many=True)  
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# للحصول على الخطط الغذائية لمدرب محدد
+@api_view(["GET"])
+def get_coach_diet_plans(request, coach_id):
+    coach = get_object_or_404(Profile, user__id=coach_id)
+    diet_plans = DietPlan.objects.filter(coach=coach)
+
+    result = []
+
+    for plan in diet_plans:
+        # جلب جميع الوجبات لهذا النظام ا لغذائي
+        scheduled_meals = MealsSchedule.objects.filter(dietplan=plan)
+        grouped_by_day = defaultdict(list)
+
+        for schedule in scheduled_meals:
+            serialized_meal = MealSerializer(schedule.meal).data
+
+            # إضافة وصف اليوم من جدول MealsSchedule
+            grouped_by_day[schedule.day].append({
+                "meal": serialized_meal
+            })
+        days_meals = []
+        for day, meals_list in grouped_by_day.items():
+            days_meals.append({
+                "diet_plan_id": plan.id,
+                "day": day,
+                "description": scheduled_meals.filter(day=day).first().description,
+                "meals": meals_list
+            })
+
+      
+        result.append({                     
+              "coach": ProfileSerializer(plan.coach).data,
+              "trainer": ProfileSerializer(plan.trainer).data,
+              "days_meals": days_meals                            
+        })
+
+    return Response(result, status=status.HTTP_200_OK)
+
+
+# للحصول على الخطة الغذائية للاعب محدد
+@api_view(["GET"])
+def get_trainner_diet_plans(request,trainer_id):
+    trainer = get_object_or_404(Profile,user__id=trainer_id)
+    diet_plan = DietPlan.objects.filter(trainer=trainer).first()
+    if not diet_plan:
+        return Response({}, status=status.HTTP_200_OK)
+
+    result = []
+
+        # جلب جميع الوجبات لهذا النظام الغذائي
+    scheduled_meals = MealsSchedule.objects.filter(dietplan=diet_plan)
+    grouped_by_day = defaultdict(list)
+
+    for schedule in scheduled_meals:
+        serialized_meal = MealSerializer(schedule.meal).data
+
+            #  إضافة وصف اليوم من جدول MealsSchedule لتصنيف الوجبات حسب اليوم
+        grouped_by_day[schedule.day].append({
+            "meal": serialized_meal
+        })
+
+    days_meals = []
+    for day, meals_list in grouped_by_day.items():
+        days_meals.append({
+            "day": day,
+            "description": scheduled_meals.filter(day=day).first().description,
+            "meals": meals_list
+        })
+
+      
+    result.append({                     
+          "id": diet_plan.id,
+          "coach": ProfileSerializer(diet_plan.coach).data,
+          "trainer": ProfileSerializer(diet_plan.trainer).data,
+          "days_meals": days_meals                            
+    })
+
+    return Response(result, status=status.HTTP_200_OK)
+
+#للحصول على الخطط الغذائية
+@api_view(["GET"])
+def get_diet_plans(request):
+    diet_plans = DietPlan.objects.all()
+    serializer = DietPlanSerializer(diet_plans, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+#لإضافة خطة غذائية
+@api_view(["POST"])
+def add_diet_plan(request,coach_id,trainer_id):
+    coach = get_object_or_404(Profile,user__id=coach_id)
+    trainer = get_object_or_404(Profile,user__id=trainer_id)
+    days_meals = request.data.get("days_meals", [])
+    print(days_meals)
+    ## هون في حال لم يكن هناك برنامج رح يفرش بس اذا كان في رح يعلم المستخدم انو في برنامج
+    dietplan = DietPlan.objects.filter(trainer=trainer).first()
+
+    if dietplan:
+        return Response({"detail": "This User already got a dite plan"}, status=status.HTTP_400_BAD_REQUEST)
+    if not days_meals:
+        return Response({"detail": "At least one meal must be provided."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    print("H"*50)
+      
+    dietplan = DietPlan.objects.create(
+        coach=coach,
+        trainer=trainer,
+    )
+
+    for day_meal in days_meals:
+        day = day_meal.get("day")
+        description = day_meal.get("description")
+        meals_ids = day_meal.get("meals" , [])
+
+        if not meals_ids:
+             return Response({"detail": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        meals = Meal.objects.filter(meals_id__in=meals_ids)
+        print("K"*50)
+        print(meals[0])
+
+        for meal in meals:
+             MealsSchedule.objects.create(
+                meal=meal,
+                description = description,
+                dietplan=dietplan,
+                day=day
+            )
+
+    serialized_program = DietPlanSerializer(dietplan)
+    return Response(serialized_program.data, status=status.HTTP_201_CREATED)
+
+
+#البحث عن الخطة بالنسبة لوقتها(افطار غداء عشاء)
+@api_view(["GET"])
+def search_meal_time(request):
+    meal_time = request.GET.get('meal_time', None)
+    if meal_time:
+        meals = Meal.objects.filter(meal_time=meal_time)
+    else:
+        meals = Meal.objects.all()
+
+    serializer = MealSerializer(meals, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["Post"])
+def update_dietplan(request,coach_id,plan_id):
+    coach = get_object_or_404(Profile,user__id=coach_id)
+    print(coach.user.username)
+    dietplan = get_object_or_404(DietPlan,id=plan_id)
+    days_meals = request.data.get("days_meals", [])
+
+    if not days_meals:
+        return Response({"detail": "At least one meal must be provided."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if coach!=dietplan.coach:
+        print(dietplan.coach.user.id)
+        print(coach_id)
+        return Response({"detail":"You Cant update on this plan"})
+    
+    print("H"*50)
+    MealsSchedule.objects.filter(dietplan=dietplan).delete()
+    print("K"*50)
+    
+    for day_meal in days_meals:
+        day = day_meal.get("day")
+        meals_ids = day_meal.get("meals" , []) 
+        description = day_meal.get("description")
+
+        if not meals_ids:
+             return Response({"detail": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        for meal_id in meals_ids:
+            try:
+               meal = Meal.objects.get(meals_id=meal_id)
+            except Meal.DoesNotExist:
+               return Response({"detail": f"Meal with id {meal_id} not found."}, status=status.HTTP_400_BAD_REQUEST)
+
+            MealsSchedule.objects.create(
+                  meal=meal,
+                  description=description,
+                  dietplan=dietplan,
+                  day=day
+            )
+          
+    
+    
+    serialized_program = DietPlanSerializer(dietplan)
+    return Response(serialized_program.data, status=status.HTTP_200_OK)
+   
+@api_view(["GET"])
+def get_restaurants_with_meal(request,meal_id):
+    meal = get_object_or_404(Meal,meals_id=meal_id)
+    restaurants = meal.restaurant
+    serializer = RestaurantSerializer(restaurants, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+@api_view(["GET"])
+def get_meals_in_restaurant(request, restaurant_id):
+    # Fetch the restaurant object or return 404 if not found
+    restaurant = get_object_or_404(Restaurant, id=restaurant_id)
+    
+    # Fetch all meals that are associated with this restaurant
+    meals = Meal.objects.filter(restaurant=restaurant)
+    
+    # Serialize the meals data
+    serializer = MealSerializer(meals, many=True)
+    
+    # Return the serialized data
+    return Response(serializer.data, status=status.HTTP_200_OK)
+####################################################################################
+
+
+@api_view(['POST'])
+def update_meal(request, meal_id):
+    meal = get_object_or_404(Meal, meals_id=meal_id)
+    ingredient_ids = request.data.get('ingredients', [])
+
+    if not ingredient_ids:
+        return Response({"detail": "Food IDs must be provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+    new_foods = []
+    for food_id in ingredient_ids:
+        food = get_object_or_404(Food, id=food_id)
+        new_foods.append(food)
+
+    meal.ingredients.clear()
+
+    meal.ingredients.add(*new_foods)
+
+    serializer = MealSerializer(meal)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['DELETE'])
+def delete_meal(request,  meal_id):
+    
+    meal = get_object_or_404(Meal, meals_id=meal_id)
+
+  
+    meal.delete()
+
+    return Response({"detail": "Meal deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def get_meal_by_id(request,  meal_id):
+    
+    meal = get_object_or_404(Meal, meals_id=meal_id)
+    serializer = MealSerializer(meal)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+@api_view(["DELETE"])
+def delete_dietplan(request,dietplan_id,user_id):
+
+    deleter = get_object_or_404(Profile,user__id=user_id)
+    dietplan = get_object_or_404(DietPlan,id=dietplan_id)
+
+
+    if(dietplan and (dietplan.coach==deleter or dietplan.trainer==deleter)):
+            dietplan.delete()
+            return(Response("dietplan Deleted Succesfuly"))
+    else:
+           return(Response("no dietplan with that info"))
+    
 
 @api_view(["POST"])
-def recommend_program_ai(request, user_id):
+def recommend_diet_ai(request, user_id):
     profile = get_object_or_404(Profile, user__id=user_id)
 
-    # عدم وضع برنامج ثاني اذا كان لدى المتدرب برنامج
-    existing_program = Program.objects.filter(trainer=profile).first()
-    if existing_program:
+    #اذا كان للمتدرب خطة غذائية
+    existing_plan = DietPlan.objects.filter(trainer=profile).first()
+    if existing_plan:
         return Response({
-            'message': 'User already has an existing program.',
-            'program_id': existing_program.id
+            "message": "User already has a diet plan.",
+            "plan_id": existing_plan.id
         }, status=status.HTTP_400_BAD_REQUEST)
     
-    #جلب الأمراض من الداتا بيز
-    illnesses = list(IllnessToAvoidExercises.objects.all())
-    illness_id = {ill.id: idx for idx, ill in enumerate(illnesses)}
 
-    
-   #معلومات المتدرب
+    #جلب الأمراض من الداتا بيز
+    illnesses = list(IllnessToAvoidFood.objects.all())
+    illness_id= {ill.id: idx for idx, ill in enumerate(illnesses)}
+
+
+    # معلومات المتدرب
     weight = profile.weight
     height = profile.height
     gender = encode_gender(profile.gender)
     level = encode_fitness_level(profile.experianse_level)
-    goal = encode_goal(profile.goal) 
-    illnesses = encode_illnesses(profile.illnesses, illness_id, len(illnesses))
-  
+    goal = encode_goal(profile.goal)
+    illnesses = encode_illnesses(profile.illnesses or [], illness_id, len(illnesses))
 
     # تحميل المودل
-    model = joblib.load('program_recommender_multi.joblib')
-    mlb = joblib.load('exercise_mlb.joblib')
+    model = joblib.load("diet_recommender.joblib")
+    mlb = joblib.load("meal_mlb.joblib")
 
-    #  مصفوفة التمارين المتوقعة
+    #  مصفوفة الأطعمة المتوقعة
     X_basic = [weight, height, level, goal, gender]
     X = np.array([X_basic + illnesses])
     predicted = model.predict(X)
-    exercise_ids = mlb.inverse_transform(predicted)[0]  # List of IDs
+    meal_ids = mlb.inverse_transform(predicted)[0]
 
-    # جلب تمارين
-    exercises = list(Exercise.objects.filter(exercise_id__in=exercise_ids))
-    print(exercises)
+    # جلب الوجبات
+    meals = list(Meal.objects.filter(meals_id__in=meal_ids))
 
-
+    if not meals:
+        return Response({"detail": "No meals found for the predicted IDs."}, status=status.HTTP_404_NOT_FOUND)
 #المدرب الافتراضي
-    virtual_coach = Profile.objects.get(user__username='ai_trainer') 
-    print(virtual_coach)
+    virtual_coach = Profile.objects.get(user__username='ai_trainer')
 
-    new_program = Program.objects.create(
-        description="AI Generated Program",
+    new_plan = DietPlan.objects.create(
         coach=virtual_coach,
-        trainer=profile,
+        trainer=profile
     )
+
 #من اجل كل يوم سيعرض لنا ثلاث تمارين بكل يوم من ايام الاسبوع
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    exercisesinday = 3
-    total = exercisesinday * len(days)
+    meals_per_day = 5
+    total = meals_per_day * len(days)
 
-    if len(exercises) < total:
-        exercises = random.choices(exercises, k=total)
+    if len(meals) < total:
+        meals = random.choices(meals, k=total)
     else:
-        exercises = random.sample(exercises, total)
+        meals = random.sample(meals, total)
+        
     #لإضافة البرنامج لجدول البرنامج في الداتا
     for i, day in enumerate(days):
-        exercise1 = exercises[i * exercisesinday : (i + 1) * exercisesinday]
+        day_meals = meals[i * meals_per_day : (i + 1) * meals_per_day]
+        for meal in day_meals:
+            MealsSchedule.objects.create(
+                meal=meal,
+                dietplan=new_plan,
+                day=day,
+                description="AI generated meal plan"
+            )
 
-        for exercise in exercise1:
-            if not ExerciseSchedule.objects.filter(program=new_program, exercise=exercise, day=day).exists():
-              ExerciseSchedule.objects.create(
-                  program=new_program,
-                  exercise=exercise,
-                  day=day,
-                  sets=3 if profile.experianse_level == 'beginner' else 4,
-                  reps=12 if profile.goal == 'build_muscle' else 15,
-              )
-
-    serializer = ProgramSerializer(new_program)
+    serializer = DietPlanSerializer(new_plan)
     return Response(serializer.data)
 
-# Helper Encodings
 def encode_fitness_level(level):
     return {'beginner': 0, 'intermediate': 1, 'advanced': 2}.get(level, 0)
 
@@ -367,22 +580,16 @@ def encode_gender(gender):
     return {'male': 0, 'female': 1}.get(gender, 0)
 
 #تحويل الأمراض الى قائمة اعداد 0 اذا لم يكن موجود و 1 اذا كان المرض موجود
-def encode_illnesses(user_illness, illness_id, list_length):
-    list = [0] * list_length
-    if not user_illness:
-        return list
+def encode_illnesses(user_illness, id, total_illness):
+    list = [0] * total_illness
     for ill_id in user_illness:
-        idx = illness_id.get(ill_id)
-        if idx is not None:
-            list[idx] = 1
+        index = id.get(ill_id)
+        if index is not None:
+            list[index] = 1
     return list
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-
 @api_view(["GET"])
-def get_exercises_with_avoid_flag(request, user_id):
+def get_meals_with_avoid_flag(request, user_id):
     try:
         profile = Profile.objects.get(user_id=user_id)
     except Profile.DoesNotExist:
@@ -390,93 +597,25 @@ def get_exercises_with_avoid_flag(request, user_id):
 
     illnesses = profile.illnesses  
 
-    all_exercises = Exercise.objects.all()
-    avoid_exercise_names = set()
-
-   
-    avoid_entries = IllnessToAvoidExercises.objects.filter(illness__in=illnesses)
+    avoid_entries = IllnessToAvoidFood.objects.filter(illness__in=illnesses)
+    avoid_food_names = set()
     for entry in avoid_entries:
-        avoid_exercise_names.update(entry.exercise_to_avoid)
+        avoid_food_names.update(entry.foods_to_avoid)  
 
+    all_meals = Meal.objects.prefetch_related("ingredients").all()
     result = []
-    for exercise in all_exercises:
+
+    for meal in all_meals:
+        ingredient_names = [food.name for food in meal.ingredients.all()]
+        should_avoid = any(name in avoid_food_names for name in ingredient_names)
+
         result.append({
-            "exercise_id": exercise.exercise_id,
-            "name": exercise.name,
-            "muscle_group": exercise.muscle_group,
-            "description": exercise.description,
-            "avoid": "yes" if exercise.name in avoid_exercise_names else "no"
+            "meal_id": meal.meals_id,
+            "name": meal.name,
+            "description": meal.description,
+            "price": meal.price,
+            "ingredients": ingredient_names,
+            "avoid": "yes" if should_avoid else "no"
         })
 
     return Response(result, status=status.HTTP_200_OK)
-
-#لعرض التمارين حسب العضلة
-@api_view(["GET"])
-def get_exercises_with_avoid_flag_by_muscle(request, user_id):
-    try:
-        profile = Profile.objects.get(user_id=user_id)
-    except Profile.DoesNotExist:
-        return Response({"error": "User profile not found"}, status=status.HTTP_404_NOT_FOUND)
-
-    illnesses = profile.illnesses
-
-    # أسم التمرين الذي يجب تجنبه حسب الأمراض
-    avoid_exercise_names = set()
-    avoid_entries = IllnessToAvoidExercises.objects.filter(illness__in=illnesses)
-    for entry in avoid_entries:
-        avoid_exercise_names.update(entry.exercise_to_avoid)
-
-    #لجلب التمارين مصنفة حسب العضلة
-    grouped_exercises = {}
-
-    all_exercises = Exercise.objects.all()
-    for exercise in all_exercises:
-         muscle = exercise.muscle_group
-         if muscle not in grouped_exercises:
-            grouped_exercises[muscle] = []  # إنشاء قائمة جديدة للعضلة
-
-         grouped_exercises[exercise.muscle_group].append({
-            "exercise_id": exercise.exercise_id,
-            "name": exercise.name,
-            "description": exercise.description,
-            "avoid": "yes" if exercise.name in avoid_exercise_names else "no"
-         })
-
-    return Response(grouped_exercises, status=status.HTTP_200_OK)
-
-## ad exircise with video
-from rest_framework.decorators import api_view, parser_classes
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Exercise
-from .serializers import ExerciseSerializer
-import cloudinary.uploader
-
-@api_view(["POST"])
-@parser_classes([MultiPartParser, FormParser])
-def add_exercise_with_video(request):
-    name = request.data.get("name")
-    muscle_group = request.data.get("muscle_group")
-    description = request.data.get("description")
-    video = request.FILES.get("video")
-
-    video_url = None
-    if video:
-        try:
-            upload_result = cloudinary.uploader.upload(
-                video,
-                resource_type="video"
-            )
-            video_url = upload_result.get("secure_url")
-        except Exception as e:
-            return Response({"error": f"Video upload failed: {str(e)}"}, status=500)
-
-    exercise = Exercise.objects.create(
-        name=name,
-        muscle_group=muscle_group,
-        video_url=video_url,
-        description=description,
-    )
-
-    return Response(ExerciseSerializer(exercise).data, status=status.HTTP_201_CREATED)
