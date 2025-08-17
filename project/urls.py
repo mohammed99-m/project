@@ -29,7 +29,7 @@ schema_view = get_schema_view(
       description="توثيق API الخاص بي",
    ),
    public=True,
-   authentication_classes=[SessionAuthentication],  # أضف هذا
+   authentication_classes=[SessionAuthentication],  
    permission_classes=[AllowAny],
 )
 

@@ -277,6 +277,7 @@ def get_trainers(request, coach_id):
 
 
 from .models import JoinRequest
+
 @api_view(['POST'])
 def send_join_request(request, user_id, coach_id):
     try:

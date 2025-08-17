@@ -14,6 +14,7 @@ import numpy as np
 
 
 #للحصول على التمارين
+
 @api_view(["GET"])
 def list_exercises(request):
     exercises = Exercise.objects.all()  
@@ -91,9 +92,9 @@ def get_program(request, user_id):
     trainer = get_object_or_404(Profile, user__id=user_id)
     program = Program.objects.filter(trainer=trainer).first()
 
-    # إذا ما في برنامج رجع مصفوفة فاضية 
+    # إذا كان لا يوجد برنامج 
     if not program:
-        return Response([], status=status.HTTP_200_OK)
+        return Response({}, status=status.HTTP_200_OK)
 
     schedules = ExerciseSchedule.objects.filter(program=program)
     exercises_with_days = []
