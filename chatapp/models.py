@@ -7,4 +7,8 @@ class Message(models.Model):
     room_name = models.CharField(max_length=255)
     room_id = models.CharField(max_length=255)
     content = models.TextField()
+<<<<<<< HEAD
     timestamp = models.DateTimeField(auto_now_add=True)
+=======
+    timestamp = models.DateTimeField(auto_now_add=True)
+>>>>>>> origin/main
