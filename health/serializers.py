@@ -3,11 +3,10 @@ from accounts.models import Profile
 from .models import DietPlan, Meal, MealsSchedule , Restaurant , Food
 from accounts.serializers import ProfileSerializer
 
-class FoodSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(max_length=255)
-    calories = serializers.DecimalField(max_digits=100,decimal_places=2)
-
+class FoodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Food
+        fields = '__all__'
 
 # class RestaurantSerializer(serializers.ModelSerializer):
 #     class Meta:
