@@ -619,3 +619,69 @@ def get_meals_with_avoid_flag(request, user_id):
         })
 
     return Response(result, status=status.HTTP_200_OK)
+
+
+
+@api_view(['POST'])
+def create_many_meals(request):
+    if not isinstance(request.data, list):
+        return Response({"error": "Expected a list of meals"}, status=status.HTTP_400_BAD_REQUEST)
+
+    created_meals = []
+    errors = []
+
+    for idx, meal_data in enumerate(request.data):
+        serializer = MealSerializer2(data=meal_data)
+        if serializer.is_valid():
+            meal = serializer.save()
+
+            meal_data = MealSerializer2(meal).data
+            restaurant_data = [
+                {"id": restaurant.id, "name": restaurant.name, "location": restaurant.location}
+                for restaurant in meal.restaurant.all()
+            ]
+            ingredients_data = [
+                {"id": food.id, "name": food.name, "calories": food.calories}
+                for food in meal.ingredients.all()
+            ]
+
+            created_meals.append({
+                **meal_data,
+                "restaurant": restaurant_data,
+                "ingredients": ingredients_data,
+            })
+        else:
+            errors.append({f"meal_{idx}": serializer.errors})
+
+    if errors:
+        return Response({"created": created_meals, "errors": errors}, status=status.HTTP_207_MULTI_STATUS)
+
+    return Response({"message": "Meals created successfully", "meals": created_meals}, status=status.HTTP_201_CREATED)
+
+
+@api_view(["POST"])
+def add_many_foods(request):
+    if not isinstance(request.data, list):
+        return Response({"error": "Expected a list of foods"}, status=status.HTTP_400_BAD_REQUEST)
+
+    created_foods = []
+    errors = []
+
+    for idx, food_data in enumerate(request.data):
+        serializer = FoodSerializer(data=food_data)
+        if serializer.is_valid():
+            food = serializer.save()
+            created_foods.append(FoodSerializer(food).data)
+        else:
+            errors.append({f"food_{idx}": serializer.errors})
+
+    if errors:
+        return Response(
+            {"created": created_foods, "errors": errors}, 
+            status=status.HTTP_207_MULTI_STATUS
+        )
+
+    return Response(
+        {"message": "Foods created successfully", "foods": created_foods}, 
+        status=status.HTTP_201_CREATED
+    )

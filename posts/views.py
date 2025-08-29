@@ -32,31 +32,21 @@ def add_post(request,author_id):
     post.save()  
     return Response(PostSerializer(post).data, status=status.HTTP_201_CREATED)
 
-## add post with image
 from rest_framework.decorators import api_view, parser_classes
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-import cloudinary.uploader
 from .models import Post, Profile
 from .serializers import PostSerializer
 
-@api_view(['POST'])
-@parser_classes([MultiPartParser, FormParser])
+@api_view(["POST"])
+@parser_classes([JSONParser])
 def add_post_with_image(request, author_id):
-    content = request.data.get('content')
-    image = request.FILES.get('image')  # <== grab image from form-data
+    content = request.data.get('content', '')
+    image_url = request.data.get('image_url', None)  # optional
 
     profile = get_object_or_404(Profile, user_id=author_id)
-
-    image_url = None
-    if image:
-        try:
-            upload_result = cloudinary.uploader.upload(image)
-            image_url = upload_result.get("secure_url")
-        except Exception as e:
-            return Response({'error': f"Image upload failed: {str(e)}"}, status=500)
 
     post = Post.objects.create(
         author=profile,
@@ -65,6 +55,8 @@ def add_post_with_image(request, author_id):
     )
 
     return Response(PostSerializer(post).data, status=status.HTTP_201_CREATED)
+
+
 
 @api_view(['GET'])
 def get_all_posts(request):
