@@ -47,13 +47,13 @@ def make_program(request,coach_id,trainer_id):
     program = Program.objects.filter(trainer=trainer).first()
 
     if program:
-        return Response({"detail": "This User already got a trainning program"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "This User already got a trainning program"}, status=status.HTTP_400_BAD_REQUEST)
     
     print("H"*50)
     print("K"*50)
     if not days_exercises:
         return Response(
-            {"detail": "At least one day of exercises must be provided"},
+            {"message": "At least one day of exercises must be provided"},
             status=status.HTTP_400_BAD_REQUEST
         )
     
@@ -71,7 +71,7 @@ def make_program(request,coach_id,trainer_id):
         exercises_ids = day_exercise.get("exercises", []) 
 
         if not exercises_ids:
-             return Response({"detail": "Exercises must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
+             return Response({"message": "Exercises must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
         
         exercises = Exercise.objects.filter(exercise_id__in=exercises_ids)
         
@@ -91,11 +91,9 @@ def make_program(request,coach_id,trainer_id):
 def get_program(request, user_id):
     trainer = get_object_or_404(Profile, user__id=user_id)
     program = Program.objects.filter(trainer=trainer).first()
-
     # إذا كان لا يوجد برنامج 
     if not program:
         return Response({}, status=status.HTTP_200_OK)
-
     schedules = ExerciseSchedule.objects.filter(program=program)
     exercises_with_days = []
 
@@ -107,7 +105,6 @@ def get_program(request, user_id):
             'exercise': ExerciseSerializer(schedule.exercise).data,
         }
         exercises_with_days.append(exercise_info)
-
     # إعداد البيانات للرد
     serialized_program = ProgramSerializer(program)
     response_data = serialized_program.data
@@ -138,13 +135,13 @@ def update_program(request,coach_id,program_id):
     days_exercises = request.data.get("days_exercises", [])
 
     if not days_exercises:
-        return Response({"detail": "Days and exercises must be provided."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Days and exercises must be provided."}, status=status.HTTP_400_BAD_REQUEST)
     
 
     if coach!=program.coach:
         print(program.coach.user.id)
         print(coach_id)
-        return Response({"detail":"You Cant update on this program"})
+        return Response({"message":"You Cant update on this program"})
     
     # حذف التمارين القديمة
     ExerciseSchedule.objects.filter(program=program).delete()
@@ -156,14 +153,14 @@ def update_program(request,coach_id,program_id):
         exercises_ids = day_exercise.get("exercises", [])
 
         if not exercises_ids:
-            return Response({"detail": f"At least one exercise must be provided for day {day}."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": f"At least one exercise must be provided for day {day}."}, status=status.HTTP_400_BAD_REQUEST)
 #جلب التمارين التي وضعناها في البرنامج من الداتا بيز
         exercises = Exercise.objects.filter(exercise_id__in=exercises_ids)
         print("K"*50)
 
         if exercises.count() != len(exercises_ids):
             return Response(
-                {"detail": "One or more exercises not found."},
+                {"message": "One or more exercises not found."},
             status=status.HTTP_400_BAD_REQUEST
         )
     
@@ -283,7 +280,6 @@ def add_exercise_list(request):
 @api_view(["POST"])
 def recommend_program_ai(request, user_id):
     profile = get_object_or_404(Profile, user__id=user_id)
-
     # عدم وضع برنامج ثاني اذا كان لدى المتدرب برنامج
     existing_program = Program.objects.filter(trainer=profile).first()
     if existing_program:
@@ -291,12 +287,9 @@ def recommend_program_ai(request, user_id):
             'message': 'User already has an existing program.',
             'program_id': existing_program.id
         }, status=status.HTTP_400_BAD_REQUEST)
-    
     #جلب الأمراض من الداتا بيز
     illnesses = list(IllnessToAvoidExercises.objects.all())
     illness_id = {ill.id: idx for idx, ill in enumerate(illnesses)}
-
-    
    #معلومات المتدرب
     weight = profile.weight
     height = profile.height
@@ -304,37 +297,29 @@ def recommend_program_ai(request, user_id):
     level = encode_fitness_level(profile.experianse_level)
     goal = encode_goal(profile.goal) 
     illnesses = encode_illnesses(profile.illnesses, illness_id, len(illnesses))
-  
-
     # تحميل المودل
     model = joblib.load('program_recommender_multi.joblib')
     mlb = joblib.load('exercise_mlb.joblib')
-
     #  مصفوفة التمارين المتوقعة
     X_basic = [weight, height, level, goal, gender]
     X = np.array([X_basic + illnesses])
     predicted = model.predict(X)
     exercise_ids = mlb.inverse_transform(predicted)[0]  # List of IDs
-
     # جلب تمارين
     exercises = list(Exercise.objects.filter(exercise_id__in=exercise_ids))
     print(exercises)
-
-
-#المدرب الافتراضي
+    #المدرب الافتراضي
     virtual_coach = Profile.objects.get(user__username='ai_trainer') 
     print(virtual_coach)
-
     new_program = Program.objects.create(
         description="AI Generated Program",
         coach=virtual_coach,
         trainer=profile,
     )
-#من اجل كل يوم سيعرض لنا ثلاث تمارين بكل يوم من ايام الاسبوع
+    #من اجل كل يوم سيعرض لنا ثلاث تمارين بكل يوم من ايام الاسبوع
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     exercisesinday = 3
     total = exercisesinday * len(days)
-
     if len(exercises) < total:
         exercises = random.choices(exercises, k=total)
     else:
@@ -342,7 +327,6 @@ def recommend_program_ai(request, user_id):
     #لإضافة البرنامج لجدول البرنامج في الداتا
     for i, day in enumerate(days):
         exercise1 = exercises[i * exercisesinday : (i + 1) * exercisesinday]
-
         for exercise in exercise1:
             if not ExerciseSchedule.objects.filter(program=new_program, exercise=exercise, day=day).exists():
               ExerciseSchedule.objects.create(
@@ -352,7 +336,6 @@ def recommend_program_ai(request, user_id):
                   sets=3 if profile.experianse_level == 'beginner' else 4,
                   reps=12 if profile.goal == 'build_muscle' else 15,
               )
-
     serializer = ProgramSerializer(new_program)
     return Response(serializer.data)
 

@@ -273,7 +273,7 @@ def get_trainner_diet_plans(request,trainer_id):
     trainer = get_object_or_404(Profile,user__id=trainer_id)
     diet_plan = DietPlan.objects.filter(trainer=trainer).first()
     if not diet_plan:
-        return Response({}, status=status.HTTP_200_OK)
+        return Response([], status=status.HTTP_200_OK)
 
     result = []
 
@@ -325,9 +325,9 @@ def add_diet_plan(request,coach_id,trainer_id):
     dietplan = DietPlan.objects.filter(trainer=trainer).first()
 
     if dietplan:
-        return Response({"detail": "This User already got a dite plan"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "This User already got a dite plan"}, status=status.HTTP_400_BAD_REQUEST)
     if not days_meals:
-        return Response({"detail": "At least one meal must be provided."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "At least one meal must be provided."}, status=status.HTTP_400_BAD_REQUEST)
     
     print("H"*50)
       
@@ -342,7 +342,7 @@ def add_diet_plan(request,coach_id,trainer_id):
         meals_ids = day_meal.get("meals" , [])
 
         if not meals_ids:
-             return Response({"detail": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
+             return Response({"message": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
         
         meals = Meal.objects.filter(meals_id__in=meals_ids)
         print("K"*50)
@@ -381,12 +381,12 @@ def update_dietplan(request,coach_id,plan_id):
     days_meals = request.data.get("days_meals", [])
 
     if not days_meals:
-        return Response({"detail": "At least one meal must be provided."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "At least one meal must be provided."}, status=status.HTTP_400_BAD_REQUEST)
     
     if coach!=dietplan.coach:
         print(dietplan.coach.user.id)
         print(coach_id)
-        return Response({"detail":"You Cant update on this plan"})
+        return Response({"message":"You Cant update on this plan"})
     
     print("H"*50)
     MealsSchedule.objects.filter(dietplan=dietplan).delete()
@@ -398,13 +398,13 @@ def update_dietplan(request,coach_id,plan_id):
         description = day_meal.get("description")
 
         if not meals_ids:
-             return Response({"detail": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
+             return Response({"message": "Meals must be provided for each day."}, status=status.HTTP_400_BAD_REQUEST)
         
         for meal_id in meals_ids:
             try:
                meal = Meal.objects.get(meals_id=meal_id)
             except Meal.DoesNotExist:
-               return Response({"detail": f"Meal with id {meal_id} not found."}, status=status.HTTP_400_BAD_REQUEST)
+               return Response({"message": f"Meal with id {meal_id} not found."}, status=status.HTTP_400_BAD_REQUEST)
 
             MealsSchedule.objects.create(
                   meal=meal,
