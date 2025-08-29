@@ -11,7 +11,6 @@ urlpatterns = [
   path('getcommentsonpost/<str:post_id>/',get_comments_on_post,name="Get Comments On Post"),
   path("deletepost/<str:post_id>/<str:user_id>/", delete_post , name="Delete post"),
   path("get_nuber_of_comments/<str:post_id>/",get_number_of_comments_on_post,name="Number of Comments")
-
 ]
 
 

@@ -58,7 +58,7 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"manar1" , "email":"manar1@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Stroke (Prevention)"] }
+{"username":"ai_trainer" , "email":"ai_trainer@gmail.com" ,"latitude":1.33434,"longitude":0.474663, "password":"1234","phone":"1234", "weight":200.9,"height":150.6,"first_name":"jack","last_name":"jack", "gender":"male", "goal":"lose_weight", "experianse_level" :"advanced", "user_type":"trainer", "illnesses":["Heart Failure","Stroke (Prevention)"] }
 
 ###
 
@@ -69,7 +69,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 {}
 ###
-post http://127.0.0.1:8000/exercises/ai-program/38/
+post http://127.0.0.1:8000/exercises/ai-program/10/
 Content-Type: application/json
 
 {}
@@ -238,7 +238,7 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/exercises/gettrainerprogram/4/
+GET http://127.0.0.1:8000/exercises/gettrainerprogram/10/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
 ##Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
@@ -565,7 +565,7 @@ Content-Type: application/json
 {}
 
 ###
-Post http://127.0.0.1:8000/exercises/makeprogram/2/1/
+Post http://127.0.0.1:8000/exercises/makeprogram/1/7/
 Content-Type: application/json
 
 {
@@ -575,7 +575,7 @@ Content-Type: application/json
             "day":"sunday",
             "sets":3,
             "reps":10,
-            "exercises":[1,2,3] 
+            "exercises":[2,3] 
         },
         {
             "day":"friday",
@@ -807,9 +807,6 @@ Content-Type: application/json
 
 #############
 Get http://127.0.0.1:8000/posts/get_nuber_of_comments/1/
-<<<<<<< HEAD
-Content-Type: application/json
-=======
 Content-Type: application/json
 #########
 Get http://127.0.0.1:8000/exercises/avoidexercisesbymuscle/1
@@ -891,4 +888,3 @@ Content-Type: image/jpeg
 
 < C:/Users/mwe33/Desktop/coffee/cap_image2.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
->>>>>>> origin/main
