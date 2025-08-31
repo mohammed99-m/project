@@ -21,24 +21,31 @@ Content-Type: application/json
 }
 
 ###
-POST http://127.0.0.1:8000/exercises/makeprogram/3/26/
+POST http://127.0.0.1:8000/exercises/makeprogram/4/16/
 Content-Type: application/json
 
 {
     "description": "برنامج تدريب جديد",
     "days_exercises": [
         {
+            "day": "Sunday",
+            "sets": 3,
+            "reps": 15,
+            "exercises": [19,20,3,4]
+        },
+        {
             "day": "Monday",
             "sets": 3,
             "reps": 10,
-            "exercises": [1, 2]
+            "exercises": [13,14,15,16]
         },
         {
             "day": "Wednesday",
-            "sets": 2,
+            "sets": 3,
             "reps": 15,
-            "exercises": [3]
+            "exercises": [6,5,7,8]
         }
+ 
     ]
 }
 ####
@@ -50,17 +57,48 @@ Content-Type: application/json
   {
     "days_exercises": [
         {
+            "day": "Sunday",
+            "sets": 3,
+            "reps": 15,
+            "exercises": [19,20,3,4]
+        }
+        {
             "day": "Monday",
             "sets": 3,
             "reps": 10,
-            "exercises": [1]
+            "exercises": [13,14,15,16]
         },
         {
             "day": "Wednesday",
-            "sets": 2,
+            "sets": 3,
             "reps": 15,
-            "exercises": [1]
-        }
+            "exercises": [6,5,7,8]
+        },
+        {
+            "day": "Thursday",
+            "sets": 3,
+            "reps": 15,
+            "exercises": [9, 10 , 11 ,12]
+        },
+        {
+            "day": "Saturday",
+            "sets": 3,
+            "reps": 15,
+            "exercises": [17,18,21]
+        },
+        {
+            "day": "Thursday",
+            "sets": 3,
+            "reps": 15,
+            "exercises": [19,20,9,10]
+        },
+        {
+            "day": "Friday",
+            "sets": 3,
+            "reps": 15,
+            "exercises": [13,14,17,18]
+        },
+        
     ]
 }
 
