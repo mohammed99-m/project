@@ -299,7 +299,7 @@ def recommend_program_ai(request, user_id):
     illnesses = encode_illnesses(profile.illnesses, illness_id, len(illnesses))
     # تحميل المودل
     model = joblib.load('/home/mohammedmoh/project/program_recommender_multi.joblib')
-    mlb = joblib.load('exercise_mlb.joblib')
+    mlb = joblib.load('/home/mohammedmoh/project/exercise_mlb.joblib')
     #  مصفوفة التمارين المتوقعة
     X_basic = [weight, height, level, goal, gender]
     X = np.array([X_basic + illnesses])
