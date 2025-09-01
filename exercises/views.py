@@ -288,7 +288,8 @@ def recommend_program_ai(request, user_id):
             'program_id': existing_program.id
         }, status=status.HTTP_400_BAD_REQUEST)
     #جلب الأمراض من الداتا بيز
-    illnesses = list(IllnessToAvoidExercises.objects.all())
+    # illnesses = list(IllnessToAvoidExercises.objects.all())
+    illnesses = list(IllnessToAvoidExercises.objects.all()[:13])
     illness_id = {ill.id: idx for idx, ill in enumerate(illnesses)}
    #معلومات المتدرب
     weight = profile.weight
