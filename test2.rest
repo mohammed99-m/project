@@ -391,9 +391,9 @@ GET http://127.0.0.1:8000/health/foods/
 Content-Type: application/json
 
 {}
-
+//days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 ###
-POST http://127.0.0.1:8000/health/addditeplan/3/2/
+POST http://127.0.0.1:8000/health/addditeplan/4/16/
 Content-Type: application/json
 
   {
@@ -401,7 +401,37 @@ Content-Type: application/json
        {
            "day": "Monday",
            "description":"Heelo",
-           "meals": [1]
+           "meals": [1,2,3,4,5]
+       },
+        {
+           "day": "Tuesday",
+           "description":"Heelo",
+           "meals": [5,4,4,6,8]
+       },
+        {
+           "day": "Wednesday",
+           "description":"Heelo",
+           "meals": [5,5,3,2,1]
+       },
+        {
+           "day": "Thursday",
+           "description":"Heelo",
+           "meals": [1,2,3,4,5]
+       },
+        {
+           "day": "Friday",
+           "description":"Heelo",
+           "meals": [6,7,8,9,10]
+       },
+        {
+           "day": "Saturday",
+           "description":"Heelo",
+           "meals": [1,20,13,14,5]
+       },
+        {
+           "day": "Sunday",
+           "description":"Heelo",
+           "meals": [1,2,3,4,5]
        }
     ]
 }

@@ -511,7 +511,7 @@ def recommend_diet_ai(request, user_id):
     
 
     #جلب الأمراض من الداتا بيز
-    illnesses = list(IllnessToAvoidFood.objects.all())
+    illnesses = list(IllnessToAvoidFood.objects.all()[:99])
     illness_id= {ill.id: idx for idx, ill in enumerate(illnesses)}
 
 
@@ -524,8 +524,8 @@ def recommend_diet_ai(request, user_id):
     illnesses = encode_illnesses(profile.illnesses or [], illness_id, len(illnesses))
 
     # تحميل المودل
-    model = joblib.load("diet_recommender.joblib")
-    mlb = joblib.load("meal_mlb.joblib")
+    model = joblib.load("/home/mohammedmoh/project/diet_recommender.joblib")
+    mlb = joblib.load("/home/mohammedmoh/project/meal_mlb.joblib")
 
     #  مصفوفة الأطعمة المتوقعة
     X_basic = [weight, height, level, goal, gender]
