@@ -582,3 +582,21 @@ def update_profile_image_url(request, user_id):
         "message": "Image URL updated successfully",
         "image_url": profile.image_url
     }, status=status.HTTP_200_OK)
+
+
+@api_view(["DELETE"])
+def delete_account_by_id(request, user_id):
+    # Get user by ID
+    user = get_object_or_404(User, id=user_id)
+
+    # Delete profile if exists
+    try:
+        profile = Profile.objects.get(user=user)
+        profile.delete()
+    except Profile.DoesNotExist:
+        pass  # No profile, just delete user
+
+    # Delete user
+    user.delete()
+
+    return Response({"message": "Account deleted successfully."}, status=status.HTTP_200_OK)

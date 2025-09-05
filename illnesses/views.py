@@ -151,3 +151,21 @@ def get_foods_to_avoid_for_user(request, user_id):
         'foods_to_avoid': food_to_avoid,
         'sources': sources,
     }, status=status.HTTP_200_OK)
+
+@api_view(["DELETE"])
+def force_delete_illnesses_food(request,illnesses_id):
+    try:
+         illnesses = get_object_or_404(IllnessToAvoidFood,id=illnesses_id)
+         illnesses.delete()
+         return Response({"message":"Illnesses deleted successfully."},status=status.HTTP_200_OK)
+    except IllnessToAvoidFood.DoesNotExist:
+        return Response({"message":"Something get Wrong"},status=status.HTTP_200_OK)
+    
+@api_view(["DELETE"])
+def force_delete_illnesses_exercises(request,illnesses_id):
+    try:
+         illnesses = get_object_or_404(IllnessToAvoidExercises,id=illnesses_id)
+         illnesses.delete()
+         return Response({"message":"Illnesses deleted successfully."},status=status.HTTP_200_OK)
+    except IllnessToAvoidExercises.DoesNotExist:
+        return Response({"message":"Something get Wrong"},status=status.HTTP_200_OK)

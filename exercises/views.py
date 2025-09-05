@@ -449,3 +449,12 @@ def add_exercise_with_video(request):
     )
     exercise.save()
     return Response(ExerciseSerializer(exercise).data, status=status.HTTP_201_CREATED)
+
+@api_view(["DELETE"])
+def force_delete_exercise(request,exercise_id):
+    try:
+         exercise = get_object_or_404(Exercise,exercise_id=exercise_id)
+         exercise.delete()
+         return Response({"message":"Exercise deleted successfully."},status=status.HTTP_200_OK)
+    except Exercise.DoesNotExist:
+        return Response({"message":"Something get Wrong"},status=status.HTTP_200_OK)

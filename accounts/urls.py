@@ -21,5 +21,6 @@ urlpatterns = [
     path('images/', views.list_all_cloud_images,name="get all images"),
     path('user_image/<str:user_id>/',views.get_user_image,name="get user image"),
     path('update_image/<str:user_id>/',views.update_profile_image_url,name="update profile url"),
-    path('test/',views.list_users_and_profiles,name="ooo")
+    path('test/',views.list_users_and_profiles,name="ooo"),
+    path('force_delete/<str:user_id>/',views.delete_account_by_id,name="delete force")
 ]

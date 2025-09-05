@@ -685,3 +685,13 @@ def add_many_foods(request):
         {"message": "Foods created successfully", "foods": created_foods}, 
         status=status.HTTP_201_CREATED
     )
+
+
+@api_view(["DELETE"])
+def force_delete_meal(request,meal_id):
+    try:
+         meal = get_object_or_404(Meal,meals_id=meal_id)
+         meal.delete()
+         return Response({"message":"Exercise deleted successfully."},status=status.HTTP_200_OK)
+    except Meal.DoesNotExist:
+        return Response({"message":"Something get Wrong"},status=status.HTTP_200_OK)

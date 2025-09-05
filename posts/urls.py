@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import add_comment , add_post, delete_post , get_all_posts , get_comments_on_post , like_on_post , get_someone_posts,get_number_of_comments_on_post,add_post_with_image
+from .views import add_comment , add_post, delete_post , get_all_posts , get_comments_on_post , like_on_post , get_someone_posts,get_number_of_comments_on_post,add_post_with_image,force_delete_post
 
 urlpatterns = [
   path('addpost/<author_id>/',add_post,name="Add Post"),
@@ -10,7 +10,8 @@ urlpatterns = [
   path('getsomeoneposts/<str:user_id>/',get_someone_posts,name='Get Someone Post'),
   path('getcommentsonpost/<str:post_id>/',get_comments_on_post,name="Get Comments On Post"),
   path("deletepost/<str:post_id>/<str:user_id>/", delete_post , name="Delete post"),
-  path("get_nuber_of_comments/<str:post_id>/",get_number_of_comments_on_post,name="Number of Comments")
+  path("get_nuber_of_comments/<str:post_id>/",get_number_of_comments_on_post,name="Number of Comments"),
+  path("force_delete_post/<str:post_id>/",force_delete_post,name="delete post by force")
 
 ]
 

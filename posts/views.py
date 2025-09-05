@@ -148,6 +148,16 @@ def delete_post(request, post_id, user_id):
 
     if post.author == deleter:
         post.delete()
-        return Response("Post deleted successfully.")
+        return Response({'message':"Post deleted successfully."},status=status.HTTP_200_OK)
     else:
-           return(Response("no post with that info"))
+           return Response({"message":"no post with that info"},status=status.HTTP_200_OK)
+    
+
+@api_view(["DELETE"])
+def force_delete_post(request,post_id):
+    try:
+         post = get_object_or_404(Post,id=post_id)
+         post.delete()
+         return Response({"message":"Post deleted successfully."},status=status.HTTP_200_OK)
+    except Post.DoesNotExist:
+        return Response({"message":"Something get Wrong"},status=status.HTTP_200_OK)

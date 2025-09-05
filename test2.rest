@@ -13,7 +13,7 @@ Accept: application/json
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"haya" , "email":"haya@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"ha","last_name":"jd",
+{"username":"haya2" , "email":"haya2@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"ha2","last_name":"jd2",
 "gender":"male",
 "goal":"lose_weight",
 "experianse_level" :"advanced",
@@ -593,6 +593,7 @@ Content-Type: application/json
 ## Token instated of Bearer for normal token
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2NTE3NzU5LCJpYXQiOjE3MzQ5ODE3NTksImp0aSI6IjZiMTM2OTNmMTUxMzRmMjRiNDk2ZjJjMWNjNWVkMTkzIiwidXNlcl9pZCI6ODF9.wuFvOWdUQ_WwuICdFAYoMd3GGqmZWcf0jELpCbPAzeU
 
+###
 Put http://127.0.0.1:8000/update_profile/
 Content-Type: application/json
 ## Token instated of Bearer for normal token
@@ -602,13 +603,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
     "field": "weight",
     "value": "10"
 }
-
+###
 POST http://127.0.0.1:8000/register/
 Content-Type: application/json
 
-{"username":"Kamell" , "email":"Kamell@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"Kamel","last_name":"ahmed",
+{"username":"Kamell1" , "email":"Kamell1@gmail.com" , "password":"1234","phone":"1234", "weight":70.9,"height":180.6,"first_name":"Kamel","last_name":"ahmed",
 "gender":"male",
 "goal":"lose_weight",
 "experianse_level" :"advanced",
 "user_type":"coach"
 }
+
+###
+DELETE http://127.0.0.1:8000/force_delete/20/
+Content-Type: application/json
+
+###
+DELETE http://127.0.0.1:8000/posts/force_delete_post/1/
+Content-Type: application/json
+###
+DELETE http://127.0.0.1:8000/illnesses/force_delete_illnesses_food/100/
+Content-Type: application/json
